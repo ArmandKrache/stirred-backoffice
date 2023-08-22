@@ -13,12 +13,42 @@ class _CocktailApiService implements CocktailApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'https://thecocktaildb.com/api/json/v1/1';
+    baseUrl ??= 'http://127.0.0.1:8000/';
   }
 
   final Dio _dio;
 
   String? baseUrl;
+
+  @override
+  Future<HttpResponse<LoginResponse>> getTokens(
+      Map<String, dynamic> credentials) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(credentials);
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<LoginResponse>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/auth/token/login/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = LoginResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
 
   @override
   Future<HttpResponse<PopularCocktailsResponse>> getPopularCocktails() async {

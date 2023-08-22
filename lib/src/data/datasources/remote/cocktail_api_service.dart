@@ -1,5 +1,6 @@
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/popular_cocktails_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/saerched_cocktails_response.dart';
@@ -8,9 +9,13 @@ import 'package:retrofit/retrofit.dart';
 
 part 'cocktail_api_service.g.dart';
 
-@RestApi(baseUrl: baseCocktailApiUrl, parser: Parser.MapSerializable)
+
+@RestApi(baseUrl: baseStirredAdminUrl, parser: Parser.MapSerializable)
 abstract class CocktailApiService {
   factory CocktailApiService(Dio dio, {String baseUrl}) = _CocktailApiService;
+
+  @POST('/auth/token/login/')
+  Future<HttpResponse<LoginResponse>> getTokens(@Body() Map<String, dynamic> credentials);
 
   @GET('/popular.php')
   Future<HttpResponse<PopularCocktailsResponse>> getPopularCocktails();

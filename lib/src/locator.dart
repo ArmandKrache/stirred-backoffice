@@ -12,14 +12,18 @@ import 'package:get_it/get_it.dart';
 final locator = GetIt.instance;
 
 Future<void> initializeDependencies ( ) async {
-  final db = await $FloorAppDatabase.databaseBuilder(databaseName).build();
+  /*final db = await $FloorAppDatabase.databaseBuilder(databaseName).build();
   locator.registerSingleton<AppDatabase>(db);
 
   locator.registerSingleton<DatabaseRepository>(
     DatabaseRepositoryImpl(locator<AppDatabase>())
-  );
+  );*/
 
   final dio = Dio();
+  dio.options = BaseOptions();
+  /*dio.options.headers['Access-Control-Allow-Origin'] = '*'; //TODO : Change it to something safer
+  dio.options.headers['Access-Control-Allow-Methods'] = 'GET, DELETE, HEAD, OPTIONS, POST, PUT, PATCH';
+  dio.options.headers['Access-Control-Allow-Credentials'] = 'true'; */
   locator.registerSingleton<Dio>(dio);
   locator.registerSingleton<CocktailApiService>(
     CocktailApiService(locator<Dio>()),

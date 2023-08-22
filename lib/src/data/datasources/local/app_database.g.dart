@@ -85,7 +85,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `drinks_table` (`id` INTEGER, `idDrink` TEXT, `strDrink` TEXT, `strDrinkThumb` TEXT, PRIMARY KEY (`idDrink`))');
+            'CREATE TABLE IF NOT EXISTS `drinks_table` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `idDrink` TEXT, `strDrink` TEXT, `strDrinkThumb` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -116,7 +116,7 @@ class _$DrinkDao extends DrinkDao {
         _drinkDeletionAdapter = DeletionAdapter(
             database,
             'drinks_table',
-            ['idDrink'],
+            ['id'],
             (Drink item) => <String, Object?>{
                   'id': item.id,
                   'idDrink': item.idDrink,

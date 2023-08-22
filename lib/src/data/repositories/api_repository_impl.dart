@@ -1,10 +1,12 @@
 import 'package:cocktail_app/src/data/datasources/remote/base/base_api_repository.dart';
 import 'package:cocktail_app/src/data/datasources/remote/cocktail_api_service.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/lookup_details_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/popular_cocktails_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/saerched_cocktails_response.dart';
@@ -54,5 +56,14 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
       drinkId: request.drinkId,
       ingredientId: request.ingredientId,
     ));
+  }
+
+  @override
+  Future<DataState<LoginResponse>> getTokens({
+    required LoginRequest request
+  }) {
+    return getState0f<LoginResponse>(request: () => _cocktailApiService.getTokens(
+        {"username" : request.username!, "password" : request.password!}),
+    );
   }
 }

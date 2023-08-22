@@ -15,12 +15,6 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    HomepageRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomepageView(),
-      );
-    },
     DrinkDetailsRoute.name: (routeData) {
       final args = routeData.argsAs<DrinkDetailsRouteArgs>();
       return AutoRoutePage<dynamic>(
@@ -31,10 +25,16 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
-    SavedDrinksRoute.name: (routeData) {
+    HomepageRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const SavedDrinksView(),
+        child: const HomepageView(),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LoginView(),
       );
     },
     RootRoute.name: (routeData) {
@@ -43,21 +43,13 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RootView(),
       );
     },
+    SavedDrinksRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const SavedDrinksView(),
+      );
+    },
   };
-}
-
-/// generated route for
-/// [HomepageView]
-class HomepageRoute extends PageRouteInfo<void> {
-  const HomepageRoute({List<PageRouteInfo>? children})
-      : super(
-          HomepageRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomepageRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for
@@ -99,15 +91,29 @@ class DrinkDetailsRouteArgs {
 }
 
 /// generated route for
-/// [SavedDrinksView]
-class SavedDrinksRoute extends PageRouteInfo<void> {
-  const SavedDrinksRoute({List<PageRouteInfo>? children})
+/// [HomepageView]
+class HomepageRoute extends PageRouteInfo<void> {
+  const HomepageRoute({List<PageRouteInfo>? children})
       : super(
-          SavedDrinksRoute.name,
+          HomepageRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'SavedDrinksRoute';
+  static const String name = 'HomepageRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoginView]
+class LoginRoute extends PageRouteInfo<void> {
+  const LoginRoute({List<PageRouteInfo>? children})
+      : super(
+          LoginRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'LoginRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
@@ -122,6 +128,20 @@ class RootRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'RootRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [SavedDrinksView]
+class SavedDrinksRoute extends PageRouteInfo<void> {
+  const SavedDrinksRoute({List<PageRouteInfo>? children})
+      : super(
+          SavedDrinksRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'SavedDrinksRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }
