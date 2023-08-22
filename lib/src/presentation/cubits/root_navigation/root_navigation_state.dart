@@ -5,7 +5,7 @@ abstract class RootNavigationState extends Equatable {
   final int index;
 
   const RootNavigationState({
-    this.navbarItem = NavbarItem.home,
+    this.navbarItem = NavbarItem.drinks,
     this.index = 0
   });
 

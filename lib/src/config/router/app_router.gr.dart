@@ -25,16 +25,48 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    DrinksRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const DrinksView(),
+      );
+    },
+    GlassesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const GlassesView(),
+      );
+    },
     HomepageRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const HomepageView(),
       );
     },
-    LoginRoute.name: (routeData) {
+    IngredientsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: LoginView(),
+        child: const IngredientsView(),
+      );
+    },
+    LoginRoute.name: (routeData) {
+      final args = routeData.argsAs<LoginRouteArgs>(
+          orElse: () => const LoginRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: LoginView(key: args.key),
+      );
+    },
+    ProfilesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const ProfilesView(),
+      );
+    },
+    RecipesRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const RecipesView(),
       );
     },
     RootRoute.name: (routeData) {
@@ -91,6 +123,34 @@ class DrinkDetailsRouteArgs {
 }
 
 /// generated route for
+/// [DrinksView]
+class DrinksRoute extends PageRouteInfo<void> {
+  const DrinksRoute({List<PageRouteInfo>? children})
+      : super(
+          DrinksRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'DrinksRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [GlassesView]
+class GlassesRoute extends PageRouteInfo<void> {
+  const GlassesRoute({List<PageRouteInfo>? children})
+      : super(
+          GlassesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'GlassesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
 /// [HomepageView]
 class HomepageRoute extends PageRouteInfo<void> {
   const HomepageRoute({List<PageRouteInfo>? children})
@@ -105,15 +165,71 @@ class HomepageRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [LoginView]
-class LoginRoute extends PageRouteInfo<void> {
-  const LoginRoute({List<PageRouteInfo>? children})
+/// [IngredientsView]
+class IngredientsRoute extends PageRouteInfo<void> {
+  const IngredientsRoute({List<PageRouteInfo>? children})
       : super(
+          IngredientsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'IngredientsRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [LoginView]
+class LoginRoute extends PageRouteInfo<LoginRouteArgs> {
+  LoginRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           LoginRoute.name,
+          args: LoginRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'LoginRoute';
+
+  static const PageInfo<LoginRouteArgs> page = PageInfo<LoginRouteArgs>(name);
+}
+
+class LoginRouteArgs {
+  const LoginRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'LoginRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [ProfilesView]
+class ProfilesRoute extends PageRouteInfo<void> {
+  const ProfilesRoute({List<PageRouteInfo>? children})
+      : super(
+          ProfilesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfilesRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RecipesView]
+class RecipesRoute extends PageRouteInfo<void> {
+  const RecipesRoute({List<PageRouteInfo>? children})
+      : super(
+          RecipesRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'RecipesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

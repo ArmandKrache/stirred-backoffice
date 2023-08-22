@@ -2,7 +2,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_items.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
+import 'package:cocktail_app/src/presentation/views/drinks_view.dart';
+import 'package:cocktail_app/src/presentation/views/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/homepage_view.dart';
+import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
+import 'package:cocktail_app/src/presentation/views/profiles_view.dart';
+import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
+import 'package:cocktail_app/src/utils/constants/strings.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,60 +21,86 @@ class RootView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter Bottom Navbar Tutorial w/ Bloc'),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Row(
+          children: <Widget>[
+            Drawer(
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    DrawerHeader(
+                      margin: EdgeInsets.zero,
+                      child: Center(
+                        child: Image.asset(iconAsset),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person_rounded, size: 32,),
+                      title: const Text('Profiles'),
+                      onTap: () {
+                        BlocProvider.of<RootNavigationCubit>(context)
+                            .getNavBarItem(NavbarItem.profiles);
+                      },
+                    ),
+                    ListTile(
+                      leading: Image.asset(iconAsset, width: 32,),
+                      title: const Text('Drinks'),
+                      onTap: () {
+                        BlocProvider.of<RootNavigationCubit>(context)
+                            .getNavBarItem(NavbarItem.drinks);
+                      },
+                    ),
+                    ListTile(
+                      leading: Image.asset(iconAsset, width: 32,),
+                      title: const Text('Recipes'),
+                      onTap: () {
+                        BlocProvider.of<RootNavigationCubit>(context)
+                            .getNavBarItem(NavbarItem.recipes);
+                      },
+                    ),
+                    ListTile(
+                      leading: Image.asset(iconAsset, width: 32,),
+                      title: const Text('Glasses'),
+                      onTap: () {
+                        BlocProvider.of<RootNavigationCubit>(context)
+                            .getNavBarItem(NavbarItem.glasses);
+                      },
+                    ),
+                    ListTile(
+                      leading: Image.asset(iconAsset, width: 32,),
+                      title: const Text('Ingredients'),
+                      onTap: () {
+                        BlocProvider.of<RootNavigationCubit>(context)
+                            .getNavBarItem(NavbarItem.ingredients);
+                      },
+                    ),
+                  ],
+                )
+            ),
+            Expanded(
+              child: BlocBuilder<RootNavigationCubit, RootNavigationState>(
+                builder: (_, state) {
+                  if (state.navbarItem == NavbarItem.drinks) {
+                    return const DrinksView();
+                  } else if (state.navbarItem == NavbarItem.profiles) {
+                    return const ProfilesView();
+                  } else if (state.navbarItem == NavbarItem.recipes) {
+                    return const RecipesView();
+                  } else if (state.navbarItem == NavbarItem.glasses) {
+                    return const GlassesView();
+                  } else if (state.navbarItem == NavbarItem.ingredients) {
+                    return const IngredientsView();
+                  }
+                  return const SizedBox();
+                }
+              ),
+            ),
+          ],
+        ),
       ),
-      bottomNavigationBar: BlocBuilder<RootNavigationCubit, RootNavigationState>(
-        builder: (context, state) {
-          return BottomNavigationBar(
-            currentIndex: state.index,
-            showUnselectedLabels: false,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.home,
-                ),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.settings,
-                ),
-                label: 'Settings',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.person,
-                ),
-                label: 'Profile',
-              ),
-            ],
-            onTap: (index) {
-              if (index == 0) {
-                BlocProvider.of<RootNavigationCubit>(context)
-                    .getNavBarItem(NavbarItem.home);
-              } else if (index == 1) {
-                BlocProvider.of<RootNavigationCubit>(context)
-                    .getNavBarItem(NavbarItem.settings);
-              } else if (index == 2) {
-                BlocProvider.of<RootNavigationCubit>(context)
-                    .getNavBarItem(NavbarItem.profile);
-              }
-            },
-          );
-        },
-      ),
-      body: BlocBuilder<RootNavigationCubit, RootNavigationState>(
-          builder: (_, state) {
-            if (state.navbarItem == NavbarItem.home) {
-              return const HomepageView();
-            } else if (state.navbarItem == NavbarItem.settings) {
-              // return SettingsScreen();
-            } else if (state.navbarItem == NavbarItem.profile) {
-              // return ProfileScreen();
-            }
-            return const SizedBox();
-          }),
     );
   }
 }
+

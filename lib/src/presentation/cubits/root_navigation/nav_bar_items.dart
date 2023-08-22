@@ -1,1 +1,1 @@
-enum NavbarItem { home, settings, profile }
+enum NavbarItem { drinks, profiles, recipes, glasses, ingredients }

@@ -6,18 +6,24 @@ import 'package:equatable/equatable.dart';
 part 'root_navigation_state.dart';
 
 class RootNavigationCubit extends Cubit<RootNavigationState> {
-  RootNavigationCubit() : super(const RootNavigationSuccess(navbarItem: NavbarItem.home, index: 0));
+  RootNavigationCubit() : super(const RootNavigationSuccess(navbarItem: NavbarItem.drinks, index: 0));
 
   void getNavBarItem(NavbarItem navbarItem) {
     switch (navbarItem) {
-      case NavbarItem.home:
-        emit(const RootNavigationSuccess(navbarItem: NavbarItem.home, index: 0));
+      case NavbarItem.drinks:
+        emit(const RootNavigationSuccess(navbarItem: NavbarItem.drinks, index: 0));
         break;
-      case NavbarItem.settings:
-        emit(const RootNavigationSuccess(navbarItem: NavbarItem.settings, index: 1));
+      case NavbarItem.profiles:
+        emit(const RootNavigationSuccess(navbarItem: NavbarItem.profiles, index: 1));
         break;
-      case NavbarItem.profile:
-        emit(const RootNavigationSuccess(navbarItem: NavbarItem.profile, index: 2));
+      case NavbarItem.recipes:
+        emit(const RootNavigationSuccess(navbarItem: NavbarItem.recipes, index: 2));
+        break;
+      case NavbarItem.glasses:
+        emit(const RootNavigationSuccess(navbarItem: NavbarItem.glasses, index: 2));
+        break;
+      case NavbarItem.ingredients:
+        emit(const RootNavigationSuccess(navbarItem: NavbarItem.ingredients, index: 2));
         break;
     }
   }
