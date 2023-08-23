@@ -19,8 +19,8 @@ class AppRouter extends _$AppRouter {
 
     @override
     List<AutoRoute> get routes => [
-        AutoRoute(page: RootRoute.page, initial: true),
-        AutoRoute(page: LoginRoute.page, initial: false), /// TODO: Set back to True after dev
+        AutoRoute(page: RootRoute.page, initial: false),
+        AutoRoute(page: LoginRoute.page, initial: true), /// TODO: Set back to True after dev
         AutoRoute(page: DrinksRoute.page,),
         AutoRoute(page: RecipesRoute.page,),
         AutoRoute(page: IngredientsRoute.page,),

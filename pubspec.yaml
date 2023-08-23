@@ -46,6 +46,7 @@ dependencies:
   dio: ^5.0.3
   intl: ^0.18.0
   lottie: ^2.3.2
+  flutter_secure_storage: ^8.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

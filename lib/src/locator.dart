@@ -21,9 +21,6 @@ Future<void> initializeDependencies ( ) async {
 
   final dio = Dio();
   dio.options = BaseOptions();
-  /*dio.options.headers['Access-Control-Allow-Origin'] = '*'; //TODO : Change it to something safer
-  dio.options.headers['Access-Control-Allow-Methods'] = 'GET, DELETE, HEAD, OPTIONS, POST, PUT, PATCH';
-  dio.options.headers['Access-Control-Allow-Credentials'] = 'true'; */
   locator.registerSingleton<Dio>(dio);
   locator.registerSingleton<CocktailApiService>(
     CocktailApiService(locator<Dio>()),

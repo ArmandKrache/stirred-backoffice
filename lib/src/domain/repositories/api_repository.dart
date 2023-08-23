@@ -14,6 +14,7 @@ abstract class ApiRepository {
   Future<DataState<LoginResponse>> getTokens({
     required LoginRequest request,
   });
+
   Future<DataState<PopularCocktailsResponse>> getPopularCocktails({
     required PopularCocktailsRequest request,
   });

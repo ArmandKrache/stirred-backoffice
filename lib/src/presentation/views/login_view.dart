@@ -112,7 +112,7 @@ class LoginView extends HookWidget {
               child: Container(
                 margin: const EdgeInsets.only(top: 8),
                 child: Center(
-                    child: Text(error == null ? "" : error.response!.data["errors"][0]["detail"] ?? "",
+                    child: Text(error == null ? "" : error.response?.data["errors"][0]["detail"] ?? "",
                       style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                 ),

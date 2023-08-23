@@ -6,6 +6,7 @@ import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_reque
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
+import 'package:cocktail_app/src/utils/resources/tokens_management.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -30,7 +31,10 @@ class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>>
           final access = response.data!.access;
           final refresh = response.data!.refresh;
 
-          /// data.addAll(); //TODO : handle caching tokens
+          storeAccessToken(access);
+          storeRefreshToken(refresh);
+
+          String? test = await getAccessToken();
 
           emit(const RemoteLoginSuccess());
         } else if (response is DataFailed) {

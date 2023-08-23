@@ -13,7 +13,7 @@ class _CocktailApiService implements CocktailApiService {
     this._dio, {
     this.baseUrl,
   }) {
-    baseUrl ??= 'http://127.0.0.1:8000/';
+    baseUrl ??= 'https://127.0.0.1:8000/';
   }
 
   final Dio _dio;
