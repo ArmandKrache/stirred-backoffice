@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
 import 'package:dio/dio.dart';

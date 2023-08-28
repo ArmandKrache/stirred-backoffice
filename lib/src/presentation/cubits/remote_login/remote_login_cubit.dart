@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
@@ -27,20 +28,17 @@ class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>>
           await _apiRepository.getTokens(request: event.request!);
 
         if (response is DataSuccess) {
-          log(response.data.toString());
           final access = response.data!.access;
           final refresh = response.data!.refresh;
 
-          storeAccessToken(access);
-          storeRefreshToken(refresh);
+          await storeAccessToken(access);
+          await storeRefreshToken(refresh);
 
-          String? test = await getAccessToken();
+          appRouter.push(const RootRoute());
 
           emit(const RemoteLoginSuccess());
         } else if (response is DataFailed) {
           emit(const RemoteLoginLoading());
-          log(response.exception.toString());
-          log(response.exception!.response.toString());
           emit(RemoteLoginFailed(exception: response.exception));
         }
       });
