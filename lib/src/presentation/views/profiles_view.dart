@@ -36,6 +36,9 @@ class ProfilesView extends HookWidget {
         ),
       body: BlocBuilder<ProfilesCubit, ProfilesState>(
           builder: (context, state) {
+            if (state.runtimeType == ProfilesLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
             if (state.profiles.isEmpty) {
               return const Center(child: Text("Profile list is empty"),);
             } else {

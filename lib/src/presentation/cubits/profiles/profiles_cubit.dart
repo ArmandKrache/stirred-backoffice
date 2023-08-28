@@ -29,6 +29,7 @@ class ProfilesCubit extends BaseCubit<ProfilesState, List<Profile>> {
           final profiles = response.data!.profiles;
           final noMoreData = profiles.isEmpty;
 
+          data.clear();
           data.addAll(profiles);
 
           emit(ProfilesSuccess(profiles: data, noMoreData: noMoreData));
