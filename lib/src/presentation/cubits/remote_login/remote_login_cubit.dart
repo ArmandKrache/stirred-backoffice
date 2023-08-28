@@ -44,6 +44,17 @@ class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>>
       });
     }
   }
+
+  Future<void> isAlreadyLoggedIn() async { /// TODO: NOT WORKING AS INTENDED
+    final access = await getAccessToken();
+    final refresh = await getRefreshToken();
+
+    if (access == null || refresh == null)
+      return ;
+
+    appRouter.push(const RootRoute());
+    emit(const RemoteLoginSuccess());
+  }
 }
 
 class LoginEvent {

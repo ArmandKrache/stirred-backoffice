@@ -17,6 +17,8 @@ abstract class CocktailApiService {
   @POST('/auth/token/login/')
   Future<HttpResponse<LoginResponse>> getTokens(@Body() Map<String, dynamic> credentials);
 
+  /// Deprecated below
+
   @GET('/popular.php')
   Future<HttpResponse<PopularCocktailsResponse>> getPopularCocktails();
 

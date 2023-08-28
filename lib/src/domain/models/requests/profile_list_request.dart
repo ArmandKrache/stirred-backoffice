@@ -1,0 +1,3 @@
+class ProfileListRequest {
+  ProfileListRequest();
+}

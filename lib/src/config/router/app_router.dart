@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/presentation/views/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses_view.dart';
-import 'package:cocktail_app/src/presentation/views/homepage_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/login_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles_view.dart';

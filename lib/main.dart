@@ -2,6 +2,7 @@ import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/config/themes/app_themes.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
+import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
 import 'package:cocktail_app/src/utils/constants/strings.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => RootNavigationCubit()),
         BlocProvider(create: (context) => RemoteLoginCubit(
+          locator<ApiRepository>(),)
+        ),
+        BlocProvider(create: (context) => ProfilesCubit(
           locator<ApiRepository>(),)
         ),
       ],

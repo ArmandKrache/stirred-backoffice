@@ -37,12 +37,6 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const GlassesView(),
       );
     },
-    HomepageRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const HomepageView(),
-      );
-    },
     IngredientsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -146,20 +140,6 @@ class GlassesRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'GlassesRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [HomepageView]
-class HomepageRoute extends PageRouteInfo<void> {
-  const HomepageRoute({List<PageRouteInfo>? children})
-      : super(
-          HomepageRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomepageRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

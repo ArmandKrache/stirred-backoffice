@@ -4,7 +4,9 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
+import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_drinks/remote_drinks_cubit.dart';
 import 'package:cocktail_app/src/presentation/widgets/drink_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
@@ -22,15 +24,14 @@ class ProfilesView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    /// final remoteDrinksCubit = BlocProvider.of<RemoteDrinksCubit>(context);
+    final profilesCubit = BlocProvider.of<ProfilesCubit>(context);
     final scrollController = useScrollController();
     final TextEditingController _searchController = TextEditingController();
 
 
     useEffect(() {
-      /// remoteDrinksCubit.handleEvent(event: FilteredDrinksEvent(request: FilteredCocktailsRequest(ingredients: "Vodka")));
-
-    }, const []);
+      profilesCubit.handleEvent(event: ProfileListEvent(request: ProfileListRequest()));
+    }, []);
 
     return Scaffold(
         appBar: AppBar(
@@ -40,7 +41,14 @@ class ProfilesView extends HookWidget {
           ),
           actions: const [],
         ),
-      body: const Center(child: Text("PROFILES"),),
+      body: BlocBuilder<ProfilesCubit, ProfilesState>(
+          builder: (context, state) {
+            if (state.profiles.isEmpty) {
+              return const Center(child: Text("Profile list is empty"),);
+            } else {
+              return const Center(child: Text("TODO LIST VIEW OF PROFILES"),);
+            }
+          }),
       /*body: Column(
           children: [
             CustomSearchBar(

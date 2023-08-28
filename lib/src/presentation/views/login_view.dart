@@ -22,8 +22,7 @@ class LoginView extends HookWidget {
     final remoteLoginCubit = BlocProvider.of<RemoteLoginCubit>(context);
 
     useEffect(() {
-      /// TODO:  Check if user is already logged
-      remoteLoginCubit.handleEvent(event: {});
+      remoteLoginCubit.isAlreadyLoggedIn();
       return ;
     }, const []);
 

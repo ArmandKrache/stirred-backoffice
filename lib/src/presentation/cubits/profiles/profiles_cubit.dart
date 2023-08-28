@@ -2,7 +2,9 @@
 import 'dart:developer';
 
 import 'package:cocktail_app/src/domain/models/drink.dart';
+import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -10,36 +12,36 @@ import 'package:cocktail_app/src/utils/resources/data_state.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
-part 'remote_drinks_state.dart';
+part 'profiles_state.dart';
 
-class RemoteDrinksCubit extends BaseCubit<RemoteDrinksState, List<Drink>> {
+class ProfilesCubit extends BaseCubit<ProfilesState, List<Profile>> {
   final ApiRepository _apiRepository;
 
-  RemoteDrinksCubit(this._apiRepository) : super(const RemoteDrinksLoading(), []);
+  ProfilesCubit(this._apiRepository) : super(const ProfilesLoading(), []);
 
   Future<void> handleEvent({dynamic event}) async {
     if (isBusy) return;
     if (event == null) return;
 
 
-    if (event is ListDrinksEvent) {
+    if (event is ProfileListEvent) {
       await run(() async {
-        /* final response = await _apiRepository.getDrinks();
+        final response = await _apiRepository.getProfileList(request: event.request!);
 
         if (response is DataSuccess) {
-          final drinks = response.data!.drinks;
-          final noMoreData = drinks.isEmpty;
+          final profiles = response.data!.profiles;
+          final noMoreData = profiles.isEmpty;
 
-          data.addAll(drinks);
+          data.addAll(profiles);
 
-          emit(RemoteDrinksSuccess(drinks: data, noMoreData: noMoreData));
+          emit(ProfilesSuccess(profiles: data, noMoreData: noMoreData));
         } else if (response is DataFailed) {
           log(response.exception.toString());
-        } */
+        }
       });
     } /*else if (event is SearchDrinksEvent) {
       await run(() async {
-        emit(RemoteDrinksLoading());
+        emit(ProfilesLoading());
         final response = await _apiRepository.getSearchedCocktails(request: event.request!);
 
         if (response is DataSuccess) {
@@ -49,7 +51,7 @@ class RemoteDrinksCubit extends BaseCubit<RemoteDrinksState, List<Drink>> {
           data.clear();
           data.addAll(drinks);
 
-          emit(RemoteDrinksSuccess(drinks: data, noMoreData: noMoreData));
+          emit(ProfilesSuccess(drinks: data, noMoreData: noMoreData));
         } else if (response is DataFailed) {
           // log(response.exception.toString());
         }
@@ -65,9 +67,8 @@ class SearchDrinksEvent {
   SearchDrinksEvent({this.request});
 }*/
 
-class ListDrinksEvent {
-  /// final ListDrinksRequest? request;
+class ProfileListEvent {
+  final ProfileListRequest? request;
 
-  /// ListDrinksEvent({this.request});
-  ListDrinksEvent();
+  ProfileListEvent({this.request});
 }
