@@ -1,19 +1,18 @@
 import 'package:cocktail_app/src/domain/models/drink.dart';
+import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
 
-class DrinkWidget extends StatelessWidget {
-  final Drink drink;
-  final bool isRemovable;
-  final void Function(Drink drink)? onRemove;
-  final void Function(Drink drink)? onArticlePressed;
+class ProfileListElementWidget extends StatelessWidget {
+  final Profile profile;
+  final void Function(Profile profile)? onRemove;
+  final void Function(Profile profile)? onArticlePressed;
 
-  const DrinkWidget({
+  const ProfileListElementWidget({
     Key? key,
-    required this.drink,
+    required this.profile,
     this.onArticlePressed,
-    this.isRemovable = false,
     this.onRemove,
   }) : super(key: key);
 
@@ -30,7 +29,6 @@ class DrinkWidget extends StatelessWidget {
           children: [
             _buildImage(context),
             _buildTitleAndDescription(),
-            _buildRemovableArea(),
           ],
         ),
       ),
@@ -48,7 +46,7 @@ class DrinkWidget extends StatelessWidget {
             color: Colors.black.withOpacity(0.08),
           ),
           child: Image.network(
-            drink.strDrinkThumb ?? '',
+            profile.picture ?? '',
             fit: BoxFit.contain,
             errorBuilder: (_, __, ___) {
               return const Center(
@@ -74,7 +72,7 @@ class DrinkWidget extends StatelessWidget {
           children: [
             // Title
             Text(
-              drink.strDrink ?? '',
+              profile.name ?? '',
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
@@ -115,28 +113,15 @@ class DrinkWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildRemovableArea() {
-    if (isRemovable) {
-      return GestureDetector(
-        onTap: _onRemove,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8),
-          child: Icon(Ionicons.trash_outline, color: Colors.red),
-        ),
-      );
-    }
-    return Container();
-  }
-
   void _onTap() {
     if (onArticlePressed != null) {
-      onArticlePressed?.call(drink);
+      onArticlePressed?.call(profile);
     }
   }
 
   void _onRemove() {
     if (onRemove != null) {
-      onRemove?.call(drink);
+      onRemove?.call(profile);
     }
   }
 }

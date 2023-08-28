@@ -2,7 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/presentation/cubits/local_drink/local_drink_cubit.dart';
-import 'package:cocktail_app/src/presentation/widgets/drink_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/profile_list_element_widget.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +55,8 @@ class SavedDrinksView extends HookWidget {
     return ListView.builder(
       itemCount: drinks.length,
       itemBuilder: (context, index) {
-        return DrinkWidget(
+        return Text(index.toString());
+        /*return DrinkWidget(
           drink: drinks[index],
           isRemovable: true,
           onRemove: (details) => BlocProvider.of<LocalDrinkCubit>(context)
@@ -63,7 +64,7 @@ class SavedDrinksView extends HookWidget {
           onArticlePressed: (drink) => appRouter.push(
             DrinkDetailsRoute(drink: drink)
           ),
-        );
+        );*/
     });
   }
 

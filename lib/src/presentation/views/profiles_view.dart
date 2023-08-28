@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
+import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_drinks/remote_drinks_cubit.dart';
-import 'package:cocktail_app/src/presentation/widgets/drink_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/profile_list_element_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:cocktail_app/src/utils/extensions/scroll_controller.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -46,44 +47,120 @@ class ProfilesView extends HookWidget {
             if (state.profiles.isEmpty) {
               return const Center(child: Text("Profile list is empty"),);
             } else {
-              return const Center(child: Text("TODO LIST VIEW OF PROFILES"),);
-            }
-          }),
-      /*body: Column(
-          children: [
-            CustomSearchBar(
-              controller: _searchController,
-              onSubmitted: (query) {
-                /* remoteDrinksCubit.handleEvent(
+              return Column(
+                children: [
+                  CustomSearchBar(
+                    controller: _searchController,
+                    onSubmitted: (query) {
+                      /* remoteDrinksCubit.handleEvent(
                     event: SearchDrinksEvent(
                       request: SearchedCocktailsRequest(name: query),
                     )
                 );*/
-              },
+                    },
+                  ),
+                  const SizedBox(height: 4,),
+                  BlocBuilder<ProfilesCubit, ProfilesState>(
+                      builder: (context, state) {
+                        switch (state.runtimeType) {
+                          case ProfilesLoading:
+                            return const Center(child: CupertinoActivityIndicator());
+                          case ProfilesFailed:
+                            return const Center(child: Icon(Ionicons.refresh));
+                          case ProfilesSuccess:
+                            return Expanded(
+                              child: _customDataTable(state.profiles)
+                            );
+                          default:
+                            return const SizedBox();
+                        }
+                      }
+                  ),
+                ],
+              );
+            }
+          }),
+    );
+  }
+
+  Widget _customDataTable(List<Profile> profiles) {
+    return Container(
+      alignment: Alignment.topLeft,
+      margin: const EdgeInsets.symmetric(horizontal: 8),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'id',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+                ),
+              ),
             ),
-            const SizedBox(height: 4,),
-            BlocBuilder<RemoteDrinksCubit, RemoteDrinksState>(
-                builder: (_, state) {
-                  switch (state.runtimeType) {
-                    case RemoteDrinksLoading:
-                      return const Center(child: CupertinoActivityIndicator());
-                    case RemoteDrinksFailed:
-                      return const Center(child: Icon(Ionicons.refresh));
-                    case RemoteDrinksSuccess:
-                      return Expanded(
-                        child: _buildArticles(
-                          scrollController,
-                          state.drinks,
-                          state.noMoreData,
-                        ),
-                      );
-                    default:
-                      return const SizedBox();
-                  }
-                }
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Name',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Email',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Description',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Date of Birth',
+                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+                ),
+              ),
             ),
           ],
-        ) */
+          rows: List<DataRow>.generate(
+            profiles.length,
+                (index) => DataRow(
+              cells: [
+                DataCell(
+                  SelectableText.rich(TextSpan(
+                    text: profiles[index].id ?? "",
+                    style: const TextStyle(color: Colors.blue,),
+                    mouseCursor: SystemMouseCursors.click,
+                    ),
+                    onTap: () {
+                      log("Clicked : ${profiles[index].id ?? ""}");
+                    },
+                  ),
+                ),
+                DataCell(SelectableText(profiles[index].name ?? "")),
+                DataCell(SelectableText(profiles[index].email ?? "")),
+                DataCell(Container(
+                  width: 300,
+                  child: SelectableText(profiles[index].description ?? "",
+                    style: const TextStyle(), maxLines: 2,),
+                )
+                ),
+                DataCell(SelectableText(profiles[index].dateOfBirth ?? "")),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
