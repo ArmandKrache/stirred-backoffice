@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_items.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/drinks_view.dart';
@@ -10,7 +8,6 @@ import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles_view.dart';
 import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
 import 'package:cocktail_app/src/utils/constants/strings.dart';
-import 'package:cocktail_app/src/utils/resources/tokens_management.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

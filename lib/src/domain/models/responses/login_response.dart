@@ -1,4 +1,3 @@
-import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:equatable/equatable.dart';
 
 class LoginResponse extends Equatable {

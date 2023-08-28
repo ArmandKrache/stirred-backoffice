@@ -1,18 +1,10 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
-import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
-import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
-import 'package:cocktail_app/src/presentation/cubits/remote_drinks/remote_drinks_cubit.dart';
-import 'package:cocktail_app/src/presentation/widgets/profile_list_element_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
-import 'package:cocktail_app/src/utils/extensions/scroll_controller.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

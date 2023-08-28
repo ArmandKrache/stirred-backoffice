@@ -1,7 +1,5 @@
-import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:flutter/material.dart';
-import 'package:ionicons/ionicons.dart';
 
 
 class ProfileListElementWidget extends StatelessWidget {

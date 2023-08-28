@@ -1,7 +1,5 @@
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:bloc/bloc.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_items.dart';
