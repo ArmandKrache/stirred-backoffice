@@ -1,4 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cocktail_app/src/config/config.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profile_list_response.dart';
 import 'package:dio/dio.dart';
@@ -16,5 +21,12 @@ abstract class StirredApiService {
 
   @GET('/profile/')
   Future<HttpResponse<ProfileListResponse>> getProfileList();
+
+  @GET('/glasses/')
+  Future<HttpResponse<GlassesListResponse>> getGlassesList();
+
+  @POST('/glasses/create/')
+  @MultiPart()
+  Future<HttpResponse<GlassesCreateResponse>> createGlass(@Part() Map<String, dynamic> body, @Part() File picture);
 
 }

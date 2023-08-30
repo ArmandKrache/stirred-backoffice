@@ -1,13 +1,19 @@
+import 'dart:developer';
+
 import 'package:cocktail_app/src/data/datasources/remote/base/base_api_repository.dart';
 import 'package:cocktail_app/src/data/datasources/remote/cocktail_api_service.dart';
 import 'package:cocktail_app/src/data/datasources/remote/stirred_api_service.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses_create_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/lookup_details_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/popular_cocktails_response.dart';
@@ -76,6 +82,29 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     required ProfileListRequest request
   }) {
     return getState0f<ProfileListResponse>(request: () => _stirredApiService.getProfileList(),
+    );
+  }
+
+  @override
+  Future<DataState<GlassesListResponse>> getGlassesList({
+    required GlassesListRequest request
+  }) {
+    return getState0f<GlassesListResponse>(request: () => _stirredApiService.getGlassesList(),
+    );
+  }
+
+  @override
+  Future<DataState<GlassesCreateResponse>> createGlass({
+    required GlassesCreateRequest request
+  }) {
+    log("API REPO RQUEST : ${request.name}");
+    log("API REPO RQUEST : ${request.description}");
+    log("API REPO RQUEST : ${request.picture}");
+    return getState0f<GlassesCreateResponse>(request: () => _stirredApiService.createGlass(
+      {
+        "name" : request.name,
+        "description" : request.description,
+      }, request.picture!),
     );
   }
 }
