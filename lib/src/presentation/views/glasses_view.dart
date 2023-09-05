@@ -65,14 +65,13 @@ class GlassesView extends HookWidget {
                   child: GlassCreateModalWidget(),
                 ),
               );
-               log("Modal closed");
             }
           ),
         ],
       ),
       body: BlocBuilder<GlassesCubit, GlassesState>(
           builder: (context, state) {
-            if (state.runtimeType == ProfilesLoading) {
+            if (state.runtimeType == GlassesLoading) {
               return const Center(child: CircularProgressIndicator());
             }
             if (state.glasses.isEmpty) {

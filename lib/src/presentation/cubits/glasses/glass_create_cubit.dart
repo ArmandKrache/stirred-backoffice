@@ -53,7 +53,6 @@ class GlassCreateCubit extends BaseCubit<GlassCreateState, dynamic> {
             description: description,
             picture: multipartFilePicture,
           ));
-      log("Cubit response : ${response.data.toString()}");
       emit(const GlassCreateSuccess());
     });
   }

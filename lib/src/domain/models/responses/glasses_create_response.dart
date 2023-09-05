@@ -6,25 +6,23 @@ import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:equatable/equatable.dart';
 
 class GlassesCreateResponse extends Equatable {
-  final List<Glass> glasses;
-
+  final Glass glass;
 
   const GlassesCreateResponse({
-    required this.glasses,
+    required this.glass,
   });
 
 
   factory GlassesCreateResponse.fromMap(Map<String, dynamic> map) {
-    log("Glass Create REponse Map : $map");
+    final data = map['data'];
+    log(map.toString());
     return GlassesCreateResponse(
-      glasses: List<Glass>.from((map['data'] ?? []).map<dynamic>((element) {
-        return Glass(
-          id: element["id"] ?? "",
-          name: element["attributes"]["name"] ?? "",
-          description: element["attributes"]["description"] ?? "",
-          picture: element["attributes"]["picture"] ?? "",
-        );
-      })),
+      glass: Glass(
+        id: data["id"] ?? "",
+        name: data["attributes"]["name"] ?? "",
+        description: data["attributes"]["description"] ?? "",
+        picture: data["attributes"]["picture"] ?? "",
+      )
     );
   }
 
@@ -32,6 +30,6 @@ class GlassesCreateResponse extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [glasses];
+  List<Object?> get props => [glass];
 
 }

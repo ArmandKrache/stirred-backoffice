@@ -97,9 +97,6 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
   Future<DataState<GlassesCreateResponse>> createGlass({
     required GlassesCreateRequest request
   }) {
-    log("API REPO RQUEST : ${request.name}");
-    log("API REPO RQUEST : ${request.description}");
-    log("API REPO RQUEST : ${request.picture}");
     return getState0f<GlassesCreateResponse>(request: () => _stirredApiService.createGlass(
       request.name!,
         request.description!,
