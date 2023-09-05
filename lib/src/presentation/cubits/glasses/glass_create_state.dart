@@ -1,7 +1,7 @@
 part of 'glass_create_cubit.dart';
 
 abstract class GlassCreateState extends Equatable {
-  final File? selectedImage;
+  final http.MultipartFile? selectedImage;
 
   const GlassCreateState({
     this.selectedImage,
@@ -17,6 +17,10 @@ class GlassCreateLoading extends GlassCreateState {
 
 class GlassCreateSuccess extends GlassCreateState {
   const GlassCreateSuccess();
+}
+
+class GlassCreateImageSelectLoading extends GlassCreateState {
+  const GlassCreateImageSelectLoading();
 }
 
 class GlassCreateImageSelectSuccess extends GlassCreateState {

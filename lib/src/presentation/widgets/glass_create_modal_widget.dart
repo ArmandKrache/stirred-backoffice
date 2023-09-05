@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
@@ -85,20 +88,31 @@ class GlassCreateModalWidget extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
-                      final picker = ImagePicker();
-                      final pickedImage = await picker.pickImage(source: ImageSource.gallery);
-
-                      if (pickedImage != null) {
-                        glassCreateCubit.setSelectedImage(File(pickedImage.path));
-                      }
+                      final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+                      uploadInput.click();
+                      uploadInput.onChange.listen((event) {
+                        final file = uploadInput.files!.first;
+                        final reader = html.FileReader();
+                        reader.onLoadEnd.listen((loadEndEvent) async {
+                          final Uint8List data = reader.result as Uint8List;
+                          final image = http.MultipartFile.fromBytes(
+                            'picture',
+                            data,
+                            filename: file.name,
+                          );
+                          glassCreateCubit.setSelectedImage(image);
+                        });
+                        reader.readAsArrayBuffer(file);
+                      });
                     },
                     style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
                     child: const Text('Select Picture'),
                   ),
                   const SizedBox(width: 8,),
                   state.selectedImage != null ?
-                  Image.network(state.selectedImage!.path, width: 96, height: 96,) :
-                  const Text("No picture selected yet"),
+                  // Image.network(state.selectedImage!.path, width: 96, height: 96,) :
+                  Text(state.selectedImage!.filename!) :
+                  const Text("No picture selected yet", style: TextStyle(color: Colors.grey),),
                 ],
               ),
               Row(

@@ -108,23 +108,25 @@ class _StirredApiService implements StirredApiService {
 
   @override
   Future<HttpResponse<GlassesCreateResponse>> createGlass(
-    Map<String, dynamic> body,
-    File picture,
+    String name,
+    String description,
+    MultipartFile picture,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
-      'body',
-      jsonEncode(body),
+      'name',
+      name,
+    ));
+    _data.fields.add(MapEntry(
+      'description',
+      description,
     ));
     _data.files.add(MapEntry(
       'picture',
-      MultipartFile.fromFileSync(
-        picture.path,
-        filename: picture.path.split(Platform.pathSeparator).last,
-      ),
+      picture,
     ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesCreateResponse>>(Options(

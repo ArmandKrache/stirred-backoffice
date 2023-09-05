@@ -101,10 +101,9 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     log("API REPO RQUEST : ${request.description}");
     log("API REPO RQUEST : ${request.picture}");
     return getState0f<GlassesCreateResponse>(request: () => _stirredApiService.createGlass(
-      {
-        "name" : request.name,
-        "description" : request.description,
-      }, request.picture!),
+      request.name!,
+        request.description!,
+        request.picture!),
     );
   }
 }

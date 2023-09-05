@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:cocktail_app/src/domain/models/requests/glasses_create_request.dart';
@@ -6,8 +7,13 @@ import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'dart:html' as html;
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 part 'glass_create_state.dart';
+
 
 
 class GlassCreateCubit extends BaseCubit<GlassCreateState, dynamic> {
@@ -16,8 +22,9 @@ class GlassCreateCubit extends BaseCubit<GlassCreateState, dynamic> {
 
   GlassCreateCubit(this._apiRepository) : super(const GlassCreateLoading(), null);
 
-  Future<void> setSelectedImage(File? image) async {
+  Future<void> setSelectedImage(http.MultipartFile image) async {
     await run(() async {
+      emit(const GlassCreateImageSelectLoading());
       emit(GlassCreateImageSelectSuccess(selectedImage: image));
     });
   }
@@ -25,21 +32,26 @@ class GlassCreateCubit extends BaseCubit<GlassCreateState, dynamic> {
   Future<void> createGlass(Map<String, dynamic> data) async {
     final String? name = data["name"];
     final String? description = data["description"];
-    final File? picture = data["picture"];
-
-    log(data.toString());
+    final http.MultipartFile? picture = data["picture"];
 
     if (picture == null || name == "" || description == "") {
       emit(GlassCreateFailed(selectedImage: picture));
       return ;
     }
 
+    final MultipartFile multipartFilePicture = MultipartFile.fromStream(
+          () => picture.finalize(),
+      picture.length,
+      filename: picture.filename,
+      contentType: picture.contentType,
+    );
+
     await run(() async {
       final response = await _apiRepository.createGlass(
           request: GlassesCreateRequest(
             name: name,
             description: description,
-            picture: picture,
+            picture: multipartFilePicture,
           ));
       log("Cubit response : ${response.data.toString()}");
       emit(const GlassCreateSuccess());

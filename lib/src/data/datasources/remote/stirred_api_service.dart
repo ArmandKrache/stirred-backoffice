@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses_list_response.dart';
@@ -8,6 +10,7 @@ import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profile_list_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
+import 'package:retrofit/retrofit.dart' as retrofit;
 
 part 'stirred_api_service.g.dart';
 
@@ -27,6 +30,12 @@ abstract class StirredApiService {
 
   @POST('/glasses/create/')
   @MultiPart()
-  Future<HttpResponse<GlassesCreateResponse>> createGlass(@Part() Map<String, dynamic> body, @Part() File picture);
+  Future<HttpResponse<GlassesCreateResponse>> createGlass(
+      @Part() String name,
+      @Part() String description,
+      @Part() MultipartFile picture
+      );
+
+/// @retrofit.Headers({"Content-Type" : "application/json",})
 
 }
