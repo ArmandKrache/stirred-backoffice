@@ -110,7 +110,6 @@ class GlassCreateModalWidget extends StatelessWidget {
                   ),
                   const SizedBox(width: 8,),
                   state.selectedImage != null ?
-                  // Image.network(state.selectedImage!.path, width: 96, height: 96,) :
                   Text(state.selectedImage!.filename!) :
                   const Text("No picture selected yet", style: TextStyle(color: Colors.grey),),
                 ],

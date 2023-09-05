@@ -5,6 +5,7 @@ import 'package:cocktail_app/src/domain/models/requests/glasses_list_request.dar
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/glass_create_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -91,7 +92,7 @@ class GlassesView extends HookWidget {
                   ),
                   const SizedBox(height: 4,),
                   Expanded(
-                    child: _customDataTable(state.glasses)
+                    child: _buildDataTable(state.glasses)
                   ),
                 ],
               );
@@ -100,65 +101,64 @@ class GlassesView extends HookWidget {
     );
   }
 
-  Widget _customDataTable(List<Glass> glasses) {
+  Widget _buildDataTable(List<Glass> glasses) {
+    const columns = <DataColumn>[
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'id',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Name',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Description',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+    ];
+
     return Container(
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'id',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+      child: CustomGenericDataTableWidget(
+        columns: columns,
+        data: glasses,
+        buildRow: (item) {
+          return DataRow(
+            cells: [
+              DataCell(
+                SelectableText.rich(TextSpan(
+                  text: item.id ?? "",
+                  style: const TextStyle(color: Colors.blue,),
+                  mouseCursor: SystemMouseCursors.click,
+                ),
+                  onTap: () {
+                    log("Clicked : ${item.id ?? ""}");
+                  },
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Name',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
+              DataCell(SelectableText(item.name ?? "")),
+              DataCell(Container(
+                width: 300,
+                child: SelectableText(item.description ?? "",
+                  style: const TextStyle(), maxLines: 2,),
+              )
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Description',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-          rows: List<DataRow>.generate(
-            glasses.length,
-                (index) => DataRow(
-              cells: [
-                DataCell(
-                  SelectableText.rich(TextSpan(
-                    text: glasses[index].id ?? "",
-                    style: const TextStyle(color: Colors.blue,),
-                    mouseCursor: SystemMouseCursors.click,
-                  ),
-                    onTap: () {
-                      log("Clicked : ${glasses[index].id ?? ""}");
-                    },
-                  ),
-                ),
-                DataCell(SelectableText(glasses[index].name ?? "")),
-                DataCell(Container(
-                  width: 300,
-                  child: SelectableText(glasses[index].description ?? "",
-                    style: const TextStyle(), maxLines: 2,),
-                )
-                ),
-              ],
-            ),
-          ),
-        ),
+            ],
+          );
+        },
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +65,7 @@ class ProfilesView extends HookWidget {
                             return const Center(child: Icon(Ionicons.refresh));
                           case ProfilesSuccess:
                             return Expanded(
-                              child: _customDataTable(state.profiles)
+                              child: _buildDataTable(state.profiles)
                             );
                           default:
                             return const SizedBox();
@@ -78,83 +79,82 @@ class ProfilesView extends HookWidget {
     );
   }
 
-  Widget _customDataTable(List<Profile> profiles) {
+  Widget _buildDataTable(List<Profile> profiles) {
+    const column = <DataColumn>[
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'id',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Name',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Email',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Description',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Expanded(
+          child: Text(
+            'Date of Birth',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+          ),
+        ),
+      ),
+    ];
+
     return Container(
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.symmetric(horizontal: 8),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'id',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
+      child: CustomGenericDataTableWidget(
+        columns: column,
+        data: profiles,
+        buildRow: (item) {
+          return DataRow(
+            cells: [
+              DataCell(
+                SelectableText.rich(TextSpan(
+                  text: item.id ?? "",
+                  style: const TextStyle(color: Colors.blue,),
+                  mouseCursor: SystemMouseCursors.click,
+                ),
+                  onTap: () {
+                    log("Clicked : ${item.id ?? ""}");
+                  },
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Name',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
+              DataCell(SelectableText(item.name ?? "")),
+              DataCell(SelectableText(item.email ?? "")),
+              DataCell(Container(
+                width: 300,
+                child: SelectableText(item.description ?? "",
+                  style: const TextStyle(), maxLines: 2,),
+              )
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Email',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Description',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Date of Birth',
-                  style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 16),
-                ),
-              ),
-            ),
-          ],
-          rows: List<DataRow>.generate(
-            profiles.length,
-                (index) => DataRow(
-              cells: [
-                DataCell(
-                  SelectableText.rich(TextSpan(
-                    text: profiles[index].id ?? "",
-                    style: const TextStyle(color: Colors.blue,),
-                    mouseCursor: SystemMouseCursors.click,
-                    ),
-                    onTap: () {
-                      log("Clicked : ${profiles[index].id ?? ""}");
-                    },
-                  ),
-                ),
-                DataCell(SelectableText(profiles[index].name ?? "")),
-                DataCell(SelectableText(profiles[index].email ?? "")),
-                DataCell(Container(
-                  width: 300,
-                  child: SelectableText(profiles[index].description ?? "",
-                    style: const TextStyle(), maxLines: 2,),
-                )
-                ),
-                DataCell(SelectableText(profiles[index].dateOfBirth ?? "")),
-              ],
-            ),
-          ),
-        ),
+              DataCell(SelectableText(item.dateOfBirth ?? "")),
+            ],
+          );
+        },
       ),
     );
   }
