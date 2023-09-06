@@ -4,6 +4,7 @@ import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
+import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
@@ -62,8 +63,12 @@ class GlassesView extends HookWidget {
             onPressed: () async {
                await showDialog<String>(
                 context: context,
-                builder: (BuildContext context) => const Dialog(
-                  child: GlassCreateModalWidget(),
+                builder: (BuildContext context) => Dialog(
+                  child: GlassCreateModalWidget(
+                    onCloseWithSuccess: () {
+                      glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+                    }
+                  ),
                 ),
               );
             }
@@ -92,7 +97,7 @@ class GlassesView extends HookWidget {
                   ),
                   const SizedBox(height: 4,),
                   Expanded(
-                    child: _buildDataTable(state.glasses)
+                    child: _buildDataTable(state.glasses, glassesCubit)
                   ),
                 ],
               );
@@ -101,7 +106,7 @@ class GlassesView extends HookWidget {
     );
   }
 
-  Widget _buildDataTable(List<Glass> glasses) {
+  Widget _buildDataTable(List<Glass> glasses, GlassesCubit glassesCubit ) {
     const columns = <DataColumn>[
       DataColumn(
         label: Expanded(
@@ -144,8 +149,11 @@ class GlassesView extends HookWidget {
                   style: const TextStyle(color: Colors.blue,),
                   mouseCursor: SystemMouseCursors.click,
                 ),
-                  onTap: () {
-                    appRouter.push(GlassDetailsRoute(glass: item));
+                  onTap: () async {
+                    final deleted = await appRouter.push(GlassDetailsRoute(glass: item));
+                    if (deleted == "deleted") {
+                      glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+                    }
                   },
                 ),
               ),

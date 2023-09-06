@@ -13,7 +13,11 @@ import 'package:image_picker/image_picker.dart';
 
 class GlassCreateModalWidget extends StatelessWidget {
 
-  const GlassCreateModalWidget({Key? key}) : super(key: key);
+  final void Function() onCloseWithSuccess;
+
+  static void _defaultOnCloseWithSuccess() {}
+
+  const GlassCreateModalWidget({Key? key, this.onCloseWithSuccess = _defaultOnCloseWithSuccess }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class GlassCreateModalWidget extends StatelessWidget {
       builder: (context, state) {
         if (state.runtimeType == GlassCreateSuccess) {
           glassCreateCubit.reset();
+          onCloseWithSuccess.call();
           Navigator.pop(context);
           return const SizedBox();
         }

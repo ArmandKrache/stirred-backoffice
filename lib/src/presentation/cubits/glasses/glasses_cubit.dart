@@ -26,6 +26,7 @@ class GlassesCubit extends BaseCubit<GlassesState, List<Glass>> {
 
     if (event is GlassesListEvent) {
       await run(() async {
+        emit(const GlassesLoading());
         final response = await _apiRepository.getGlassesList(request: event.request!);
 
         if (response is DataSuccess) {

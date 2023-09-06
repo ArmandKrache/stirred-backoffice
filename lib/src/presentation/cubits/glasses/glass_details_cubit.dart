@@ -37,7 +37,7 @@ class GlassDetailsCubit extends BaseCubit<GlassDetailsState, Glass> {
               id: state.glass!.id,
             ));
         emit(GlassDeleteSuccess(glass: state.glass,));
-        appRouter.pop();
+        appRouter.pop("deleted");
       } catch (e) {
         emit(GlassDeleteFailed(glass: state.glass));
       }

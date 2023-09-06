@@ -63,11 +63,9 @@ class GlassDetailsView extends HookWidget {
                 ),
               ),
               onPressed: () async {
-                log("ALLO");
                 glassDetailsCubit.handleEvent(
                     event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
                 );
-                log("ALHUILE");
               }
           ),
         ],
@@ -88,10 +86,8 @@ class GlassDetailsView extends HookWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         PictureAttributeWidget(src : glass.picture!),
-                        Container(
-                          margin: const EdgeInsets.only(left: 16),
-                            child: DescriptionAttributeWidget(text : glass.description!)
-                        ),
+                        const SizedBox(width: 16,),
+                        DescriptionAttributeWidget(text : glass.description!),
                       ],
                     ),
                   ],
