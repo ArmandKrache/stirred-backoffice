@@ -12,7 +12,7 @@ class PictureAttributeWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return src == "" ?
-      Image.asset(glassPlaceholderAsset, width: 160, height: 160,) :
-      Image.network(src, width: 160, height: 160,);
+      Image.asset(glassPlaceholderAsset, width: 160, height: 160, fit: BoxFit.cover,) :
+      Image.network(src, width: 160, height: 160, fit: BoxFit.cover,);
   }
 }

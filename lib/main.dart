@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
           locator<ApiRepository>(),)
         ),
         BlocProvider(create: (context) => GlassDetailsCubit(
-          locator<ApiRepository>(), const Glass())
+          locator<ApiRepository>(),)
         ),
       ],
       child: OKToast(child: MaterialApp.router(

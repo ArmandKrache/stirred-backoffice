@@ -10,6 +10,11 @@ abstract class BaseCubit<S, T> extends Cubit<S> {
   @protected
   T get data => _data;
 
+  @protected
+  set data(T newData) {
+    _data = newData;
+  }
+
   bool _isBusy = false;
   bool get isBusy => _isBusy;
 

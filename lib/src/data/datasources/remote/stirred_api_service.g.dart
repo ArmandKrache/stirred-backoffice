@@ -124,9 +124,9 @@ class _StirredApiService implements StirredApiService {
       'description',
       description,
     ));
-    _data.fields.add(MapEntry(
+    _data.files.add(MapEntry(
       'picture',
-      jsonEncode(picture),
+      picture,
     ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesCreateResponse>>(Options(
@@ -149,6 +149,30 @@ class _StirredApiService implements StirredApiService {
     final value = GlassesCreateResponse.fromMap(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
+  }
+
+  @override
+  Future<void> deleteGlass(String id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+          _dio.options,
+          '/glasses/${id}',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(
+            baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

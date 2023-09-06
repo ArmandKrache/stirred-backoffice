@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/responses/glasses_create_response.dart';
-import 'package:cocktail_app/src/domain/models/responses/glasses_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profile_list_response.dart';
 import 'package:dio/dio.dart';
@@ -35,6 +36,9 @@ abstract class StirredApiService {
       @Part() String description,
       @Part() MultipartFile picture
       );
+
+  @DELETE("/glasses/{id}")
+  Future<void> deleteGlass(@Path() String id);
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 

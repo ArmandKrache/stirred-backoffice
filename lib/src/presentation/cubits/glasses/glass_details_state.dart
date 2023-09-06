@@ -1,11 +1,11 @@
 part of 'glass_details_cubit.dart';
 
 abstract class GlassDetailsState extends Equatable {
-  final Glass glass;
+  final Glass? glass;
   final DioException? exception;
 
   const GlassDetailsState({
-    required this.glass,
+    this.glass,
     this.exception,
   });
 
@@ -14,13 +14,21 @@ abstract class GlassDetailsState extends Equatable {
 }
 
 class GlassDetailsLoading extends GlassDetailsState {
-  const GlassDetailsLoading({required super.glass,});
+  const GlassDetailsLoading();
 }
 
 class GlassDetailsSuccess extends GlassDetailsState {
-  const GlassDetailsSuccess({required super.glass,});
+  const GlassDetailsSuccess({super.glass,});
 }
 
 class GlassDetailsFailed extends GlassDetailsState {
-  const GlassDetailsFailed({required super.glass,});
+  const GlassDetailsFailed({super.glass,});
+}
+
+class GlassDeleteSuccess extends GlassDetailsState {
+  const GlassDeleteSuccess({super.glass,});
+}
+
+class GlassDeleteFailed extends GlassDetailsState {
+  const GlassDeleteFailed({super.glass,});
 }
