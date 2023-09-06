@@ -1,8 +1,10 @@
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/config/themes/app_themes.dart';
+import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
+import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
@@ -46,6 +48,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => GlassCreateCubit(
           locator<ApiRepository>(),)
+        ),
+        BlocProvider(create: (context) => GlassDetailsCubit(
+          locator<ApiRepository>(), const Glass())
         ),
       ],
       child: OKToast(child: MaterialApp.router(

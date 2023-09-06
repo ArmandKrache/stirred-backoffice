@@ -1,12 +1,13 @@
 import 'dart:developer';
 import 'package:auto_route/auto_route.dart';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses_list_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/glass_create_modal_widget.dart';
+import 'package:cocktail_app/src/presentation/views/glasses/glass_create_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,7 +145,7 @@ class GlassesView extends HookWidget {
                   mouseCursor: SystemMouseCursors.click,
                 ),
                   onTap: () {
-                    log("Clicked : ${item.id ?? ""}");
+                    appRouter.push(GlassDetailsRoute(glass: item));
                   },
                 ),
               ),

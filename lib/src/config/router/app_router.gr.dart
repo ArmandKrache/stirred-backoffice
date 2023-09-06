@@ -31,6 +31,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const DrinksView(),
       );
     },
+    GlassDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<GlassDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: GlassDetailsView(
+          key: args.key,
+          glass: args.glass,
+        ),
+      );
+    },
     GlassesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -128,6 +138,44 @@ class DrinksRoute extends PageRouteInfo<void> {
   static const String name = 'DrinksRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [GlassDetailsView]
+class GlassDetailsRoute extends PageRouteInfo<GlassDetailsRouteArgs> {
+  GlassDetailsRoute({
+    Key? key,
+    required Glass glass,
+    List<PageRouteInfo>? children,
+  }) : super(
+          GlassDetailsRoute.name,
+          args: GlassDetailsRouteArgs(
+            key: key,
+            glass: glass,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'GlassDetailsRoute';
+
+  static const PageInfo<GlassDetailsRouteArgs> page =
+      PageInfo<GlassDetailsRouteArgs>(name);
+}
+
+class GlassDetailsRouteArgs {
+  const GlassDetailsRouteArgs({
+    this.key,
+    required this.glass,
+  });
+
+  final Key? key;
+
+  final Glass glass;
+
+  @override
+  String toString() {
+    return 'GlassDetailsRouteArgs{key: $key, glass: $glass}';
+  }
 }
 
 /// generated route for

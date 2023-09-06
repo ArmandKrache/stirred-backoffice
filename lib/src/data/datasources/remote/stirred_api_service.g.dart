@@ -124,9 +124,9 @@ class _StirredApiService implements StirredApiService {
       'description',
       description,
     ));
-    _data.files.add(MapEntry(
+    _data.fields.add(MapEntry(
       'picture',
-      picture,
+      jsonEncode(picture),
     ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesCreateResponse>>(Options(
