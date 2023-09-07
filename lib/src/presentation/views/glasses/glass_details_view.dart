@@ -6,7 +6,7 @@ import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
-import 'package:cocktail_app/src/presentation/views/glasses/glass_create_modal_widget.dart';
+import 'package:cocktail_app/src/presentation/views/glasses/glass_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,19 +64,58 @@ class GlassDetailsView extends HookWidget {
                 ),
               ),
               onPressed: () async {
-                /*await showDialog<String>(
+                await showDialog<String>(
                   context: context,
-                  builder: (BuildContext context) => Dialog(
-                    child: GlassCreateModalWidget(
-                        onCloseWithSuccess: () {
-                          glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
-                        }
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Center(child: Text("Warning", style: TextStyle(fontWeight: FontWeight.bold),)),
+                    content: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        minHeight: 156, maxHeight: 284,
+                        minWidth: 400, maxWidth: 800,
+                      ),
+                      child: Center(child: Text(
+                        "You are about to delete this ${glass.runtimeType.toString()} item.\n"
+                            "This action is definitive, Are you sure ?",
+                        style: const TextStyle(fontSize: 18),
+                      ),
+                      ),
                     ),
+                    contentPadding: EdgeInsets.zero,
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            appRouter.pop();
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            side: MaterialStateProperty.all(const BorderSide(color: Colors.black))
+                          ),
+                          child: const Padding(
+                              padding: EdgeInsets.all(8),
+                              child: Text("Cancel", style: TextStyle(fontSize: 18, color: Colors.black),)
+                          ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          glassDetailsCubit.handleEvent(
+                            event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
+                          );
+                        },
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(Colors.red),
+                        ),
+                        child: const Padding(
+                            padding: EdgeInsets.all(8),
+                            child: Text("Confirm", style: TextStyle(fontSize: 18, color: Colors.white),)
+                        ),
+                      ),
+                    ],
+                    actionsAlignment: MainAxisAlignment.spaceEvenly,
                   ),
-                );*/
-                /// glassDetailsCubit.handleEvent(
-                ///     event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
-                /// );
+                );
+                if (glassDetailsCubit.state.runtimeType == GlassDeleteSuccess) {
+                  appRouter.pop("deleted");
+                }
               }
           ),
         ],

@@ -8,7 +8,7 @@ import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
-import 'package:cocktail_app/src/presentation/views/glasses/glass_create_modal_widget.dart';
+import 'package:cocktail_app/src/presentation/views/glasses/glass_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
