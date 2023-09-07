@@ -45,15 +45,19 @@ class GlassDetailsCubit extends BaseCubit<GlassDetailsState, Glass> {
     }
   }
 
-  Future<void> patchGlass(String id, Map<String, dynamic> data) async {
-    await _apiRepository.patchGlass(
+  Future<Glass> patchGlass(String id, Map<String, dynamic> data) async {
+    final response = await _apiRepository.patchGlass(
         request: GlassPatchRequest(
           id: id,
           body: data
         ));
+    log(response.toString());
+    log(response.data.toString());
+    log(response.data!.glass.toString());
 
-    emit(GlassPatchSuccess(glass: state.glass,));
+    emit(GlassPatchSuccess(glass: response.data!.glass,));
     appRouter.pop();
+    return response.data!.glass;
   }
 
 }

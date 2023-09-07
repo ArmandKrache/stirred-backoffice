@@ -34,17 +34,20 @@ class GlassDetailsView extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Column(
-          children: [
-            Text(
-              glass.name ?? "",
-              style: const TextStyle(color: Colors.black),
-            ),
-            SelectableText(
-              "${glass.id}",
-              style: const TextStyle(color: Colors.blueGrey, fontSize: 14),
-            ),
-          ],
+        title: BlocBuilder<GlassDetailsCubit, GlassDetailsState>(
+          builder: (context, state) {
+            return Column(
+                  children: [
+                    Text(state.glass?.name ?? "",
+                      style: const TextStyle(color: Colors.black),
+                    ),
+                    SelectableText(
+                      "${state.glass?.id}",
+                      style: const TextStyle(color: Colors.blueGrey, fontSize: 14),
+                    ),
+                  ],
+                );
+          },
         ),
         iconTheme: const IconThemeData(color: Colors.black, size: 28),
         actions: [
@@ -95,13 +98,13 @@ class GlassDetailsView extends HookWidget {
                     await showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => CustomGenericAlertDialogWidget(
-                        item: glass,
+                        item: glassDetailsCubit.state.glass,
                         onCancel: () {
                           appRouter.pop();
                         },
                         onConfirm: () {
                           glassDetailsCubit.handleEvent(
-                              event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
+                              event : GlassDeleteEvent(request : GlassDeleteRequest(id: glassDetailsCubit.state.glass?.id))
                           );
                         },
                       ),
@@ -130,9 +133,9 @@ class GlassDetailsView extends HookWidget {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        PictureAttributeWidget(src : glass.picture!),
+                        PictureAttributeWidget(src : state.glass!.picture),
                         const SizedBox(width: 16,),
-                        DescriptionAttributeWidget(text : glass.description!),
+                        DescriptionAttributeWidget(text : state.glass!.description),
                       ],
                     ),
                   ],
@@ -148,11 +151,11 @@ class GlassDetailsView extends HookWidget {
       onClose: () {
 
       },
-      onSave: (data) {
-        glassDetailsCubit.patchGlass(glass.id, data);
+      onSave: (data) async {
+        await glassDetailsCubit.patchGlass(glassDetailsCubit.state.glass!.id, data);
       },
       title: "Edit Glass",
-      currentItem: glass,
+      currentItem: glassDetailsCubit.state.glass,
     );
   }
 }
