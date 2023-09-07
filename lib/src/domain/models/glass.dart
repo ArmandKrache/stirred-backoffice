@@ -1,16 +1,16 @@
 import 'package:equatable/equatable.dart';
 
 class Glass extends Equatable {
-  final String? id;
-  final String? name;
-  final String? description;
-  final String? picture;
+  final String id;
+  final String name;
+  final String description;
+  final String picture;
 
   const Glass({
-    this.id,
-    this.name,
-    this.description,
-    this.picture,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.picture,
   });
 
   factory Glass.fromMap(Map<String, dynamic> map) {
@@ -19,6 +19,15 @@ class Glass extends Equatable {
       name : map['name'] ?? "",
       description: map['description'] ?? "",
       picture: map['picture'] ?? "",
+    );
+  }
+
+  factory Glass.empty() {
+    return const Glass(
+      id: "",
+      name : "",
+      description: "",
+      picture: "",
     );
   }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
@@ -37,7 +38,18 @@ abstract class StirredApiService {
       @Part() MultipartFile picture
       );
 
-  @DELETE("/glasses/{id}")
+  @PATCH("/glasses/{id}/")
+  @MultiPart()
+  Future<HttpResponse<GlassPatchResponse>> patchGlass(
+      @Path() String id,
+      {
+        @Part() String? name,
+        @Part() String? description,
+        @Part() MultipartFile? picture
+      }
+      );
+
+  @DELETE("/glasses/{id}/")
   Future<void> deleteGlass(@Path() String id);
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})

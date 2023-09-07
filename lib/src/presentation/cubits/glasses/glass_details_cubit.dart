@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
@@ -19,7 +20,7 @@ part 'glass_details_state.dart';
 class GlassDetailsCubit extends BaseCubit<GlassDetailsState, Glass> {
   final ApiRepository _apiRepository;
 
-  GlassDetailsCubit(this._apiRepository) : super(const GlassDetailsLoading(), const Glass());
+  GlassDetailsCubit(this._apiRepository) : super(const GlassDetailsLoading(), Glass.empty());
 
   Future<void> handleEvent({dynamic event}) async {
     if (isBusy) return;
@@ -42,6 +43,17 @@ class GlassDetailsCubit extends BaseCubit<GlassDetailsState, Glass> {
         emit(GlassDeleteFailed(glass: state.glass));
       }
     }
+  }
+
+  Future<void> patchGlass(String id, Map<String, dynamic> data) async {
+    await _apiRepository.patchGlass(
+        request: GlassPatchRequest(
+          id: id,
+          body: data
+        ));
+
+    emit(GlassPatchSuccess(glass: state.glass,));
+    appRouter.pop();
   }
 
 }

@@ -4,6 +4,7 @@ import 'package:cocktail_app/src/data/datasources/remote/base/base_api_repositor
 import 'package:cocktail_app/src/data/datasources/remote/cocktail_api_service.dart';
 import 'package:cocktail_app/src/data/datasources/remote/stirred_api_service.dart';
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
@@ -13,6 +14,7 @@ import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_reques
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
@@ -113,5 +115,18 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     return _stirredApiService.deleteGlass(
         request.id!
     );
+  }
+
+  @override
+  Future<DataState<GlassPatchResponse>> patchGlass({
+    required GlassPatchRequest request
+  }) {
+    return getState0f<GlassPatchResponse>(request: () {
+      return _stirredApiService.patchGlass(request.id,
+        name: request.body["name"],
+        description: request.body["description"],
+        picture: request.body["picture"],
+      );
+    });
   }
 }

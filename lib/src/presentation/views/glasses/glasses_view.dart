@@ -187,9 +187,7 @@ class GlassesView extends HookWidget {
               Navigator.pop(context);
             },
             onSave: (Map<String, dynamic> data) {
-              glassCreateCubit.createGlass(
-                data
-              );
+              glassCreateCubit.createGlass(data);
             },
             title: "New Glass",
             errorText: errorText,

@@ -152,6 +152,55 @@ class _StirredApiService implements StirredApiService {
   }
 
   @override
+  Future<HttpResponse<GlassPatchResponse>> patchGlass(
+    String id, {String? name, String? description, MultipartFile? picture,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (name != null) {
+      _data.fields.add(MapEntry(
+        'name',
+        name,
+      ));
+    }
+    if (description != null) {
+      _data.fields.add(MapEntry(
+      'description',
+      description,
+    ));
+    }
+    if (picture != null) {
+      _data.files.add(MapEntry(
+      'picture',
+      picture,
+    ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<GlassPatchResponse>>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              '/glasses/${id}/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GlassPatchResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<void> deleteGlass(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -164,7 +213,7 @@ class _StirredApiService implements StirredApiService {
     )
         .compose(
           _dio.options,
-          '/glasses/${id}',
+          '/glasses/${id}/',
           queryParameters: queryParameters,
           data: _data,
         )

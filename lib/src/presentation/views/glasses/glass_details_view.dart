@@ -48,41 +48,70 @@ class GlassDetailsView extends HookWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black, size: 28),
         actions: [
-          TextButton(
-              style: ButtonStyle(
-                overlayColor: MaterialStateProperty.all(Colors.deepPurpleAccent.withOpacity(0.1)),
-              ),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.redAccent,
-                child: const Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Icon(Icons.delete, color: Colors.white,),
-                    Text("Delete", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 16),),
-                  ],
-                ),
-              ),
-              onPressed: () async {
-                await showDialog<String>(
-                  context: context,
-                  builder: (BuildContext context) => CustomGenericAlertDialogWidget(
-                    item: glass,
-                    onCancel: () {
-                      appRouter.pop();
-                    },
-                    onConfirm: () {
-                      glassDetailsCubit.handleEvent(
-                          event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
-                      );
-                    },
+          Row(
+            children: [
+              GestureDetector(
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.all(2),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.edit, color: Colors.deepPurpleAccent,),
+                          Text("Edit", style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.w600, fontSize: 16),),
+                        ],
+                      ),
+                    ),
                   ),
-                );
-                if (glassDetailsCubit.state.runtimeType == GlassDeleteSuccess) {
-                  appRouter.pop("deleted");
-                }
-              }
+                  onTap: () async {
+                    await showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => Dialog(
+                        child: _editGlassModal(context, glassDetailsCubit)
+                      ),
+                    );
+                  }
+              ),
+              GestureDetector(
+                  child: MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Container(
+                      margin: const EdgeInsets.only(right: 16),
+                      padding: const EdgeInsets.all(2),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Icon(Icons.delete, color: Colors.red,),
+                          Text("Delete", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),),
+                        ],
+                      ),
+                    ),
+                  ),
+                  onTap: () async {
+                    await showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => CustomGenericAlertDialogWidget(
+                        item: glass,
+                        onCancel: () {
+                          appRouter.pop();
+                        },
+                        onConfirm: () {
+                          glassDetailsCubit.handleEvent(
+                              event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
+                          );
+                        },
+                      ),
+                    );
+                    if (glassDetailsCubit.state.runtimeType == GlassDeleteSuccess) {
+                      appRouter.pop("deleted");
+                    }
+                  }
+              ),
+            ],
           ),
         ],
       ),
@@ -111,6 +140,19 @@ class GlassDetailsView extends HookWidget {
               );
             }
           }),
+    );
+  }
+  
+  Widget _editGlassModal(BuildContext context, GlassDetailsCubit glassDetailsCubit) {
+    return GlassEditModalWidget(
+      onClose: () {
+
+      },
+      onSave: (data) {
+        glassDetailsCubit.patchGlass(glass.id, data);
+      },
+      title: "Edit Glass",
+      currentItem: glass,
     );
   }
 }

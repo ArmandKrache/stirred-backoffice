@@ -32,3 +32,11 @@ class GlassDeleteSuccess extends GlassDetailsState {
 class GlassDeleteFailed extends GlassDetailsState {
   const GlassDeleteFailed({super.glass,});
 }
+
+class GlassPatchSuccess extends GlassDetailsState {
+  const GlassPatchSuccess({super.glass,});
+}
+
+class GlassPatchFailed extends GlassDetailsState {
+  const GlassPatchFailed({super.glass,});
+}

@@ -32,26 +32,21 @@ class GlassCreateCubit extends BaseCubit<GlassCreateState, dynamic> {
   Future<void> createGlass(Map<String, dynamic> data) async {
     final String? name = data["name"];
     final String? description = data["description"];
-    final http.MultipartFile? picture = data["picture"];
+    final MultipartFile? picture = data["picture"];
+
+    log("$name | $description | $picture");
 
     if (picture == null || name == "" || description == "") {
-      emit(GlassCreateFailed(selectedImage: picture));
+      emit(const GlassCreateFailed());
       return ;
     }
-
-    final MultipartFile multipartFilePicture = MultipartFile.fromStream(
-          () => picture.finalize(),
-      picture.length,
-      filename: picture.filename,
-      contentType: picture.contentType,
-    );
 
     await run(() async {
       final response = await _apiRepository.createGlass(
           request: GlassesCreateRequest(
             name: name,
             description: description,
-            picture: multipartFilePicture,
+            picture: picture,
           ));
       emit(const GlassCreateSuccess());
     });

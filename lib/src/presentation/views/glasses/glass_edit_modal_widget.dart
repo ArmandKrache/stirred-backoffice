@@ -1,5 +1,8 @@
+import 'dart:developer';
 import 'dart:html' as html;
 import 'dart:typed_data';
+import 'package:cocktail_app/src/domain/models/glass.dart';
+import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -7,9 +10,8 @@ import 'package:flutter/material.dart';
 class GlassEditModalWidget extends StatefulWidget {
   final void Function() onClose;
   final void Function(Map<String, dynamic> data) onSave;
+  final Glass? currentItem;
   final String title;
-  final String initialName;
-  final String initialDescription;
   final String errorText;
 
   const GlassEditModalWidget({
@@ -17,9 +19,8 @@ class GlassEditModalWidget extends StatefulWidget {
     required this.onClose,
     required this.onSave,
     required this.title,
-    this.initialName = "",
-    this.initialDescription = "",
     this.errorText = "",
+    this.currentItem,
   }) : super(key: key);
 
   @override
@@ -35,12 +36,23 @@ class _GlassEditModalWidgetState extends State<GlassEditModalWidget> {
   @override
   void initState() {
     super.initState();
-    nameController.text = widget.initialName;
-    descriptionController.text = widget.initialDescription;
+    nameController.text = widget.currentItem?.name ?? "";
+    descriptionController.text = widget.currentItem?.description ?? "";
   }
 
   @override
   Widget build(BuildContext context) {
+
+    final Widget picturePreviewWidget;
+
+    if (selectedImage == null &&  widget.currentItem != null) {
+      picturePreviewWidget = Image.network(widget.currentItem!.picture, width: 32, height: 32,);
+    } else {
+      picturePreviewWidget = Text(selectedImage == null ? "No picture selected yet" :
+      selectedImage!.filename ?? "",
+        style: const TextStyle(color: Colors.grey),
+      );
+    }
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -121,10 +133,7 @@ class _GlassEditModalWidgetState extends State<GlassEditModalWidget> {
                 child: const Text('Select Picture'),
               ),
               const SizedBox(width: 16,),
-              Text(selectedImage == null ? "No picture selected yet" :
-                selectedImage!.filename ?? "",
-                style: const TextStyle(color: Colors.grey),
-              ),
+              picturePreviewWidget,
             ],
           ),
           Row(
@@ -136,11 +145,23 @@ class _GlassEditModalWidgetState extends State<GlassEditModalWidget> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  widget.onSave.call({
-                    "name" : nameController.text,
-                    "description" : descriptionController.text,
-                    "picture" : selectedImage,
-                  });
+                  final http.MultipartFile? picture = selectedImage;
+                  Map<String, dynamic> data = {};
+                  data["name"] = nameController.text;
+                  data["description"] = descriptionController.text;
+
+                  if (picture != null) {
+                    final MultipartFile multipartFilePicture = MultipartFile.fromStream(
+                          () => picture.finalize(),
+                      picture.length,
+                      filename: picture.filename,
+                      contentType: picture.contentType,
+                    );
+                    data["picture"] = multipartFilePicture;
+                  }
+
+                  log(data.toString());
+                  widget.onSave.call(data);
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.green),

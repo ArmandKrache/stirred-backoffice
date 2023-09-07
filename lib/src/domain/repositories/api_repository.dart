@@ -1,4 +1,5 @@
 import 'package:cocktail_app/src/domain/models/requests/filtered_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
@@ -8,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_reques
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
@@ -33,6 +35,10 @@ abstract class ApiRepository {
 
   Future<DataState<GlassesCreateResponse>> createGlass({
     required GlassesCreateRequest request,
+  });
+
+  Future<DataState<GlassPatchResponse>> patchGlass({
+    required GlassPatchRequest request,
   });
 
   Future<void> deleteGlass({
