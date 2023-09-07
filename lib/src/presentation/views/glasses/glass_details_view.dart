@@ -6,6 +6,7 @@ import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
+import 'package:cocktail_app/src/presentation/views/glasses/glass_create_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -63,9 +64,19 @@ class GlassDetailsView extends HookWidget {
                 ),
               ),
               onPressed: () async {
-                glassDetailsCubit.handleEvent(
-                    event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
-                );
+                /*await showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => Dialog(
+                    child: GlassCreateModalWidget(
+                        onCloseWithSuccess: () {
+                          glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+                        }
+                    ),
+                  ),
+                );*/
+                /// glassDetailsCubit.handleEvent(
+                ///     event : GlassDeleteEvent(request : GlassDeleteRequest(id: glass.id))
+                /// );
               }
           ),
         ],

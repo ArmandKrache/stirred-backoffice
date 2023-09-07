@@ -64,11 +64,7 @@ class GlassesView extends HookWidget {
                await showDialog<String>(
                 context: context,
                 builder: (BuildContext context) => Dialog(
-                  child: GlassCreateModalWidget(
-                    onCloseWithSuccess: () {
-                      glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
-                    }
-                  ),
+                  child: _glassCreateModal(context, glassesCubit)
                 ),
               );
             }
@@ -170,4 +166,36 @@ class GlassesView extends HookWidget {
       ),
     );
   }
+
+  Widget _glassCreateModal(BuildContext context, GlassesCubit glassesCubit) {
+    final glassCreateCubit = BlocProvider.of<GlassCreateCubit>(context);
+    String errorText = "";
+
+    return BlocBuilder<GlassCreateCubit, GlassCreateState>(
+        builder: (context, state) {
+          if (state.runtimeType == GlassCreateSuccess) {
+            glassCreateCubit.reset();
+            Navigator.pop(context);
+            glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+            return const SizedBox();
+          } else if (state.runtimeType == GlassCreateFailed) {
+            errorText = "Some fields are missing";
+          }
+          return GlassEditModalWidget(
+            onClose: () {
+              glassCreateCubit.reset();
+              Navigator.pop(context);
+            },
+            onSave: (Map<String, dynamic> data) {
+              glassCreateCubit.createGlass(
+                data
+              );
+            },
+            title: "New Glass",
+            errorText: errorText,
+          );
+        }
+    );
+  }
+
 }
