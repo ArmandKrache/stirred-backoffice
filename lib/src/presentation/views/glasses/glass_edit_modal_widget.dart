@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:html' as html;
 import 'dart:typed_data';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -16,12 +17,16 @@ class GlassEditModalWidget extends StatefulWidget {
 
   const GlassEditModalWidget({
     Key? key,
-    required this.onClose,
     required this.onSave,
     required this.title,
+    this.onClose = _defaultOnClose,
     this.errorText = "",
     this.currentItem,
   }) : super(key: key);
+
+  static _defaultOnClose() {
+    appRouter.pop();
+  }
 
   @override
   State<GlassEditModalWidget> createState() => _GlassEditModalWidgetState();

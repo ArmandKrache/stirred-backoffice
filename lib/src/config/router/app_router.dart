@@ -1,12 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
+import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/presentation/views/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/login_view.dart';
-import 'package:cocktail_app/src/presentation/views/profiles_view.dart';
+import 'package:cocktail_app/src/presentation/views/profiles/profiles_view.dart';
+import 'package:cocktail_app/src/presentation/views/profiles/profiles_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
 import 'package:cocktail_app/src/presentation/views/root_view.dart';
 import 'package:cocktail_app/src/presentation/views/drinks_view.dart';
@@ -28,6 +30,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: GlassesRoute.page,),
         AutoRoute(page: GlassDetailsRoute.page),
         AutoRoute(page: ProfilesRoute.page,),
+        AutoRoute(page: ProfileDetailsRoute.page),
     ];
 }
 

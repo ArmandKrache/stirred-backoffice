@@ -61,6 +61,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: LoginView(key: args.key),
       );
     },
+    ProfileDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: ProfileDetailsView(
+          key: args.key,
+          profile: args.profile,
+        ),
+      );
+    },
     ProfilesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -231,6 +241,44 @@ class LoginRouteArgs {
   @override
   String toString() {
     return 'LoginRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [ProfileDetailsView]
+class ProfileDetailsRoute extends PageRouteInfo<ProfileDetailsRouteArgs> {
+  ProfileDetailsRoute({
+    Key? key,
+    required Profile profile,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ProfileDetailsRoute.name,
+          args: ProfileDetailsRouteArgs(
+            key: key,
+            profile: profile,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ProfileDetailsRoute';
+
+  static const PageInfo<ProfileDetailsRouteArgs> page =
+      PageInfo<ProfileDetailsRouteArgs>(name);
+}
+
+class ProfileDetailsRouteArgs {
+  const ProfileDetailsRouteArgs({
+    this.key,
+    required this.profile,
+  });
+
+  final Key? key;
+
+  final Profile profile;
+
+  @override
+  String toString() {
+    return 'ProfileDetailsRouteArgs{key: $key, profile: $profile}';
   }
 }
 

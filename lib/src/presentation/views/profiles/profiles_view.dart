@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
@@ -139,13 +140,13 @@ class ProfilesView extends HookWidget {
                   mouseCursor: SystemMouseCursors.click,
                 ),
                   onTap: () {
-                    log("Clicked : ${item.id ?? ""}");
+                    appRouter.push(ProfileDetailsRoute(profile: item));
                   },
                 ),
               ),
               DataCell(SelectableText(item.name ?? "")),
               DataCell(SelectableText(item.email ?? "")),
-              DataCell(Container(
+              DataCell(SizedBox(
                 width: 300,
                 child: SelectableText(item.description ?? "",
                   style: const TextStyle(), maxLines: 2,),

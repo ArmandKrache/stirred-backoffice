@@ -2,22 +2,22 @@ import 'package:cocktail_app/src/domain/models/preferences.dart';
 import 'package:equatable/equatable.dart';
 
 class Profile extends Equatable {
-  final String? id;
-  final String? email;
-  final String? name;
-  final String? description;
-  final String? picture;
-  final String? dateOfBirth;
-  final Preferences? preferences;
+  final String id;
+  final String email;
+  final String name;
+  final String description;
+  final String picture;
+  final String dateOfBirth;
+  final Preferences preferences;
 
   const Profile({
-    this.id,
-    this.email,
-    this.name,
-    this.description,
-    this.picture,
-    this.dateOfBirth,
-    this.preferences,
+    required this.id,
+    required this.email,
+    required this.name,
+    required this.description,
+    required this.picture,
+    required this.dateOfBirth,
+    required this.preferences,
   });
 
   factory Profile.fromMap(Map<String, dynamic> map) {

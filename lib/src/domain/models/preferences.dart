@@ -1,20 +1,20 @@
 import 'package:equatable/equatable.dart';
 
 class Preferences extends Equatable {
-  final String? id;
-  final List<String>? favorites;
-  final List<String>? likes;
-  final List<String>? dislikes;
-  final List<String>? allergies;
-  final List<String>? diets;
+  final String id;
+  final List<String> favorites;
+  final List<String> likes;
+  final List<String> dislikes;
+  final List<String> allergies;
+  final List<String> diets;
 
   const Preferences({
-    this.id,
-    this.favorites,
-    this.likes,
-    this.dislikes,
-    this.allergies,
-    this.diets,
+    required this.id,
+    required this.favorites,
+    required this.likes,
+    required this.dislikes,
+    required this.allergies,
+    required this.diets,
   });
 
   factory Preferences.fromMap(Map<String, dynamic> map) {

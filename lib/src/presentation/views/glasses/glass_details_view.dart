@@ -148,9 +148,6 @@ class GlassDetailsView extends HookWidget {
   
   Widget _editGlassModal(BuildContext context, GlassDetailsCubit glassDetailsCubit) {
     return GlassEditModalWidget(
-      onClose: () {
-
-      },
       onSave: (data) async {
         await glassDetailsCubit.patchGlass(glassDetailsCubit.state.glass!.id, data);
       },
