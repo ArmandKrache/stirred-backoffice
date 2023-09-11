@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
-import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -24,9 +24,11 @@ abstract class StirredApiService {
   @POST('/auth/token/login/')
   Future<HttpResponse<LoginResponse>> getTokens(@Body() Map<String, dynamic> credentials);
 
+  /// Profiles
   @GET('/profile/')
   Future<HttpResponse<ProfileListResponse>> getProfileList();
 
+  /// Glasses
   @GET('/glasses/')
   Future<HttpResponse<GlassesListResponse>> getGlassesList();
 
@@ -51,6 +53,10 @@ abstract class StirredApiService {
 
   @DELETE("/glasses/{id}/")
   Future<void> deleteGlass(@Path() String id);
+
+  /// Ingredients
+  @GET('/ingredients/')
+  Future<HttpResponse<IngredientsListResponse>> getIngredientsList();
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 

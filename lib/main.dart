@@ -6,6 +6,7 @@ import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
+import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredients_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
@@ -50,6 +51,9 @@ class MyApp extends StatelessWidget {
           locator<ApiRepository>(),)
         ),
         BlocProvider(create: (context) => GlassDetailsCubit(
+          locator<ApiRepository>(),)
+        ),
+        BlocProvider(create: (context) => IngredientsCubit(
           locator<ApiRepository>(),)
         ),
       ],

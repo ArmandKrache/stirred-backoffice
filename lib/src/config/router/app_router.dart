@@ -5,7 +5,7 @@ import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/presentation/views/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';
-import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
+import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/login_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_details_view.dart';

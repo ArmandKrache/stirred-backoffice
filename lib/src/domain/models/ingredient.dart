@@ -1,37 +1,42 @@
-import 'package:cocktail_app/src/config/config.dart';
+import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:equatable/equatable.dart';
-import 'package:floor/floor.dart';
 
-@Entity(tableName: ingredientTableName)
 class Ingredient extends Equatable {
-  @PrimaryKey(autoGenerate: true)
-  final int? id;
-  final String? idIngredient;
-  final String? strIngredient;
-  final String? strDescription;
-  final String? strType;
-  final String? strAlcohol;
-  final String? strABV;
+  final String id;
+  final String name;
+  final String description;
+  final String picture;
+  final List<Ingredient> matches;
+  final Categories categories;
 
   const Ingredient({
-    this.id,
-    this.idIngredient,
-    this.strIngredient,
-    this.strDescription,
-    this.strType,
-    this.strAlcohol,
-    this.strABV,
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.picture,
+    required this.matches,
+    required this.categories,
   });
 
   factory Ingredient.fromMap(Map<String, dynamic> map) {
     return Ingredient(
-      id: map['id'] != null ? map['id'] as int : null,
-      idIngredient: map['idIngredient'] != null ? map['idIngredient'] as String : null,
-      strIngredient: map['strIngredient'] != null ? map['strIngredient'] as String : null,
-      strDescription: map['strDescription'] != null ? map['strDescription'] as String : null,
-      strType: map['strType'] != null ? map['strType'] as String : null,
-      strAlcohol: map['strAlcohol'] != null ? map['strAlcohol'] as String : null,
-      strABV: map['strABV'] != null ? map['strABV'] as String : null,
+      id: map['id'] ?? "",
+      name : map['name'] ?? "",
+      description: map['description'] ?? "",
+      picture: map['picture'] ?? "",
+      matches: map['matches'] ?? "",
+      categories: map['categories'] != null ?  Categories.fromMap(map['categories']) : Categories.empty(),
+    );
+  }
+
+  factory Ingredient.empty() {
+    return Ingredient(
+      id: "",
+      name : "",
+      description: "",
+      picture: "",
+      matches: const [],
+      categories: Categories.empty(),
     );
   }
 
@@ -39,7 +44,6 @@ class Ingredient extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, idIngredient, strIngredient,
-    strDescription, strType, strAlcohol, strABV];
+  List<Object?> get props => [id, name, description];
 
 }

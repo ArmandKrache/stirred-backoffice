@@ -8,6 +8,7 @@ import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_requ
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/lookup_details_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_request.dart';
@@ -18,6 +19,7 @@ import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_res
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/popular_cocktails_response.dart';
@@ -81,6 +83,7 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     );
   }
 
+  /// Profiles
   @override
   Future<DataState<ProfileListResponse>> getProfileList({
     required ProfileListRequest request
@@ -89,6 +92,7 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     );
   }
 
+  /// Glasses
   @override
   Future<DataState<GlassesListResponse>> getGlassesList({
     required GlassesListRequest request
@@ -128,5 +132,14 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
         picture: request.body["picture"],
       );
     });
+  }
+
+  /// Ingredients
+  @override
+  Future<DataState<IngredientsListResponse>> getIngredientsList({
+    required IngredientsListRequest request
+  }) {
+    return getState0f<IngredientsListResponse>(request: () => _stirredApiService.getIngredientsList(),
+    );
   }
 }

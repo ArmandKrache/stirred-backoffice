@@ -4,7 +4,7 @@ import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_ite
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/drinks_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
-import 'package:cocktail_app/src/presentation/views/ingredients_view.dart';
+import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_view.dart';
 import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
 import 'package:cocktail_app/src/utils/constants/strings.dart';
