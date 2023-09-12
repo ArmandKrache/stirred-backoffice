@@ -2,6 +2,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
@@ -40,5 +41,32 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
     });
   }
 
+  Future<void> createIngredient(Map<String, dynamic> data) async {
+    if (isBusy) return;
+    final String name = data["name"];
+    final String description = data["description"];
+    final MultipartFile? picture = data["picture"];
+    final List<Ingredient> matches = data["matches"];
+    final Categories categories = data["categories"];
+
+    await run(() async {
+      emit(const IngredientsLoading());
+      final response = await _apiRepository.createIngredient(
+          request: IngredientCreateRequest(
+            name: name,
+            description: description,
+            picture: picture,
+            categories: categories,
+            matches: matches
+          ));
+      if (response is DataSuccess) {
+        emit(const IngredientCreateSuccess());
+      } else if (response is DataFailed) {
+        log(response.exception.toString());
+        emit(const IngredientCreateFailed());
+
+      }
+    });
+  }
 
 }

@@ -15,7 +15,6 @@ class GlassesCreateResponse extends Equatable {
 
   factory GlassesCreateResponse.fromMap(Map<String, dynamic> map) {
     final data = map['data'];
-    log(map.toString());
     return GlassesCreateResponse(
       glass: Glass(
         id: data["id"] ?? "",

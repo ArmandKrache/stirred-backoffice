@@ -21,13 +21,13 @@ class Categories extends Equatable {
 
   factory Categories.fromMap(Map<String, dynamic> map) {
     return Categories(
-      origins: map['origin'] ?? "",
-      strengths : map['strength'] ?? "",
-      eras: map['eras'] ?? "",
-      diets: map['diets'] ?? "",
-      seasons: map['seasons'] ?? "",
-      colors: map['colors'] ?? "",
-      keywords: map['keywords'] ?? "",
+      origins: List<String>.from((map['origin'] ?? [])),
+      strengths: List<String>.from((map['strengths'] ?? [])),
+      eras: List<String>.from((map['eras'] ?? [])),
+      diets: List<String>.from((map['diets'] ?? [])),
+      seasons: List<String>.from((map['seasons'] ?? [])),
+      colors: List<String>.from((map['colors'] ?? [])),
+      keywords: List<String>.from((map['keywords'] ?? [])),
     );
   }
 

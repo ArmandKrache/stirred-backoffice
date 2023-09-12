@@ -6,7 +6,7 @@ class Ingredient extends Equatable {
   final String name;
   final String description;
   final String picture;
-  final List<Ingredient> matches;
+  final List<String> matches;
   final Categories categories;
 
   const Ingredient({

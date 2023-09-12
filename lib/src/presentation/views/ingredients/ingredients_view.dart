@@ -10,6 +10,7 @@ import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredients_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
+import 'package:cocktail_app/src/presentation/views/ingredients/ingredient_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
@@ -180,7 +181,7 @@ class IngredientsView extends HookWidget {
                   style: const TextStyle(), maxLines: 2,),
               )
               ),
-              DataCell(SelectableText(item.matches.map((ingredient) => ingredient.name).join(', '))),
+              DataCell(SelectableText(item.matches.map((ingredient) => ingredient).join(', '))),
               DataCell(SelectableText("${item.categories.keywords.first},"
                 ", ${item.categories.origins.first}"
                 ", ${item.categories.eras.first}"
@@ -196,34 +197,28 @@ class IngredientsView extends HookWidget {
   }
 
   Widget _ingredientCreateModal(BuildContext context, IngredientsCubit ingredientsCubit) {
-    /// TODO : Create
-    /* final ingredientCreateCubit = BlocProvider.of<IngredientCreateCubit>(context);
     String errorText = "";
+    final IngredientsState state = ingredientsCubit.state;
 
-    return BlocBuilder<IngredientCreateCubit, IngredientCreateState>(
-        builder: (context, state) {
-          if (state.runtimeType == IngredientCreateSuccess) {
-            ingredientCreateCubit.reset();
-            Navigator.pop(context);
-            /// ingredientsCubit.handleEvent(event: IngredientesListEvent(request: IngredientesListRequest()));
-            return const SizedBox();
-          } else if (state.runtimeType == IngredientCreateFailed) {
-            errorText = "Some fields are missing";
-          }
-          return IngredientEditModalWidget(
-            onClose: () {
-              ingredientCreateCubit.reset();
-              Navigator.pop(context);
-            },
-            onSave: (Map<String, dynamic> data) {
-              ingredientCreateCubit.createIngredient(data);
-            },
-            title: "New Ingredient",
-            errorText: errorText,
-          );
-        }
-    ); */
-    return SizedBox();
+    if (state.runtimeType == IngredientCreateSuccess) {
+      /// ingredientsCubit.reset();
+      Navigator.pop(context);
+      ingredientsCubit.fetchList(request: IngredientsListRequest());
+      return const SizedBox();
+    } else if (state.runtimeType == IngredientCreateFailed) {
+      errorText = "Some fields are missing";
+    }
+    return IngredientEditModalWidget(
+      onClose: () {
+        /// ingredientsCubit.reset();
+        Navigator.pop(context);
+      },
+      onSave: (Map<String, dynamic> data) {
+        ingredientsCubit.createIngredient(data);
+      },
+      title: "New Ingredient",
+      errorText: errorText,
+    );
   }
 
 }

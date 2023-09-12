@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
@@ -24,7 +25,7 @@ class IngredientsListResponse extends Equatable {
           name: element["attributes"]["name"] ?? "",
           description: element["attributes"]["description"] ?? "",
           picture: element["attributes"]["picture"] ?? "",
-          matches: element["attributes"]["matches"] ?? [],
+          matches: List<String>.from((element["attributes"]["matches"] ?? [])),
           categories: Categories.fromMap(element["attributes"]["categories"]),
         );
       })),

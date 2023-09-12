@@ -14,6 +14,7 @@ import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_res
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
@@ -52,6 +53,10 @@ abstract class ApiRepository {
   /// Ingredients
   Future<DataState<IngredientsListResponse>> getIngredientsList({
     required IngredientsListRequest request,
+  });
+
+  Future<DataState<IngredientCreateResponse>> createIngredient({
+    required IngredientCreateRequest request,
   });
 
   /// -------- Deprecated below ----------- ///

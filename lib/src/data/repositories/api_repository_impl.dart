@@ -19,6 +19,7 @@ import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_res
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_delete_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
@@ -140,6 +141,20 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     required IngredientsListRequest request
   }) {
     return getState0f<IngredientsListResponse>(request: () => _stirredApiService.getIngredientsList(),
+    );
+  }
+
+  @override
+  Future<DataState<IngredientCreateResponse>> createIngredient({
+    required IngredientCreateRequest request
+  }) {
+    return getState0f<IngredientCreateResponse>(request: () => _stirredApiService.createIngredient(
+      request.name!,
+      request.description!,
+      request.picture!,
+      request.categories!,
+      request.matches!,
+    ),
     );
   }
 }

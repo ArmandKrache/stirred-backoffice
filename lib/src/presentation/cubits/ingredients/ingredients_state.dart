@@ -26,3 +26,11 @@ class IngredientsSuccess extends IngredientsState {
 class IngredientsFailed extends IngredientsState {
   const IngredientsFailed({super.exception});
 }
+
+class IngredientCreateSuccess extends IngredientsState {
+  const IngredientCreateSuccess({super.ingredients, super.noMoreData});
+}
+
+class IngredientCreateFailed extends IngredientsState {
+  const IngredientCreateFailed({super.exception});
+}

@@ -2,7 +2,11 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cocktail_app/src/domain/models/categories.dart';
+import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/preferences.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
@@ -57,6 +61,16 @@ abstract class StirredApiService {
   /// Ingredients
   @GET('/ingredients/')
   Future<HttpResponse<IngredientsListResponse>> getIngredientsList();
+
+  @POST('/ingredients/create/')
+  @MultiPart()
+  Future<HttpResponse<IngredientCreateResponse>> createIngredient(
+      @Part() String name,
+      @Part() String description,
+      @Part() MultipartFile picture,
+      @Part() Categories categories,
+      @Part() List<Ingredient> matches,
+      );
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 
