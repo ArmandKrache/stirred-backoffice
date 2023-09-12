@@ -166,11 +166,10 @@ class IngredientsView extends HookWidget {
                   mouseCursor: SystemMouseCursors.click,
                 ),
                   onTap: () async {
-                  /// TODO : Details View
-                    /* final deleted = await appRouter.push(IngredientDetailsRoute(ingredient: item));
+                    final deleted = await appRouter.push(IngredientDetailsRoute(ingredient: item));
                     if (deleted == "deleted") {
                       ingredientsCubit.fetchList(request: IngredientsListRequest());
-                    } */
+                    }
                   },
                 ),
               ),

@@ -47,6 +47,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const GlassesView(),
       );
     },
+    IngredientDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<IngredientDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: IngredientDetailsView(
+          key: args.key,
+          ingredient: args.ingredient,
+        ),
+      );
+    },
     IngredientsRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -200,6 +210,44 @@ class GlassesRoute extends PageRouteInfo<void> {
   static const String name = 'GlassesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [IngredientDetailsView]
+class IngredientDetailsRoute extends PageRouteInfo<IngredientDetailsRouteArgs> {
+  IngredientDetailsRoute({
+    Key? key,
+    required Ingredient ingredient,
+    List<PageRouteInfo>? children,
+  }) : super(
+          IngredientDetailsRoute.name,
+          args: IngredientDetailsRouteArgs(
+            key: key,
+            ingredient: ingredient,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'IngredientDetailsRoute';
+
+  static const PageInfo<IngredientDetailsRouteArgs> page =
+      PageInfo<IngredientDetailsRouteArgs>(name);
+}
+
+class IngredientDetailsRouteArgs {
+  const IngredientDetailsRouteArgs({
+    this.key,
+    required this.ingredient,
+  });
+
+  final Key? key;
+
+  final Ingredient ingredient;
+
+  @override
+  String toString() {
+    return 'IngredientDetailsRouteArgs{key: $key, ingredient: $ingredient}';
+  }
 }
 
 /// generated route for

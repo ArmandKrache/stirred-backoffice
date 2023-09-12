@@ -13,23 +13,28 @@ class PreferencesAttributeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomGenericAttributeWidget(
-      title: "Preferences",
-      child: Flexible(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(minWidth: 128, maxWidth: 448),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Favorites : ${preferences.favorites}"),
-              Text("Likes : ${preferences.likes}"),
-              Text("Dislikes : ${preferences.dislikes}"),
-              Text("Allergies : ${preferences.allergies}"),
-              Text("Diets : ${preferences.diets}"),
-            ],
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(minWidth: 128, maxWidth: 448),
+            child:  CustomGenericAttributeWidget(
+              title: "Preferences",
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Favorites : ${preferences.favorites}"),
+                  Text("Likes : ${preferences.likes}"),
+                  Text("Dislikes : ${preferences.dislikes}"),
+                  Text("Allergies : ${preferences.allergies}"),
+                  Text("Diets : ${preferences.diets}"),
+                ],
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

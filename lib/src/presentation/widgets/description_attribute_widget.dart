@@ -12,14 +12,14 @@ class DescriptionAttributeWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomGenericAttributeWidget(
-      title : "Description",
-      child: Flexible(
+    return Flexible(
         child: ConstrainedBox(
           constraints: const BoxConstraints(minWidth: 128, maxWidth: 512),
-          child: Text(
-            text,
-            style: const TextStyle(fontSize: 18),
+          child: CustomGenericAttributeWidget(
+            title : "Description",
+            child: Text(
+                text,
+                style: const TextStyle(fontSize: 16),
           ),
         ),
       ),

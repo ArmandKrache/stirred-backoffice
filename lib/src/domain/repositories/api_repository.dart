@@ -20,7 +20,7 @@ import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/lookup_details_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/popular_cocktails_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profile_list_response.dart';
-import 'package:cocktail_app/src/domain/models/responses/saerched_cocktails_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/searched_cocktails_response.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 
 abstract class ApiRepository {

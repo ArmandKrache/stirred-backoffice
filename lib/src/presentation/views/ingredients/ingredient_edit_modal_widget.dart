@@ -99,7 +99,7 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
                 ),
                 fillColor: Colors.white,
                 filled: true,
-                labelText: "Username"
+                labelText: "Name"
             ),
           ),
           const SizedBox(height: 8,),
@@ -149,10 +149,13 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
               picturePreviewWidget,
             ],
           ),
+          const SizedBox(height: 16,),
           /// TODO: Matches selector widget
           const SizedBox(), /// Matches
           Column( /// Categories
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Text("Categories", style: TextStyle(fontSize: 12),),
               /// TODO: Categories selector widget
               const SizedBox(),
               TextField(
@@ -167,11 +170,10 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
                   filled: true,
                   labelText: "Keywords (keyword1,keyword2,...",
                 ),
-                maxLines: 5,
-                keyboardType: TextInputType.multiline,
               ),
             ],
           ),
+          const SizedBox(height: 16,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
