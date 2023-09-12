@@ -109,10 +109,7 @@ class IngredientDetailsView extends HookWidget {
                           appRouter.pop();
                         },
                         onConfirm: () {
-                          /// TODO: Delete Ingredient
-                          /// ingredientDetailsCubit.handleEvent(
-                          ///    event : GlassDeleteEvent(request : GlassDeleteRequest(id: ingredientDetailsCubit.state.ingredient?.id))
-                          ///);
+                           ingredientDetailsCubit.deleteIngredient(ingredientDetailsCubit.state.ingredient!.id);
                         },
                       ),
                     );

@@ -72,6 +72,9 @@ abstract class StirredApiService {
       @Part() List<Ingredient> matches,
       );
 
+  @DELETE("/ingredients/{id}/")
+  Future<void> deleteIngredient(@Path() String id);
+
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 
 }

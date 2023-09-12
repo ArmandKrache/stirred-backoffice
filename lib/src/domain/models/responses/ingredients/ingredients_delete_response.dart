@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 
-class GlassDeleteResponse extends Equatable {
+class IngredientDeleteResponse extends Equatable {
   final bool success;
 
-  const GlassDeleteResponse({
+  const IngredientDeleteResponse({
     required this.success,
   });
 
 
-  factory GlassDeleteResponse.fromMap(Map<String, dynamic> map) {
-    return const GlassDeleteResponse(
+  factory IngredientDeleteResponse.fromMap(Map<String, dynamic> map) {
+    return const IngredientDeleteResponse(
         success: true
     );
   }

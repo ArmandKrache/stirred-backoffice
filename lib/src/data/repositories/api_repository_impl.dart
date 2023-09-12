@@ -157,4 +157,13 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     ),
     );
   }
+
+  @override
+  Future<void> deleteIngredient({
+    required IngredientDeleteRequest request
+  }) {
+    return _stirredApiService.deleteIngredient(
+        request.id!
+    );
+  }
 }

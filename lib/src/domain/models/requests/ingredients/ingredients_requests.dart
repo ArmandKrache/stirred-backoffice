@@ -21,3 +21,9 @@ class IngredientCreateRequest {
     this.matches,
   });
 }
+
+class IngredientDeleteRequest {
+  final String? id;
+
+  IngredientDeleteRequest({this.id});
+}

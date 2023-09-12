@@ -9,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -31,16 +32,15 @@ class IngredientDetailsCubit extends BaseCubit<IngredientDetailsState, Ingredien
 
   Future<void> deleteIngredient(String id) async {
     if (isBusy) return;
-    /* try {
+    try {
       await _apiRepository.deleteIngredient(
-          request: IngredientDeleteRequest(
-            id: id,
-          ));
+          request: IngredientDeleteRequest(id: id,)
+      );
       emit(IngredientDeleteSuccess(ingredient: state.ingredient,));
       appRouter.pop();
     } catch (e) {
       emit(IngredientDeleteFailed(ingredient: state.ingredient));
-    } */
+    }
   }
 
   /* Future<Ingredient> patchIngredient(String id, Map<String, dynamic> data) async {
