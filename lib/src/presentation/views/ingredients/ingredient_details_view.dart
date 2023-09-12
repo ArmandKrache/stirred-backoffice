@@ -14,6 +14,7 @@ import 'package:cocktail_app/src/presentation/widgets/categories_attribute_widge
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/matches_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -144,20 +145,7 @@ class IngredientDetailsView extends HookWidget {
                           DescriptionAttributeWidget(text : state.ingredient!.description),
                         ],
                       ),
-                      CustomGenericAttributeWidget(
-                        title: "Matches with",
-                        child: ConstrainedBox(
-                          constraints: const BoxConstraints(maxHeight: 300, maxWidth: 300),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: state.ingredient!.matches.length,
-                            itemBuilder: (context, index) {
-                              ///TODO: match ids with ingredients name from all_ingredients
-                              return Text(state.ingredient!.matches[index]);
-                            },
-                          ),
-                        ),
-                      ),
+                      MatchesAttributeWidget(matches: state.ingredient!.matches),
                       CategoriesAttributeWidget(categories: state.ingredient!.categories),
                     ],
                   )
