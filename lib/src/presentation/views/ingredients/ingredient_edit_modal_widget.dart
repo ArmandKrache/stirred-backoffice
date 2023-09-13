@@ -5,7 +5,9 @@ import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:dio/dio.dart';
+import 'package:expandable/expandable.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -67,99 +69,51 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      width: 600,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: widget.onClose,
-                child: const MouseRegion(
-                  cursor: SystemMouseCursors.click,
-                  child: Icon(Icons.close, size: 24,),
-                ),
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxWidth: 600,
+            maxHeight: 800,
+            minHeight: 300,
+            minWidth: 200,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GestureDetector(
+                    onTap: widget.onClose,
+                    child: const MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Icon(Icons.close, size: 24,),
+                    ),
+                  ),
+                  Text(widget.title),
+                  const SizedBox(),
+                ],
               ),
-              Text(widget.title),
-              const SizedBox(),
-            ],
-          ),
-          const SizedBox(height: 16,),
-          TextField(
-            controller: nameController,
-            cursorColor: Colors.deepPurple,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
-                ),
-                fillColor: Colors.white,
-                filled: true,
-                labelText: "Name"
-            ),
-          ),
-          const SizedBox(height: 8,),
-          TextField(
-            controller: descriptionController,
-            cursorColor: Colors.deepPurple,
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
-              ),
-              fillColor: Colors.white,
-              filled: true,
-              labelText: "Description",
-            ),
-            maxLines: 5,
-            keyboardType: TextInputType.multiline,
-          ),
-          const SizedBox(height: 8,),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
-                  uploadInput.click();
-                  uploadInput.onChange.listen((event) {
-                    final file = uploadInput.files!.first;
-                    final reader = html.FileReader();
-                    reader.onLoadEnd.listen((loadEndEvent) async {
-                      final Uint8List data = reader.result as Uint8List;
-                      final image = http.MultipartFile.fromBytes(
-                        'picture',
-                        data,
-                        filename: file.name,
-                      );
-                      setState(() {
-                        selectedImage = image;
-                      });
-                    });
-                    reader.readAsArrayBuffer(file);
-                  });
-                },
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
-                child: const Text('Select Picture'),
-              ),
-              const SizedBox(width: 16,),
-              picturePreviewWidget,
-            ],
-          ),
-          const SizedBox(height: 16,),
-          /// TODO: Matches selector widget
-          const SizedBox(), /// Matches
-          Column( /// Categories
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text("Categories", style: TextStyle(fontSize: 12),),
-              /// TODO: Categories selector widget
-              const SizedBox(),
+              const SizedBox(height: 16,),
               TextField(
-                controller: keywordsController,
+                controller: nameController,
+                cursorColor: Colors.deepPurple,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: "Name"
+                ),
+              ),
+              const SizedBox(height: 8,),
+              TextField(
+                controller: descriptionController,
                 cursorColor: Colors.deepPurple,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
@@ -168,49 +122,138 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
                   ),
                   fillColor: Colors.white,
                   filled: true,
-                  labelText: "Keywords (keyword1,keyword2,...",
+                  labelText: "Description",
                 ),
+                maxLines: 5,
+                keyboardType: TextInputType.multiline,
+              ),
+              const SizedBox(height: 8,),
+              Row(
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      final html.FileUploadInputElement uploadInput = html.FileUploadInputElement();
+                      uploadInput.click();
+                      uploadInput.onChange.listen((event) {
+                        final file = uploadInput.files!.first;
+                        final reader = html.FileReader();
+                        reader.onLoadEnd.listen((loadEndEvent) async {
+                          final Uint8List data = reader.result as Uint8List;
+                          final image = http.MultipartFile.fromBytes(
+                            'picture',
+                            data,
+                            filename: file.name,
+                          );
+                          setState(() {
+                            selectedImage = image;
+                          });
+                        });
+                        reader.readAsArrayBuffer(file);
+                      });
+                    },
+                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
+                    child: const Text('Select Picture'),
+                  ),
+                  const SizedBox(width: 16,),
+                  picturePreviewWidget,
+                ],
+              ),
+              const SizedBox(height: 16,),
+              /// TODO: Matches selector widget
+              ExpandablePanel( /// Matches
+                header: const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text("Matches", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                ),
+                collapsed: const SizedBox(),
+                expanded: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    children: [
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: [
+                          CustomTextTileWidget(
+                            text: "Name",
+                            onTap: () {
+                              log("TIP TAP");
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              /// Categories
+              ExpandablePanel(
+                header: const Padding(
+                  padding: EdgeInsets.all(12.0),
+                  child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                ),
+                collapsed: const SizedBox(),
+                expanded: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Column(
+                    children: [
+                      TextField(
+                        controller: keywordsController,
+                        cursorColor: Colors.deepPurple,
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          labelText: "Keywords (keyword1,keyword2,...",
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const SizedBox(),
+                  Text(widget.errorText,
+                    style: const TextStyle(color: Colors.red),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      final http.MultipartFile? picture = selectedImage;
+                      Map<String, dynamic> data = {};
+                      data["name"] = nameController.text;
+                      data["description"] = descriptionController.text;
+                      categories?.keywords.addAll(keywordsController.text.split(","));
+
+                      if (picture != null) {
+                        final MultipartFile multipartFilePicture = MultipartFile.fromStream(
+                              () => picture.finalize(),
+                          picture.length,
+                          filename: picture.filename,
+                          contentType: picture.contentType,
+                        );
+                        data["picture"] = multipartFilePicture;
+                      }
+
+                      log(data.toString());
+                      widget.onSave.call(data);
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.green),
+                      padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
+                    ),
+                    child: const Text('Save', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                  ),
+                ],
               ),
             ],
           ),
-          const SizedBox(height: 16,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const SizedBox(),
-              Text(widget.errorText,
-                style: const TextStyle(color: Colors.red),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  final http.MultipartFile? picture = selectedImage;
-                  Map<String, dynamic> data = {};
-                  data["name"] = nameController.text;
-                  data["description"] = descriptionController.text;
-                  categories?.keywords.addAll(keywordsController.text.split(","));
-
-                  if (picture != null) {
-                    final MultipartFile multipartFilePicture = MultipartFile.fromStream(
-                          () => picture.finalize(),
-                      picture.length,
-                      filename: picture.filename,
-                      contentType: picture.contentType,
-                    );
-                    data["picture"] = multipartFilePicture;
-                  }
-
-                  log(data.toString());
-                  widget.onSave.call(data);
-                },
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                  padding: MaterialStateProperty.all(const EdgeInsets.all(16)),
-                ),
-                child: const Text('Save', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-              ),
-            ],
-          ),
-        ],
+        ),
       ),
     );
   }

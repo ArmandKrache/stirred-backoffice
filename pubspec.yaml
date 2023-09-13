@@ -50,6 +50,7 @@ dependencies:
   image_picker: ^1.0.2
   image_picker_for_web: ^3.0.0
   logger: ^2.0.2
+  expandable: ^5.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
