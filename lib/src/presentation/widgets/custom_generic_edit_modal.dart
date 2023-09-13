@@ -4,18 +4,20 @@ import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_w
 import 'package:cocktail_app/src/utils/constants/strings.dart';
 import 'package:flutter/material.dart';
 
-class CategoriesAttributeWidget extends StatelessWidget {
+class CustomGenericEditModalWidget extends StatelessWidget {
   final String title;
   final void Function() onSave;
   final Function onClose;
   final String errorText;
+  final List<Widget> children;
 
-  const CategoriesAttributeWidget({
+  const CustomGenericEditModalWidget({
     super.key,
     required this.title,
     required this.onSave,
     this.onClose = _defaultOnClose,
     this.errorText = "",
+    this.children = const [],
   });
 
   static _defaultOnClose() {
@@ -54,6 +56,7 @@ class CategoriesAttributeWidget extends StatelessWidget {
                   const SizedBox(),
                 ],
               ),
+              ...children,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
