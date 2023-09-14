@@ -23,7 +23,13 @@ class IngredientCreateRequest {
 }
 
 class IngredientDeleteRequest {
-  final String? id;
+  final String id;
 
-  IngredientDeleteRequest({this.id});
+  IngredientDeleteRequest({required this.id});
+}
+
+class IngredientsSearchRequest {
+  final String query;
+
+  IngredientsSearchRequest({this.query = ""});
 }

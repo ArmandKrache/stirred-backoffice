@@ -62,6 +62,11 @@ abstract class StirredApiService {
   @GET('/ingredients/')
   Future<HttpResponse<IngredientsListResponse>> getIngredientsList();
 
+  @GET('/ingredients/search/')
+  Future<HttpResponse<IngredientsListResponse>> searchIngredients({
+    @Query("query") String? query,
+  });
+
   @POST('/ingredients/create/')
   @MultiPart()
   Future<HttpResponse<IngredientCreateResponse>> createIngredient(

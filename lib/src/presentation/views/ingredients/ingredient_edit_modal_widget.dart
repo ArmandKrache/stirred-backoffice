@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:html' as html;
 import 'dart:typed_data';
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
+import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable/expandable.dart';
 import 'package:http/http.dart' as http;
@@ -19,11 +21,13 @@ class IngredientEditModalWidget extends StatefulWidget {
   final Ingredient? currentItem;
   final String title;
   final String errorText;
+  final Future<List<Ingredient>> Function(String query) searchMatches;
 
   const IngredientEditModalWidget({
     Key? key,
     required this.onSave,
     required this.title,
+    required this.searchMatches,
     this.onClose = _defaultOnClose,
     this.errorText = "",
     this.currentItem,
@@ -44,7 +48,9 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
   final keywordsController = TextEditingController();
   http.MultipartFile? selectedImage;
   Categories? categories;
-  List<String> matches = [];
+  List<IngredientMatch> matches = [];
+  final TextEditingController _searchController = TextEditingController();
+  List<Ingredient> matchesSearchResults = [];
 
   @override
   void initState() {
@@ -79,7 +85,7 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
         Map<String, dynamic> data = {};
         data["name"] = nameController.text;
         data["description"] = descriptionController.text;
-        categories?.keywords.addAll(keywordsController.text.split(","));
+        categories?.keywords.addAll(keywordsController.text.split(",").map((e) => e.trim()).toList());
 
         if (picture != null) {
           final MultipartFile multipartFilePicture = MultipartFile.fromStream(
@@ -90,6 +96,7 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
           );
           data["picture"] = multipartFilePicture;
         }
+        /// TODO: add Matches and categories to data
 
         log(data.toString());
         widget.onSave.call(data);
@@ -158,62 +165,128 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
         ),
         const SizedBox(height: 16,),
         /// TODO: Matches selector widget
-        ExpandablePanel( /// Matches
-          header: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Text("Matches", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-          ),
-          collapsed: const SizedBox(),
-          expanded: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              children: [
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    CustomTextTileWidget(
-                      text: "Name",
-                      onTap: () {
-                        log("TIP TAP");
-                      },
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        /// Categories
-        ExpandablePanel(
-          header: const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-          ),
-          collapsed: const SizedBox(),
-          expanded: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Column(
-              children: [
-                TextField(
-                  controller: keywordsController,
-                  cursorColor: Colors.deepPurple,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
-                    ),
-                    fillColor: Colors.white,
-                    filled: true,
-                    labelText: "Keywords (keyword1,keyword2,...",
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        _matchesWidget(),
+        _categoriesWidget(),
         const SizedBox(height: 16,),
       ],
+    );
+  }
+
+  /// TODO Matches
+  Widget _matchesWidget() {
+
+    log("matches : $matches");
+    List<Widget> matchesWidgetList = List<Widget>.from(matches.map((e) {
+      return CustomTextTileWidget(
+        text: e.name,
+        onTap: () {
+          setState(() {
+            matches.remove(e);
+          });
+        },
+      );
+    }));
+
+    List<Widget> matchesSearchResultsWidgetList = List<Widget>.from(matchesSearchResults.map((e) {
+      return CustomTextTileWidget(
+        text: e.name,
+        textStyle: const TextStyle(fontSize: 12),
+        onTap: () {
+          IngredientMatch newMatch = IngredientMatch(id: e.id, name: e.name);
+          setState(() {
+            if (!matches.contains(newMatch)) {
+              matches.add(newMatch);
+            }
+          });
+        },
+        icon: const Icon(Icons.add, size: 12,),
+        backgroundColor: Colors.green,
+      );
+    }));
+
+
+    return ExpandablePanel( /// Matches
+      header: const Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Text("Matches", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+      ),
+      collapsed: const SizedBox(),
+      expanded: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomSearchBar(
+                  hintText: "Search for matches",
+                  controller: _searchController,
+                  onChanged: (query) async {
+                    List<Ingredient> res = await widget.searchMatches.call(query);
+                    logger.d("Search :  $res");
+                    setState(() {
+                      matchesSearchResults = res;
+                    });
+                  },
+                  width: 300,
+                  margin: const EdgeInsets.only(left: 4, right: 8),
+                ),
+                Flexible(
+                  child: Wrap(
+                    spacing: 4,
+                    runSpacing: 4,
+                    children: [
+                      ...matchesSearchResultsWidgetList
+                    ],
+                  ),
+                )
+              ],
+            ),
+            const SizedBox(height: 8,),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                ...matchesWidgetList
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// TODO Categories
+  Widget _categoriesWidget() {
+    return ExpandablePanel(
+      header: const Padding(
+        padding: EdgeInsets.all(12.0),
+        child: Text("Categories", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+      ),
+      collapsed: const SizedBox(),
+      expanded: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: keywordsController,
+              cursorColor: Colors.deepPurple,
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  labelText: "Keywords (eg: keyword1,keyword2,keyword3)",
+                  labelStyle: TextStyle(fontSize: 12)
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

@@ -84,16 +84,18 @@ class IngredientsView extends HookWidget {
               return const Center(child: Text("Ingredients list is empty"),);
             } else {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomSearchBar(
                     controller: _searchController,
-                    onSubmitted: (query) {
+                    onChanged: (query) {
                       /* remoteDrinksCubit.handleEvent(
                     event: SearchDrinksEvent(
                       request: SearchedCocktailsRequest(name: query),
                     )
                 );*/
                     },
+                    margin: const EdgeInsets.all(8),
                   ),
                   const SizedBox(height: 4,),
                   Expanded(
@@ -180,7 +182,7 @@ class IngredientsView extends HookWidget {
                   style: const TextStyle(), maxLines: 2,),
               )
               ),
-              DataCell(SelectableText(item.matches.map((ingredient) => ingredient).join(', '))),
+              DataCell(SelectableText(item.matches.map((ingredient) => ingredient.name).join(', '))),
               DataCell(SelectableText("${item.categories.keywords.first},"
                 ", ${item.categories.origins.first}"
                 ", ${item.categories.eras.first}"
@@ -217,6 +219,9 @@ class IngredientsView extends HookWidget {
       },
       title: "New Ingredient",
       errorText: errorText,
+      searchMatches: (query) {
+        return ingredientsCubit.searchMatches(query);
+      },
     );
   }
 

@@ -6,7 +6,7 @@ class Ingredient extends Equatable {
   final String name;
   final String description;
   final String picture;
-  final List<String> matches;
+  final List<IngredientMatch> matches;
   final Categories categories;
 
   const Ingredient({
@@ -24,7 +24,9 @@ class Ingredient extends Equatable {
       name : map['name'] ?? "",
       description: map['description'] ?? "",
       picture: map['picture'] ?? "",
-      matches: map['matches'] ?? "",
+      matches: List<IngredientMatch>.from((map['matches'] ?? []).map(
+        (element) => IngredientMatch.fromMap(element))
+      ),
       categories: map['categories'] != null ?  Categories.fromMap(map['categories']) : Categories.empty(),
     );
   }
@@ -45,5 +47,36 @@ class Ingredient extends Equatable {
 
   @override
   List<Object?> get props => [id, name, description];
+
+}
+
+class IngredientMatch extends Equatable {
+  final String id;
+  final String name;
+
+  const IngredientMatch({
+    required this.id,
+    required this.name,
+  });
+
+  factory IngredientMatch.fromMap(Map<String, dynamic> map) {
+    return IngredientMatch(
+      id: map['id'] ?? "",
+      name : map['name'] ?? "",
+    );
+  }
+
+  factory IngredientMatch.empty() {
+    return const IngredientMatch(
+      id: "",
+      name : "",
+    );
+  }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [id, name];
 
 }

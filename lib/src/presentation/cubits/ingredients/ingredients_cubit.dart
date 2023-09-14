@@ -2,6 +2,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
@@ -67,6 +68,17 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
 
       }
     });
+  }
+
+  Future<List<Ingredient>> searchMatches(String query) async {
+    final response = await _apiRepository.searchIngredients(
+        request: IngredientsSearchRequest(query: query,));
+    if (response is DataSuccess) {
+      return response.data!.ingredients;
+    } else if (response is DataFailed) {
+      log(response.exception.toString());
+    }
+    return [];
   }
 
 }

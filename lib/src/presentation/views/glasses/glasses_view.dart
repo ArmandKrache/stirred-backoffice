@@ -80,16 +80,18 @@ class GlassesView extends HookWidget {
               return const Center(child: Text("Glasses list is empty"),);
             } else {
               return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomSearchBar(
                     controller: _searchController,
-                    onSubmitted: (query) {
+                    onChanged: (query) {
                       /* remoteDrinksCubit.handleEvent(
                     event: SearchDrinksEvent(
                       request: SearchedCocktailsRequest(name: query),
                     )
                 );*/
                     },
+                    margin: const EdgeInsets.all(8),
                   ),
                   const SizedBox(height: 4,),
                   Expanded(

@@ -58,4 +58,15 @@ class IngredientDetailsCubit extends BaseCubit<IngredientDetailsState, Ingredien
     return response.data!.ingredient;
   } */
 
+  Future<List<Ingredient>> searchMatches(String query) async {
+    final response = await _apiRepository.searchIngredients(
+        request: IngredientsSearchRequest(query: query,));
+    if (response is DataSuccess) {
+      return response.data!.ingredients;
+    } else if (response is DataFailed) {
+      log(response.exception.toString());
+    }
+    return [];
+  }
+
 }

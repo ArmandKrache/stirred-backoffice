@@ -82,7 +82,7 @@ class RootView extends HookWidget {
                           },
                         ),
                       ],
-            ),
+                  ),
                   GestureDetector(
                     onTap: () {
                       rootNavigationCubit.logOut();

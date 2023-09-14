@@ -160,6 +160,9 @@ class IngredientDetailsView extends HookWidget {
       },
       title: "Edit Ingredient",
       currentItem: ingredientDetailsCubit.state.ingredient,
+      searchMatches: (query) {
+        return ingredientDetailsCubit.searchMatches(query);
+      },
     );
   }
 }

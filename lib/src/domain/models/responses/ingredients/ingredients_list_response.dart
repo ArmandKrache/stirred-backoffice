@@ -25,7 +25,8 @@ class IngredientsListResponse extends Equatable {
           name: element["attributes"]["name"] ?? "",
           description: element["attributes"]["description"] ?? "",
           picture: element["attributes"]["picture"] ?? "",
-          matches: List<String>.from((element["attributes"]["matches"] ?? [])),
+          matches: List<IngredientMatch>.from((element["attributes"]["matches"] ?? []).map(
+                  (element) => IngredientMatch.fromMap(element))),
           categories: Categories.fromMap(element["attributes"]["categories"]),
         );
       })),

@@ -63,6 +63,11 @@ abstract class ApiRepository {
     required IngredientDeleteRequest request,
   });
 
+  Future<DataState<IngredientsListResponse>> searchIngredients({
+    required IngredientsSearchRequest request,
+  });
+
+
   /// -------- Deprecated below ----------- ///
   Future<DataState<PopularCocktailsResponse>> getPopularCocktails({
     required PopularCocktailsRequest request,
