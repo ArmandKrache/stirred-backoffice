@@ -14,6 +14,7 @@ import 'package:cocktail_app/src/domain/models/requests/lookup_details_request.d
 import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -82,6 +83,11 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     return getState0f<LoginResponse>(request: () => _cocktailApiService.getTokens(
         {"username" : request.username!, "password" : request.password!}),
     );
+  }
+
+  @override
+  Future<DataState<AllChoicesResponse>> getAllChoices() {
+    return getState0f<AllChoicesResponse>(request: () => _stirredApiService.getAllChoices());
   }
 
   /// Profiles

@@ -9,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/requests/lookup_details_request.d
 import 'package:cocktail_app/src/domain/models/requests/popular_cocktails_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/searched_cocktails_request.dart';
+import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/filtered_cocktails_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -24,6 +25,9 @@ import 'package:cocktail_app/src/domain/models/responses/searched_cocktails_resp
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 
 abstract class ApiRepository {
+
+  Future<DataState<AllChoicesResponse>> getAllChoices();
+
   Future<DataState<LoginResponse>> getTokens({
     required LoginRequest request,
   });

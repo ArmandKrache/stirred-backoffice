@@ -21,22 +21,20 @@ class _StirredApiService implements StirredApiService {
   String? baseUrl;
 
   @override
-  Future<HttpResponse<LoginResponse>> getTokens(
-      Map<String, dynamic> credentials) async {
+  Future<HttpResponse<AllChoicesResponse>> getAllChoices() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-    _data.addAll(credentials);
+    final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
-        _setStreamType<HttpResponse<LoginResponse>>(Options(
-      method: 'POST',
+        _setStreamType<HttpResponse<AllChoicesResponse>>(Options(
+      method: 'GET',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/auth/token/login/',
+              '/all-choices/',
               queryParameters: queryParameters,
               data: _data,
             )
@@ -45,7 +43,7 @@ class _StirredApiService implements StirredApiService {
               _dio.options.baseUrl,
               baseUrl,
             ))));
-    final value = LoginResponse.fromMap(_result.data!);
+    final value = AllChoicesResponse.fromMap(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

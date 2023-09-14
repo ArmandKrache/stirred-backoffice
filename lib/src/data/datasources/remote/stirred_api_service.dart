@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/preferences.dart';
+import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
@@ -25,8 +26,8 @@ part 'stirred_api_service.g.dart';
 abstract class StirredApiService {
   factory StirredApiService(Dio dio, {String baseUrl}) = _StirredApiService;
 
-  @POST('/auth/token/login/')
-  Future<HttpResponse<LoginResponse>> getTokens(@Body() Map<String, dynamic> credentials);
+  @GET('/all-choices/')
+  Future<HttpResponse<AllChoicesResponse>> getAllChoices();
 
   /// Profiles
   @GET('/profile/')
