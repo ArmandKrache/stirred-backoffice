@@ -21,7 +21,7 @@ class Categories extends Equatable {
 
   factory Categories.fromMap(Map<String, dynamic> map) {
     return Categories(
-      origins: List<String>.from((map['origin'] ?? [])),
+      origins: List<String>.from((map['origins'] ?? [])),
       strengths: List<String>.from((map['strengths'] ?? [])),
       eras: List<String>.from((map['eras'] ?? [])),
       diets: List<String>.from((map['diets'] ?? [])),

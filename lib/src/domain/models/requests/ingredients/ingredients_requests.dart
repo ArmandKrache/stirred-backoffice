@@ -10,15 +10,15 @@ class IngredientCreateRequest {
   final String? name;
   final String? description;
   final MultipartFile? picture;
-  final Categories? categories;
-  final List<Ingredient>? matches;
+  final List<String>? matches;
+  final Map<String, List<String>>? categories;
 
   IngredientCreateRequest({
     this.name,
     this.description,
     this.picture,
-    this.categories,
     this.matches,
+    this.categories,
   });
 }
 

@@ -47,8 +47,8 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
     final String name = data["name"];
     final String description = data["description"];
     final MultipartFile? picture = data["picture"];
-    final List<Ingredient> matches = data["matches"];
-    final Categories categories = data["categories"];
+    final List<String> matches = data["matches"];
+    final Map<String, List<String>> categories = data["categories"] as Map<String, List<String>>;
 
     await run(() async {
       emit(const IngredientsLoading());
@@ -57,8 +57,8 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
             name: name,
             description: description,
             picture: picture,
+            matches: matches,
             categories: categories,
-            matches: matches
           ));
       if (response is DataSuccess) {
         emit(const IngredientCreateSuccess());

@@ -285,8 +285,8 @@ class _StirredApiService implements StirredApiService {
     String name,
     String description,
     MultipartFile picture,
-    Categories categories,
-    List<Ingredient> matches,
+    Map<String, dynamic> categories,
+    List<String> matches,
   ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

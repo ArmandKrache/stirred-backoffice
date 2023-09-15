@@ -42,7 +42,7 @@ abstract class StirredApiService {
   Future<HttpResponse<GlassesCreateResponse>> createGlass(
       @Part() String name,
       @Part() String description,
-      @Part() MultipartFile picture
+      @Part(contentType: "file") MultipartFile picture
       );
 
   @PATCH("/glasses/{id}/")
@@ -52,7 +52,7 @@ abstract class StirredApiService {
       {
         @Part() String? name,
         @Part() String? description,
-        @Part() MultipartFile? picture
+        @Part(contentType: "file") MultipartFile? picture
       }
       );
 
@@ -73,9 +73,9 @@ abstract class StirredApiService {
   Future<HttpResponse<IngredientCreateResponse>> createIngredient(
       @Part() String name,
       @Part() String description,
-      @Part() MultipartFile picture,
-      @Part() Categories categories,
-      @Part() List<Ingredient> matches,
+      @Part(contentType: "file") MultipartFile picture,
+      @Part() Map<String, dynamic> categories,
+      @Part() List<String> matches,
       );
 
   @DELETE("/ingredients/{id}/")

@@ -98,18 +98,20 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
           data["picture"] = multipartFilePicture;
         }
         data["matches"] = List<String>.from(matches.map((e) => e.id));
-        data["categories"] = <String, dynamic>{};
-        categories.keywords = (keywordsController.text.split(",").map((e) => e.trim()).toList());
-        data["categories"]["keywords"] = categories.keywords;
-        data["categories"]["seasons"] = categories.seasons;
-        data["categories"]["origins"] = categories.origins;
-        data["categories"]["strengths"] = categories.strengths;
-        data["categories"]["colors"] = categories.colors;
-        data["categories"]["diets"] = categories.diets;
-        data["categories"]["eras"] = categories.eras;
+        Map<String, List<String>> categoriesData = {};
+        categories.keywords = keywordsController.text.split(",").map((e) => e.trim()).toList();
+        categoriesData["origins"] = categories.origins;
+        categoriesData["eras"] = categories.eras;
+        categoriesData["strengths"] = categories.strengths;
+        categoriesData["diets"] = categories.diets;
+        categoriesData["seasons"] = categories.seasons;
+        categoriesData["colors"] = categories.colors;
+        categoriesData["keywords"] = categories.keywords;
+
+        data["categories"] = categoriesData;
 
         logger.d(data.toString());
-         /// widget.onSave.call(data);
+         widget.onSave.call(data);
       },
       children: [
         const SizedBox(height: 16,),
