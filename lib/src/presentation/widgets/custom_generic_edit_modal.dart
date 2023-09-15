@@ -1,7 +1,7 @@
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
-import 'package:cocktail_app/src/utils/constants/strings.dart';
+import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomGenericEditModalWidget extends StatelessWidget {
@@ -32,7 +32,6 @@ class CustomGenericEditModalWidget extends StatelessWidget {
         child: ConstrainedBox(
           constraints: const BoxConstraints(
             maxWidth: 600,
-            maxHeight: 800,
             minHeight: 300,
             minWidth: 200,
           ),

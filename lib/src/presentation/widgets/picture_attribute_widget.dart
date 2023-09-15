@@ -1,4 +1,4 @@
-import 'package:cocktail_app/src/utils/constants/strings.dart';
+import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class PictureAttributeWidget extends StatelessWidget {

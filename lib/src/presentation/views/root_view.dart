@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_items.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
@@ -7,7 +9,8 @@ import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_view.dart';
 import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
-import 'package:cocktail_app/src/utils/constants/strings.dart';
+import 'package:cocktail_app/src/utils/constants/constants.dart';
+import 'package:cocktail_app/src/utils/constants/global_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,6 +23,11 @@ class RootView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final rootNavigationCubit = BlocProvider.of<RootNavigationCubit>(context);
+
+    useEffect(() {
+      initialChoicesDataRetrieve();
+      return;
+    }, const []);
 
     return Scaffold(
       body: Container(

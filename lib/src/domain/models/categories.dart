@@ -1,15 +1,15 @@
 import 'package:equatable/equatable.dart';
 
 class Categories extends Equatable {
-  final List<String> origins;
-  final List<String> strengths;
-  final List<String> eras;
-  final List<String> diets;
-  final List<String> seasons;
-  final List<String> colors;
-  final List<String> keywords;
+  List<String> origins;
+  List<String> strengths;
+  List<String> eras;
+  List<String> diets;
+  List<String> seasons;
+  List<String> colors;
+  List<String> keywords;
 
-  const Categories({
+  Categories({
     required this.origins,
     required this.strengths,
     required this.eras,
@@ -32,7 +32,7 @@ class Categories extends Equatable {
   }
 
   factory Categories.empty() {
-    return const Categories(
+    return Categories(
       origins: [],
       strengths : [],
       eras: [],

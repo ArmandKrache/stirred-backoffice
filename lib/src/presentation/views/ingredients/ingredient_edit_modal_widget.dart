@@ -9,6 +9,8 @@ import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
+import 'package:cocktail_app/src/utils/constants/constants.dart';
+import 'package:cocktail_app/src/utils/constants/global_data.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable/expandable.dart';
 import 'package:http/http.dart' as http;
@@ -47,7 +49,7 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
   final descriptionController = TextEditingController();
   final keywordsController = TextEditingController();
   http.MultipartFile? selectedImage;
-  Categories? categories;
+  Categories categories = Categories.empty();
   List<IngredientMatch> matches = [];
   final TextEditingController _searchController = TextEditingController();
   List<Ingredient> matchesSearchResults = [];
@@ -85,7 +87,6 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
         Map<String, dynamic> data = {};
         data["name"] = nameController.text;
         data["description"] = descriptionController.text;
-        categories?.keywords.addAll(keywordsController.text.split(",").map((e) => e.trim()).toList());
 
         if (picture != null) {
           final MultipartFile multipartFilePicture = MultipartFile.fromStream(
@@ -96,10 +97,19 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
           );
           data["picture"] = multipartFilePicture;
         }
-        /// TODO: add Matches and categories to data
+        data["matches"] = List<String>.from(matches.map((e) => e.id));
+        data["categories"] = <String, dynamic>{};
+        categories.keywords = (keywordsController.text.split(",").map((e) => e.trim()).toList());
+        data["categories"]["keywords"] = categories.keywords;
+        data["categories"]["seasons"] = categories.seasons;
+        data["categories"]["origins"] = categories.origins;
+        data["categories"]["strengths"] = categories.strengths;
+        data["categories"]["colors"] = categories.colors;
+        data["categories"]["diets"] = categories.diets;
+        data["categories"]["eras"] = categories.eras;
 
-        log(data.toString());
-        widget.onSave.call(data);
+        logger.d(data.toString());
+         /// widget.onSave.call(data);
       },
       children: [
         const SizedBox(height: 16,),
@@ -164,7 +174,6 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
           ],
         ),
         const SizedBox(height: 16,),
-        /// TODO: Matches selector widget
         _matchesWidget(),
         _categoriesWidget(),
         const SizedBox(height: 16,),
@@ -172,7 +181,6 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
     );
   }
 
-  /// TODO Matches
   Widget _matchesWidget() {
 
     log("matches : $matches");
@@ -258,7 +266,6 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
     );
   }
 
-  /// TODO Categories
   Widget _categoriesWidget() {
     return ExpandablePanel(
       header: const Padding(
@@ -270,23 +277,189 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Column(
           children: [
-            TextField(
-              controller: keywordsController,
-              cursorColor: Colors.deepPurple,
-              decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
-                  ),
-                  fillColor: Colors.white,
-                  filled: true,
-                  labelText: "Keywords (eg: keyword1,keyword2,keyword3)",
-                  labelStyle: TextStyle(fontSize: 12)
+            _categoryPickerWidget(
+              title: "Origins",
+              possibleValues: allPossibleCategories.origins,
+              currentValues: categories.origins,
+              onAdd: (String value) {
+                if (!categories.origins.contains(value)) {
+                  categories.origins.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.origins.remove(value);
+              },
+            ),
+            _categoryPickerWidget(
+              title: "Seasons",
+              possibleValues: allPossibleCategories.seasons,
+              currentValues: categories.seasons,
+              onAdd: (String value) {
+                if (!categories.seasons.contains(value)) {
+                  categories.seasons.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.seasons.remove(value);
+              },
+            ),
+            _categoryPickerWidget(
+              title: "Colors",
+              possibleValues: allPossibleCategories.colors,
+              currentValues: categories.colors,
+              onAdd: (String value) {
+                if (!categories.colors.contains(value)) {
+                  categories.colors.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.colors.remove(value);
+              },
+            ),
+            _categoryPickerWidget(
+              title: "Strengths",
+              possibleValues: allPossibleCategories.strengths,
+              currentValues: categories.strengths,
+              onAdd: (String value) {
+                if (!categories.strengths.contains(value)) {
+                  categories.strengths.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.strengths.remove(value);
+              },
+            ),
+            _categoryPickerWidget(
+              title: "Eras",
+              possibleValues: allPossibleCategories.eras,
+              currentValues: categories.eras,
+              onAdd: (String value) {
+                if (!categories.eras.contains(value)) {
+                  categories.eras.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.eras.remove(value);
+              },
+            ),
+            _categoryPickerWidget(
+              title: "Diets",
+              possibleValues: allPossibleCategories.diets,
+              currentValues: categories.diets,
+              onAdd: (String value) {
+                if (!categories.diets.contains(value)) {
+                  categories.diets.add(value);
+                }
+              },
+              onRemove : (String value) {
+                categories.diets.remove(value);
+              },
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              child: TextField(
+                controller: keywordsController,
+                cursorColor: Colors.deepPurple,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1.5),
+                    ),
+                    fillColor: Colors.white,
+                    filled: true,
+                    labelText: "Keywords (eg: keyword1,keyword2,keyword3)",
+                    labelStyle: TextStyle(fontSize: 12)
+                ),
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _categoryPickerWidget({
+    required String title,
+    required List<String> possibleValues,
+    required List<String> currentValues,
+    required void Function(String) onAdd,
+    required void Function(String) onRemove,
+  }) {
+
+    List<Widget> possibleValuesWidgets = List<Widget>.from(possibleValues.map((e) {
+      return CustomTextTileWidget(
+        text: e,
+        textStyle: const TextStyle(fontSize: 12),
+        onTap: () {
+          setState(() {
+            onAdd.call(e);
+          });
+        },
+        icon: const Icon(Icons.add, size: 12,),
+        backgroundColor: Colors.green,
+      );
+    }));
+
+
+    List<Widget> currentValuesWidgets = List<Widget>.from(currentValues.map((e) {
+      return CustomTextTileWidget(
+        text: e,
+        textStyle: const TextStyle(fontSize: 12),
+        onTap: () {
+          setState(() {
+            onRemove.call(e);
+          });
+        },
+        icon: const Icon(Icons.close, size: 12,),
+        backgroundColor: Colors.blue,
+      );
+    }));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title),
+        Row(
+          children: [
+            Expanded(
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  border: Border.all(),
+                ),
+                padding: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(top: 4, right: 4, bottom: 8),
+                child: Wrap(
+                  spacing: 2,
+                  runSpacing: 2,
+                  children: [
+                    ...possibleValuesWidgets
+                  ],
+                ),
+              ),
+            ),
+            Expanded(
+              child: currentValuesWidgets.isEmpty ?
+                  Center(child: Text("No $title selected", style: const TextStyle(color: Colors.grey),)):
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.all(Radius.circular(4)),
+                  border: Border.all(),
+                ),
+                padding: const EdgeInsets.all(4),
+                margin: const EdgeInsets.only(top: 4, right: 4, bottom: 8),
+                child: Wrap(
+                  spacing: 2,
+                  runSpacing: 2,
+                  children: [
+                    ...currentValuesWidgets
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

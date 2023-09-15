@@ -11,7 +11,7 @@ import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredients_cub
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
-import 'package:cocktail_app/src/utils/constants/strings.dart';
+import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

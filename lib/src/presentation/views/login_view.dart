@@ -92,10 +92,10 @@ class LoginView extends HookWidget {
                             padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
                           ),
                           onPressed: () {
-                            remoteLoginCubit.handleEvent(event: LoginEvent(request :
-                            LoginRequest(username: usernameController.text,
-                                password: passwordController.text))
-                            );
+                            remoteLoginCubit.logIn(request : LoginRequest(
+                                username: usernameController.text,
+                                password: passwordController.text
+                            ));
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),

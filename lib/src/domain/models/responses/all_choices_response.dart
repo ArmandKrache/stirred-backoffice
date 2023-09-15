@@ -25,14 +25,14 @@ class AllChoicesResponse extends Equatable {
   factory AllChoicesResponse.fromMap(Map<String, dynamic> map) {
     final data = map["data"];
     return AllChoicesResponse(
-      seasons: data['seasons'] ?? [],
-      origins: data['origins'] ?? [],
-      strengths: data['strengths'] ?? [],
-      eras: data['eras'] ?? [],
-      diets: data['diets'] ?? [],
-      colors: data['colors'] ?? [],
-      ingredientUnits: data['ingredient_units'] ?? [],
-      difficulties: data['difficulties'] ?? [],
+      seasons: List<String>.from(data['seasons'] ?? []),
+      origins: List<String>.from(data['origins'] ?? []),
+      strengths: List<String>.from(data['strengths'] ?? []),
+      eras: List<String>.from(data['eras'] ?? []),
+      diets: List<String>.from(data['diets'] ?? []),
+      colors: List<String>.from(data['colors'] ?? []),
+      ingredientUnits: List<String>.from(data['ingredient_units'] ?? []),
+      difficulties: List<String>.from(data['difficulties'] ?? []),
     );
   }
 
@@ -40,6 +40,6 @@ class AllChoicesResponse extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [origins, seasons, strengths, eras, diets, colors, ingredientUnits, difficulties];
 
 }
