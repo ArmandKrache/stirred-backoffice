@@ -183,12 +183,13 @@ class IngredientsView extends HookWidget {
               )
               ),
               DataCell(SelectableText(item.matches.map((ingredient) => ingredient.name).join(', '))),
-              DataCell(SelectableText("${item.categories.keywords.first},"
-                ", ${item.categories.origins.first}"
-                ", ${item.categories.eras.first}"
-                ", ${item.categories.diets.first}"
-                ", ${item.categories.colors.first}"
-                ", ${item.categories.seasons.first}"
+              DataCell(SelectableText("${item.categories.keywords.isEmpty ? "" : item.categories.keywords.first}"
+                "${item.categories.origins.isEmpty ? "" : ",  ${item.categories.origins.first}"}"
+                "${item.categories.colors.isEmpty ? "" : ", ${item.categories.colors.first}"}"
+                "${item.categories.diets.isEmpty ? "" : ", ${item.categories.diets.first}"}"
+                "${item.categories.seasons.isEmpty ? "" : ",  ${item.categories.seasons.first}"}"
+                "${item.categories.strengths.isEmpty ? "" : ",  ${item.categories.strengths.first}"}"
+                "${item.categories.eras.isEmpty ? "" : ", ${item.categories.eras.first}"}"
               )),
             ],
           );
@@ -202,20 +203,20 @@ class IngredientsView extends HookWidget {
     final IngredientsState state = ingredientsCubit.state;
 
     if (state.runtimeType == IngredientCreateSuccess) {
-      /// ingredientsCubit.reset();
-      Navigator.pop(context);
+
+      /// ingredientsCubit.setLoading();
+      appRouter.pop();
       ingredientsCubit.fetchList(request: IngredientsListRequest());
       return const SizedBox();
     } else if (state.runtimeType == IngredientCreateFailed) {
       errorText = "Some fields are missing";
     }
     return IngredientEditModalWidget(
-      onClose: () {
-        /// ingredientsCubit.reset();
-        Navigator.pop(context);
-      },
       onSave: (Map<String, dynamic> data) {
-        ingredientsCubit.createIngredient(data);
+        ingredientsCubit.createIngredient(data, () async {
+          await appRouter.pop();
+          ingredientsCubit.fetchList(request: IngredientsListRequest());
+        });
       },
       title: "New Ingredient",
       errorText: errorText,

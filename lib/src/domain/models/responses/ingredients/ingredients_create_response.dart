@@ -24,7 +24,9 @@ class IngredientCreateResponse extends Equatable {
         name: data["attributes"]["name"] ?? "",
         description: data["attributes"]["description"] ?? "",
         picture: data["attributes"]["picture"] ?? "",
-        matches: data["attributes"]["matches"] ?? [],
+        matches: List<IngredientMatch>.from((data["attributes"]["matches"] ?? []).map(
+                (element) => IngredientMatch.fromMap(element))
+        ),
         categories: Categories.fromMap(data["attributes"]["categories"]),
       ),
     );

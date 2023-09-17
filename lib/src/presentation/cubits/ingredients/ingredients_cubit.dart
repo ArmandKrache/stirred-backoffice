@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:cocktail_app/src/config/config.dart';
+import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
@@ -42,13 +43,13 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
     });
   }
 
-  Future<void> createIngredient(Map<String, dynamic> data) async {
+  Future<void> createIngredient(Map<String, dynamic> map, Function onSuccess) async {
     if (isBusy) return;
-    final String name = data["name"];
-    final String description = data["description"];
-    final MultipartFile? picture = data["picture"];
-    final List<String> matches = data["matches"];
-    final Map<String, List<String>> categories = data["categories"] as Map<String, List<String>>;
+    final String name = map["name"];
+    final String description = map["description"];
+    final MultipartFile? picture = map["picture"];
+    final List<String> matches = map["matches"];
+    final Map<String, List<String>> categories = map["categories"] as Map<String, List<String>>;
 
     await run(() async {
       emit(const IngredientsLoading());
@@ -61,11 +62,12 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
             categories: categories,
           ));
       if (response is DataSuccess) {
-        emit(const IngredientCreateSuccess());
+        log("Success");
+        emit(IngredientCreateSuccess(ingredients: data));
+        onSuccess.call();
       } else if (response is DataFailed) {
         log(response.exception.toString());
         emit(const IngredientCreateFailed());
-
       }
     });
   }
@@ -79,6 +81,10 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
       log(response.exception.toString());
     }
     return [];
+  }
+
+  Future<void> setLoading() async {
+    emit(const IngredientsLoading());
   }
 
 }

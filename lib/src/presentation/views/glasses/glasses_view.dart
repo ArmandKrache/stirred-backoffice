@@ -177,7 +177,7 @@ class GlassesView extends HookWidget {
         builder: (context, state) {
           if (state.runtimeType == GlassCreateSuccess) {
             glassCreateCubit.reset();
-            Navigator.pop(context);
+            appRouter.pop(context);
             glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
             return const SizedBox();
           } else if (state.runtimeType == GlassCreateFailed) {
@@ -186,7 +186,7 @@ class GlassesView extends HookWidget {
           return GlassEditModalWidget(
             onClose: () {
               glassCreateCubit.reset();
-              Navigator.pop(context);
+              appRouter.pop(context);
             },
             onSave: (Map<String, dynamic> data) {
               glassCreateCubit.createGlass(data);

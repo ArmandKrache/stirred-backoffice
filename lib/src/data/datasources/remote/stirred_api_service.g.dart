@@ -288,9 +288,18 @@ class _StirredApiService implements StirredApiService {
     Map<String, dynamic> categories,
     List<String> matches,
   ) async {
+    logger.d("matches : $matches\nmatches encoded : ${jsonEncode(matches)}");
+    logger.d("categories : $categories\ncategories encoded : ${jsonEncode(categories)}");
+
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
+    /*final _data = FormData.fromMap({"name": name,
+      "description" : description,
+      "picture" : picture,
+      "categories": categories,
+      "matches" : matches,
+    });*/
     final _data = FormData();
     _data.fields.add(MapEntry(
       'name',
