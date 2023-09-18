@@ -25,14 +25,14 @@ class AllChoicesResponse extends Equatable {
   factory AllChoicesResponse.fromMap(Map<String, dynamic> map) {
     final data = map["data"];
     return AllChoicesResponse(
-      seasons: List<String>.from(data['seasons'] ?? []),
-      origins: List<String>.from(data['origins'] ?? []),
-      strengths: List<String>.from(data['strengths'] ?? []),
-      eras: List<String>.from(data['eras'] ?? []),
-      diets: List<String>.from(data['diets'] ?? []),
-      colors: List<String>.from(data['colors'] ?? []),
-      ingredientUnits: List<String>.from(data['ingredient_units'] ?? []),
-      difficulties: List<String>.from(data['difficulties'] ?? []),
+      seasons: List<String>.from(map['seasons'] ?? []),
+      origins: List<String>.from(map['origins'] ?? []),
+      strengths: List<String>.from(map['strengths'] ?? []),
+      eras: List<String>.from(map['eras'] ?? []),
+      diets: List<String>.from(map['diets'] ?? []),
+      colors: List<String>.from(map['colors'] ?? []),
+      ingredientUnits: List<String>.from(map['ingredient_units'] ?? []),
+      difficulties: List<String>.from(map['difficulties'] ?? []),
     );
   }
 

@@ -15,15 +15,15 @@ class ProfileListResponse extends Equatable {
 
   factory ProfileListResponse.fromMap(Map<String, dynamic> map) {
     return ProfileListResponse(
-      profiles: List<Profile>.from((map['data'] ?? []).map<dynamic>((element) {
+      profiles: List<Profile>.from((map['results'] ?? []).map<dynamic>((element) {
         return Profile(
           id: element["id"] ?? "",
-          email: element["attributes"]["user"]["email"] ?? "",
-          name: element["attributes"]["name"] ?? "",
-          description: element["attributes"]["description"] ?? "",
-          picture: element["attributes"]["picture"] ?? "",
-          dateOfBirth: element["attributes"]["date_of_birth"] ?? "",
-          preferences: Preferences.fromMap(element["attributes"]["preferences"] ?? {}), /// TODO: Replace with correct format
+          email: element["user"]["email"] ?? "",
+          name: element["name"] ?? "",
+          description: element["description"] ?? "",
+          picture: element["picture"] ?? "",
+          dateOfBirth: element["date_of_birth"] ?? "",
+          preferences: Preferences.fromMap(element["preferences"] ?? {}), /// TODO: Replace with correct format
         );
       })),
     );

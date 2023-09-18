@@ -302,25 +302,27 @@ class _StirredApiService implements StirredApiService {
     });*/
     final _data = FormData();
     _data.fields.add(MapEntry(
-      'name',
+      "name",
       name,
     ));
     _data.fields.add(MapEntry(
-      'description',
+      "description",
       description,
     ));
     _data.files.add(MapEntry(
-      'picture',
+      "picture",
       picture,
     ));
     _data.fields.add(MapEntry(
-      'categories',
+      "categories",
       jsonEncode(categories),
     ));
-    _data.fields.add(MapEntry(
-      'matches',
-      jsonEncode(matches),
-    ));
+    for (var element in matches) {
+      _data.fields.add(MapEntry(
+        "matches",
+        element
+      ));
+    }
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientCreateResponse>>(Options(
       method: 'POST',

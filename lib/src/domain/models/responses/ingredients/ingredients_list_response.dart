@@ -19,15 +19,15 @@ class IngredientsListResponse extends Equatable {
 
   factory IngredientsListResponse.fromMap(Map<String, dynamic> map) {
     return IngredientsListResponse(
-      ingredients: List<Ingredient>.from((map['data'] ?? []).map<dynamic>((element) {
+      ingredients: List<Ingredient>.from((map['results'] ?? []).map<dynamic>((element) {
         return Ingredient(
           id: element["id"] ?? "",
-          name: element["attributes"]["name"] ?? "",
-          description: element["attributes"]["description"] ?? "",
-          picture: element["attributes"]["picture"] ?? "",
-          matches: List<IngredientMatch>.from((element["attributes"]["matches"] ?? []).map(
+          name: element["name"] ?? "",
+          description: element["description"] ?? "",
+          picture: element["picture"] ?? "",
+          matches: List<IngredientMatch>.from((element["matches"] ?? []).map(
                   (element) => IngredientMatch.fromMap(element))),
-          categories: Categories.fromMap(element["attributes"]["categories"]),
+          categories: Categories.fromMap(element["categories"]),
         );
       })),
     );

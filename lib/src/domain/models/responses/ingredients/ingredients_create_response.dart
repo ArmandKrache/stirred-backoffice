@@ -20,14 +20,14 @@ class IngredientCreateResponse extends Equatable {
     final data = map['data'];
     return IngredientCreateResponse(
       ingredient: Ingredient(
-        id: data["id"] ?? "",
-        name: data["attributes"]["name"] ?? "",
-        description: data["attributes"]["description"] ?? "",
-        picture: data["attributes"]["picture"] ?? "",
-        matches: List<IngredientMatch>.from((data["attributes"]["matches"] ?? []).map(
+        id: map["id"] ?? "",
+        name: map["name"] ?? "",
+        description: map["description"] ?? "",
+        picture: map["picture"] ?? "",
+        matches: List<IngredientMatch>.from((map["matches"] ?? []).map(
                 (element) => IngredientMatch.fromMap(element))
         ),
-        categories: Categories.fromMap(data["attributes"]["categories"]),
+        categories: Categories.fromMap(map["categories"]),
       ),
     );
   }

@@ -16,12 +16,12 @@ class GlassesListResponse extends Equatable {
 
   factory GlassesListResponse.fromMap(Map<String, dynamic> map) {
     return GlassesListResponse(
-      glasses: List<Glass>.from((map['data'] ?? []).map<dynamic>((element) {
+      glasses: List<Glass>.from((map['results'] ?? []).map<dynamic>((element) {
         return Glass(
           id: element["id"] ?? "",
-          name: element["attributes"]["name"] ?? "",
-          description: element["attributes"]["description"] ?? "",
-          picture: element["attributes"]["picture"] ?? "",
+          name: element["name"] ?? "",
+          description: element["description"] ?? "",
+          picture: element["picture"] ?? "",
         );
       })),
     );

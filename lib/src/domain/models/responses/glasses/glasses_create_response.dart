@@ -17,10 +17,10 @@ class GlassesCreateResponse extends Equatable {
     final data = map['data'];
     return GlassesCreateResponse(
       glass: Glass(
-        id: data["id"] ?? "",
-        name: data["attributes"]["name"] ?? "",
-        description: data["attributes"]["description"] ?? "",
-        picture: data["attributes"]["picture"] ?? "",
+        id: map["id"] ?? "",
+        name: map["name"] ?? "",
+        description: map["description"] ?? "",
+        picture: map["picture"] ?? "",
       )
     );
   }

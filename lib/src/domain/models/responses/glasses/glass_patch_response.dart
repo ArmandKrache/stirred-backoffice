@@ -15,13 +15,12 @@ class GlassPatchResponse extends Equatable {
 
   factory GlassPatchResponse.fromMap(Map<String, dynamic> map) {
     final data = map['data'];
-    log(map.toString());
     return GlassPatchResponse(
         glass: Glass(
-          id: data["id"] ?? "",
-          name: data["attributes"]["name"] ?? "",
-          description: data["attributes"]["description"] ?? "",
-          picture: data["attributes"]["picture"] ?? "",
+          id: map["id"] ?? "",
+          name: map["name"] ?? "",
+          description: map["description"] ?? "",
+          picture: map["picture"] ?? "",
         )
     );
   }
