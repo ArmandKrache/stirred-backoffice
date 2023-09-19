@@ -155,8 +155,7 @@ class IngredientDetailsView extends HookWidget {
   Widget _editIngredientModal(BuildContext context, IngredientDetailsCubit ingredientDetailsCubit) {
     return IngredientEditModalWidget(
       onSave: (data) async {
-        /// TODO: Patch ingredient
-        /// await ingredientDetailsCubit.patchIngredient(ingredientDetailsCubit.state.glass!.id, data);
+        await ingredientDetailsCubit.patchIngredient(ingredientDetailsCubit.state.ingredient!.id, data);
       },
       title: "Edit Ingredient",
       currentItem: ingredientDetailsCubit.state.ingredient,

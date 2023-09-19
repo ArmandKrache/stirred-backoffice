@@ -43,7 +43,7 @@ class IngredientDetailsCubit extends BaseCubit<IngredientDetailsState, Ingredien
     }
   }
 
-  /* Future<Ingredient> patchIngredient(String id, Map<String, dynamic> data) async {
+  Future<Ingredient> patchIngredient(String id, Map<String, dynamic> data) async {
     final response = await _apiRepository.patchIngredient(
         request: IngredientPatchRequest(
             id: id,
@@ -56,7 +56,7 @@ class IngredientDetailsCubit extends BaseCubit<IngredientDetailsState, Ingredien
     emit(IngredientPatchSuccess(ingredient: response.data!.ingredient,));
     appRouter.pop();
     return response.data!.ingredient;
-  } */
+  }
 
   Future<List<Ingredient>> searchMatches(String query) async {
     final response = await _apiRepository.searchIngredients(

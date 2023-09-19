@@ -86,21 +86,22 @@ class _IngredientEditModalWidgetState extends State<IngredientEditModalWidget> {
         final http.MultipartFile? picture = selectedImage;
         Map<String, dynamic> data = {};
         if (nameController.text == "" ||
-            descriptionController.text == "" ||
-            picture == null) {
+            descriptionController.text == "") {
           /// TODO: display error toast
           return ;
         }
         data["name"] = nameController.text;
         data["description"] = descriptionController.text;
 
-        final MultipartFile multipartFilePicture = MultipartFile.fromStream(
-              () => picture.finalize(),
-          picture.length,
-          filename: picture.filename,
-          contentType: picture.contentType,
-        );
-        data["picture"] = multipartFilePicture;
+        if (picture != null) {
+          final MultipartFile multipartFilePicture = MultipartFile.fromStream(
+                () => picture.finalize(),
+            picture.length,
+            filename: picture.filename,
+            contentType: picture.contentType,
+          );
+          data["picture"] = multipartFilePicture;
+        }
         data["matches"] = List<String>.from(matches.map((e) => e.id));
         Map<String, List<String>> categoriesData = {};
         categories.keywords = keywordsController.text.split(",").map((e) => e.trim()).toList();

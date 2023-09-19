@@ -288,18 +288,9 @@ class _StirredApiService implements StirredApiService {
     Map<String, dynamic> categories,
     List<String> matches,
   ) async {
-    logger.d("matches : $matches\nmatches encoded : ${jsonEncode(matches)}");
-    logger.d("categories : $categories\ncategories encoded : ${jsonEncode(categories)}");
-
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
-    /*final _data = FormData.fromMap({"name": name,
-      "description" : description,
-      "picture" : picture,
-      "categories": categories,
-      "matches" : matches,
-    });*/
     final _data = FormData();
     _data.fields.add(MapEntry(
       "name",
@@ -317,12 +308,9 @@ class _StirredApiService implements StirredApiService {
       "categories",
       jsonEncode(categories),
     ));
-    for (var element in matches) {
-      _data.fields.add(MapEntry(
-        "matches",
-        element
-      ));
-    }
+    matches.forEach((i) {
+      _data.fields.add(MapEntry('matches', i));
+    });
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientCreateResponse>>(Options(
       method: 'POST',
@@ -342,6 +330,70 @@ class _StirredApiService implements StirredApiService {
               baseUrl,
             ))));
     final value = IngredientCreateResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<IngredientPatchResponse>> patchIngredient(
+    String id, {
+    String? name,
+    String? description,
+    MultipartFile? picture,
+    Map<String, dynamic>? categories,
+    List<String>? matches,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (name != null) {
+      _data.fields.add(MapEntry(
+        'name',
+        name,
+      ));
+    }
+    if (description != null) {
+      _data.fields.add(MapEntry(
+        'description',
+        description,
+      ));
+    }
+    if (picture != null) {
+      _data.files.add(MapEntry(
+        'picture',
+        picture,
+      ));
+    }
+    if (categories != null) {
+      _data.fields.add(MapEntry(
+        'categories',
+        jsonEncode(categories),
+      ));
+    }
+    matches?.forEach((i) {
+      _data.fields.add(MapEntry('matches', i));
+    });
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<IngredientPatchResponse>>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              '/ingredients/${id}/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = IngredientPatchResponse.fromMap(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
   }

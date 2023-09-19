@@ -9,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/responses/all_choices_response.da
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_patch_response.dart';
 import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -76,6 +77,19 @@ abstract class StirredApiService {
       @Part(contentType: "file") MultipartFile picture,
       @Part() Map<String, dynamic> categories,
       @Part() List<String> matches,
+      );
+
+  @PATCH("/ingredients/{id}/")
+  @MultiPart()
+  Future<HttpResponse<IngredientPatchResponse>> patchIngredient(
+      @Path() String id,
+      {
+        @Part() String? name,
+        @Part() String? description,
+        @Part(contentType: "file") MultipartFile? picture,
+        @Part() Map<String, dynamic>? categories,
+        @Part() List<String>? matches,
+      }
       );
 
   @DELETE("/ingredients/{id}/")

@@ -33,3 +33,10 @@ class IngredientsSearchRequest {
 
   IngredientsSearchRequest({this.query = ""});
 }
+
+class IngredientPatchRequest {
+  final String id;
+  final Map<String, dynamic> body;
+
+  IngredientPatchRequest({required this.id, required this.body});
+}
