@@ -1,6 +1,5 @@
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/config/themes/app_themes.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
@@ -8,8 +7,8 @@ import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredient_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredients_cubit.dart';
+import 'package:cocktail_app/src/presentation/cubits/login/login_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
-import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
 import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -39,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => RootNavigationCubit()),
-        BlocProvider(create: (context) => RemoteLoginCubit(
+        BlocProvider(create: (context) => LoginCubit(
           locator<ApiRepository>(),)
         ),
         BlocProvider(create: (context) => ProfilesCubit(

@@ -1,23 +1,14 @@
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/preferences.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
-import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
-import 'package:cocktail_app/src/presentation/cubits/glasses/glass_details_cubit.dart';
-import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
-import 'package:cocktail_app/src/presentation/views/glasses/glass_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/preferences_attribute_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 const Preferences dumbPreferences = Preferences(
@@ -42,7 +33,7 @@ class ProfileDetailsView extends HookWidget {
       appBar: AppBar(
         title: Column(
           children: [
-            Text(profile.name ?? "",
+            Text(profile.name,
               style: const TextStyle(color: Colors.black),
             ),
             SelectableText(profile.id,

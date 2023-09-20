@@ -44,7 +44,7 @@ class ProfileListElementWidget extends StatelessWidget {
             color: Colors.black.withOpacity(0.08),
           ),
           child: Image.network(
-            profile.picture ?? '',
+            profile.picture,
             fit: BoxFit.contain,
             errorBuilder: (_, __, ___) {
               return const Center(
@@ -70,7 +70,7 @@ class ProfileListElementWidget extends StatelessWidget {
           children: [
             // Title
             Text(
-              profile.name ?? '',
+              profile.name,
               maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

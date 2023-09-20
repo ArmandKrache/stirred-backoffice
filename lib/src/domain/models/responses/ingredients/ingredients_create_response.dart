@@ -1,10 +1,6 @@
-import 'dart:developer';
 
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:equatable/equatable.dart';
 
 class IngredientCreateResponse extends Equatable {
@@ -17,7 +13,6 @@ class IngredientCreateResponse extends Equatable {
 
 
   factory IngredientCreateResponse.fromMap(Map<String, dynamic> map) {
-    final data = map['data'];
     return IngredientCreateResponse(
       ingredient: Ingredient(
         id: map["id"] ?? "",

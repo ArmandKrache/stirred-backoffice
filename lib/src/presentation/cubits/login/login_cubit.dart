@@ -1,24 +1,20 @@
-import 'dart:convert';
 
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
-import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 import 'package:cocktail_app/src/utils/resources/tokens_management.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-part 'remote_login_state.dart';
+part 'login_state.dart';
 
-class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>> {
+class LoginCubit extends BaseCubit<LoginState, Map<String, dynamic>> {
   final ApiRepository _apiRepository;
 
-  RemoteLoginCubit(this._apiRepository) : super(const RemoteLoginSuccess(), {});
+  LoginCubit(this._apiRepository) : super(const LoginSuccess(), {});
 
   Future<void> logIn({LoginRequest? request}) async {
     if (isBusy) return;
@@ -37,10 +33,10 @@ class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>>
 
           appRouter.push(const RootRoute());
 
-          emit(const RemoteLoginSuccess());
+          emit(const LoginSuccess());
         } else if (response is DataFailed) {
-          emit(const RemoteLoginLoading());
-          emit(RemoteLoginFailed(exception: response.exception));
+          emit(const LoginLoading());
+          emit(LoginFailed(exception: response.exception));
         }
       });
   }
@@ -54,6 +50,6 @@ class RemoteLoginCubit extends BaseCubit<RemoteLoginState, Map<String, dynamic>>
       return ;
 
     appRouter.push(const RootRoute());
-    emit(const RemoteLoginSuccess());
+    emit(const LoginSuccess());
   }
 }

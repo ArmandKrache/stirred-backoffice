@@ -1,8 +1,5 @@
-import 'dart:developer';
 
 import 'package:cocktail_app/src/domain/models/glass.dart';
-import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:equatable/equatable.dart';
 
 class GlassesListResponse extends Equatable {

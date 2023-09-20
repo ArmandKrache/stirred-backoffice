@@ -1,11 +1,6 @@
-import 'dart:developer';
 
-import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:equatable/equatable.dart';
 
 class IngredientsListResponse extends Equatable {

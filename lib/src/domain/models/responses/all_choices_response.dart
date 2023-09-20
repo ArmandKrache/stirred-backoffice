@@ -23,7 +23,6 @@ class AllChoicesResponse extends Equatable {
 
 
   factory AllChoicesResponse.fromMap(Map<String, dynamic> map) {
-    final data = map["data"];
     return AllChoicesResponse(
       seasons: List<String>.from(map['seasons'] ?? []),
       origins: List<String>.from(map['origins'] ?? []),

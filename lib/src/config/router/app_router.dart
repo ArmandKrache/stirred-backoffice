@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
-import 'package:cocktail_app/src/presentation/views/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';
@@ -11,10 +9,9 @@ import 'package:cocktail_app/src/presentation/views/ingredients/ingredient_detai
 import 'package:cocktail_app/src/presentation/views/login_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_view.dart';
 import 'package:cocktail_app/src/presentation/views/profiles/profiles_details_view.dart';
-import 'package:cocktail_app/src/presentation/views/recipes_view.dart';
+import 'package:cocktail_app/src/presentation/views/recipes/recipes_view.dart';
 import 'package:cocktail_app/src/presentation/views/root_view.dart';
-import 'package:cocktail_app/src/presentation/views/drinks_view.dart';
-import 'package:cocktail_app/src/presentation/views/saved_drink_view.dart';
+import 'package:cocktail_app/src/presentation/views/drinks/drinks_view.dart';
 import 'package:flutter/cupertino.dart';
 part 'app_router.gr.dart';
 

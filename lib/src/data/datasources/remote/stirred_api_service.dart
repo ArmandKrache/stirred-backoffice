@@ -1,24 +1,15 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/preferences.dart';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_patch_response.dart';
-import 'package:http/http.dart' as http;
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
-import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
-import 'package:cocktail_app/src/domain/models/responses/profile_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
-import 'package:retrofit/retrofit.dart' as retrofit;
 
 part 'stirred_api_service.g.dart';
 

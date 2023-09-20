@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 
 class GlassPatchRequest {
   final String id;

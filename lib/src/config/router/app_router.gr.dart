@@ -15,16 +15,6 @@ abstract class _$AppRouter extends RootStackRouter {
 
   @override
   final Map<String, PageFactory> pagesMap = {
-    DrinkDetailsRoute.name: (routeData) {
-      final args = routeData.argsAs<DrinkDetailsRouteArgs>();
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: DrinkDetailsView(
-          key: args.key,
-          drink: args.drink,
-        ),
-      );
-    },
     DrinksRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -99,51 +89,7 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const RootView(),
       );
     },
-    SavedDrinksRoute.name: (routeData) {
-      return AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const SavedDrinksView(),
-      );
-    },
   };
-}
-
-/// generated route for
-/// [DrinkDetailsView]
-class DrinkDetailsRoute extends PageRouteInfo<DrinkDetailsRouteArgs> {
-  DrinkDetailsRoute({
-    Key? key,
-    required Drink drink,
-    List<PageRouteInfo>? children,
-  }) : super(
-          DrinkDetailsRoute.name,
-          args: DrinkDetailsRouteArgs(
-            key: key,
-            drink: drink,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'DrinkDetailsRoute';
-
-  static const PageInfo<DrinkDetailsRouteArgs> page =
-      PageInfo<DrinkDetailsRouteArgs>(name);
-}
-
-class DrinkDetailsRouteArgs {
-  const DrinkDetailsRouteArgs({
-    this.key,
-    required this.drink,
-  });
-
-  final Key? key;
-
-  final Drink drink;
-
-  @override
-  String toString() {
-    return 'DrinkDetailsRouteArgs{key: $key, drink: $drink}';
-  }
 }
 
 /// generated route for
@@ -368,20 +314,6 @@ class RootRoute extends PageRouteInfo<void> {
         );
 
   static const String name = 'RootRoute';
-
-  static const PageInfo<void> page = PageInfo<void>(name);
-}
-
-/// generated route for
-/// [SavedDrinksView]
-class SavedDrinksRoute extends PageRouteInfo<void> {
-  const SavedDrinksRoute({List<PageRouteInfo>? children})
-      : super(
-          SavedDrinksRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'SavedDrinksRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
 }

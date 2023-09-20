@@ -1,9 +1,7 @@
-import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
-import 'package:cocktail_app/src/presentation/cubits/remote_login/remote_login_cubit.dart';
+import 'package:cocktail_app/src/presentation/cubits/login/login_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +17,7 @@ class LoginView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final remoteLoginCubit = BlocProvider.of<RemoteLoginCubit>(context);
+    final remoteLoginCubit = BlocProvider.of<LoginCubit>(context);
 
     useEffect(() {
       remoteLoginCubit.isAlreadyLoggedIn();
@@ -28,11 +26,11 @@ class LoginView extends HookWidget {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Login')),
-      body: BlocBuilder<RemoteLoginCubit, RemoteLoginState>(
+      body: BlocBuilder<LoginCubit, LoginState>(
         builder: (context, state) {
-          if (state.runtimeType == RemoteLoginLoading) {
+          if (state.runtimeType == LoginLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state.runtimeType == RemoteLoginFailed) {
+          } else if (state.runtimeType == LoginFailed) {
             return _buildLoginForm(context, remoteLoginCubit, state.exception);
           } else {
             return _buildLoginForm(context, remoteLoginCubit, null);
@@ -42,7 +40,7 @@ class LoginView extends HookWidget {
     );
   }
 
-  Widget _buildLoginForm(BuildContext context, RemoteLoginCubit remoteLoginCubit, DioException? error) {
+  Widget _buildLoginForm(BuildContext context, LoginCubit remoteLoginCubit, DioException? error) {
     return Container(
       child: Center(
         child: Column(

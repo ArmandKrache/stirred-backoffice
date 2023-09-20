@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class Categories extends Equatable {
   List<String> origins;
   List<String> strengths;

@@ -17,7 +17,7 @@ class RecipesView extends HookWidget {
 
     useEffect(() {
       /// remoteDrinksCubit.handleEvent(event: FilteredDrinksEvent(request: FilteredCocktailsRequest(ingredients: "Vodka")));
-
+      return ;
     }, const []);
 
     return Scaffold(

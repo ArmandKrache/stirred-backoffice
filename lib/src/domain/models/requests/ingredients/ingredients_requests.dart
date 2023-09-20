@@ -1,5 +1,3 @@
-import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:dio/dio.dart';
 
 class IngredientsListRequest {

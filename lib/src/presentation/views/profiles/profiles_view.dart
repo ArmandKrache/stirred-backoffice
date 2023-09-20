@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
@@ -26,6 +24,7 @@ class ProfilesView extends HookWidget {
 
     useEffect(() {
       profilesCubit.handleEvent(event: ProfileListEvent(request: ProfileListRequest()));
+      return ;
     }, []);
 
     return Scaffold(
@@ -137,7 +136,7 @@ class ProfilesView extends HookWidget {
             cells: [
               DataCell(
                 SelectableText.rich(TextSpan(
-                  text: item.id ?? "",
+                  text: item.id,
                   style: const TextStyle(color: Colors.blue,),
                   mouseCursor: SystemMouseCursors.click,
                 ),
@@ -146,15 +145,15 @@ class ProfilesView extends HookWidget {
                   },
                 ),
               ),
-              DataCell(SelectableText(item.name ?? "")),
-              DataCell(SelectableText(item.email ?? "")),
+              DataCell(SelectableText(item.name)),
+              DataCell(SelectableText(item.email)),
               DataCell(SizedBox(
                 width: 300,
-                child: SelectableText(item.description ?? "",
+                child: SelectableText(item.description,
                   style: const TextStyle(), maxLines: 2,),
               )
               ),
-              DataCell(SelectableText(item.dateOfBirth ?? "")),
+              DataCell(SelectableText(item.dateOfBirth)),
             ],
           );
         },

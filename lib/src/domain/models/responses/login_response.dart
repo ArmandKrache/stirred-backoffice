@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +12,6 @@ class LoginResponse extends Equatable {
 
 
   factory LoginResponse.fromMap(Map<String, dynamic> map) {
-    final data = map["data"];
     logger.d(map);
     return LoginResponse(
       access: map['access'] ?? "",

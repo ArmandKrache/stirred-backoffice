@@ -1,4 +1,3 @@
-import 'package:cocktail_app/src/domain/models/categories.dart';
 
 const int defaultPageSize = 20;
 
