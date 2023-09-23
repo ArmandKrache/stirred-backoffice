@@ -77,6 +77,16 @@ abstract class _$AppRouter extends RootStackRouter {
         child: const ProfilesView(),
       );
     },
+    RecipeDetailsRoute.name: (routeData) {
+      final args = routeData.argsAs<RecipeDetailsRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: RecipeDetailsView(
+          key: args.key,
+          recipe: args.recipe,
+        ),
+      );
+    },
     RecipesRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -288,6 +298,44 @@ class ProfilesRoute extends PageRouteInfo<void> {
   static const String name = 'ProfilesRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [RecipeDetailsView]
+class RecipeDetailsRoute extends PageRouteInfo<RecipeDetailsRouteArgs> {
+  RecipeDetailsRoute({
+    Key? key,
+    required Recipe recipe,
+    List<PageRouteInfo>? children,
+  }) : super(
+          RecipeDetailsRoute.name,
+          args: RecipeDetailsRouteArgs(
+            key: key,
+            recipe: recipe,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'RecipeDetailsRoute';
+
+  static const PageInfo<RecipeDetailsRouteArgs> page =
+      PageInfo<RecipeDetailsRouteArgs>(name);
+}
+
+class RecipeDetailsRouteArgs {
+  const RecipeDetailsRouteArgs({
+    this.key,
+    required this.recipe,
+  });
+
+  final Key? key;
+
+  final Recipe recipe;
+
+  @override
+  String toString() {
+    return 'RecipeDetailsRouteArgs{key: $key, recipe: $recipe}';
+  }
 }
 
 /// generated route for

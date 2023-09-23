@@ -1,5 +1,5 @@
 
-import 'package:cocktail_app/src/domain/models/Recipe.dart';
+import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:equatable/equatable.dart';

@@ -1,7 +1,7 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/Recipe.dart';
+import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/recipes/recipes_cubit.dart';
@@ -141,13 +141,10 @@ class RecipesView extends HookWidget {
                   mouseCursor: SystemMouseCursors.click,
                 ),
                   onTap: () async {
-                    ///TODO : Open Details Page
-                    /*
-                    final deleted = await appRouter.push(RecipesDetailsRoute(recipe: item));
+                    final deleted = await appRouter.push(RecipeDetailsRoute(recipe: item));
                     if (deleted == "deleted") {
                       recipesCubit.fetchList(request: RecipesListRequest());
                     }
-                    */
                   },
                 ),
               ),
