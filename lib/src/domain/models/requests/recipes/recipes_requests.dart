@@ -1,0 +1,3 @@
+class RecipesListRequest {
+  RecipesListRequest();
+}

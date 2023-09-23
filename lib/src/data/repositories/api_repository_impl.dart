@@ -9,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_req
 import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -18,6 +19,7 @@ import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 
@@ -145,5 +147,14 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
         matches: request.body["matches"],
       );
     });
+  }
+
+  /// Recipes
+  @override
+  Future<DataState<RecipesListResponse>> getRecipesList({
+    required RecipesListRequest request
+  }) {
+    return getState0f<RecipesListResponse>(request: () => _stirredApiService.getRecipesList(),
+    );
   }
 }

@@ -8,6 +8,7 @@ import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -85,6 +86,10 @@ abstract class StirredApiService {
 
   @DELETE("/ingredients/{id}/")
   Future<void> deleteIngredient(@Path() String id);
+
+  ///Recipes
+  @GET('/recipes/')
+  Future<HttpResponse<RecipesListResponse>> getRecipesList();
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 
