@@ -10,9 +10,9 @@ part of 'stirred_api_service.dart';
 
 class _StirredApiService implements StirredApiService {
   _StirredApiService(
-    this._dio, {
-    this.baseUrl,
-  }) {
+      this._dio, {
+        this.baseUrl,
+      }) {
     baseUrl ??= 'https://127.0.0.1:8000/api/';
   }
 
@@ -28,18 +28,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<AllChoicesResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/all-choices/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/all-choices/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -56,18 +56,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<ProfileListResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/profile/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/profile/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -84,18 +84,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesListResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/glasses/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/glasses/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -106,10 +106,10 @@ class _StirredApiService implements StirredApiService {
 
   @override
   Future<HttpResponse<GlassesCreateResponse>> createGlass(
-    String name,
-    String description,
-    MultipartFile picture,
-  ) async {
+      String name,
+      String description,
+      MultipartFile picture,
+      ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -122,25 +122,25 @@ class _StirredApiService implements StirredApiService {
       'description',
       description,
     ));
-    _data.fields.add(MapEntry(
+    _data.files.add(MapEntry(
       'picture',
-      jsonEncode(picture),
+      picture,
     ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesCreateResponse>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
+          method: 'POST',
+          headers: _headers,
+          extra: _extra,
+          contentType: 'multipart/form-data',
+        )
             .compose(
-              _dio.options,
-              '/glasses/create/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/glasses/create/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -151,14 +151,10 @@ class _StirredApiService implements StirredApiService {
 
   @override
   Future<HttpResponse<GlassPatchResponse>> patchGlass(
-    String id, {
-    String? name,
-    String? description,
-    MultipartFile? picture,
-  }) async {
+      String id, {String? name, String? description, MultipartFile? picture,
+      }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{};
     final _data = FormData();
     if (name != null) {
@@ -173,25 +169,27 @@ class _StirredApiService implements StirredApiService {
         description,
       ));
     }
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture ?? <String, dynamic>{}),
-    ));
+    if (picture != null) {
+      _data.files.add(MapEntry(
+        'picture',
+        picture,
+      ));
+    }
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassPatchResponse>>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
+          method: 'PATCH',
+          headers: _headers,
+          extra: _extra,
+          contentType: 'multipart/form-data',
+        )
             .compose(
-              _dio.options,
-              '/glasses/${id}/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/glasses/${id}/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -212,13 +210,13 @@ class _StirredApiService implements StirredApiService {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          '/glasses/${id}/',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      '/glasses/${id}/',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         ))));
@@ -232,18 +230,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientsListResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/ingredients/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/ingredients/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -262,18 +260,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientsListResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/ingredients/search/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/ingredients/search/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -284,30 +282,30 @@ class _StirredApiService implements StirredApiService {
 
   @override
   Future<HttpResponse<IngredientCreateResponse>> createIngredient(
-    String name,
-    String description,
-    MultipartFile picture,
-    Map<String, dynamic> categories,
-    List<String> matches,
-  ) async {
+      String name,
+      String description,
+      MultipartFile picture,
+      Map<String, dynamic> categories,
+      List<String> matches,
+      ) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
-      'name',
+      "name",
       name,
     ));
     _data.fields.add(MapEntry(
-      'description',
+      "description",
       description,
     ));
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture),
+    _data.files.add(MapEntry(
+      "picture",
+      picture,
     ));
     _data.fields.add(MapEntry(
-      'categories',
+      "categories",
       jsonEncode(categories),
     ));
     matches.forEach((i) {
@@ -315,19 +313,19 @@ class _StirredApiService implements StirredApiService {
     });
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientCreateResponse>>(Options(
-      method: 'POST',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
+          method: 'POST',
+          headers: _headers,
+          extra: _extra,
+          contentType: 'multipart/form-data',
+        )
             .compose(
-              _dio.options,
-              '/ingredients/create/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/ingredients/create/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -338,13 +336,13 @@ class _StirredApiService implements StirredApiService {
 
   @override
   Future<HttpResponse<IngredientPatchResponse>> patchIngredient(
-    String id, {
-    String? name,
-    String? description,
-    MultipartFile? picture,
-    Map<String, dynamic>? categories,
-    List<String>? matches,
-  }) async {
+      String id, {
+        String? name,
+        String? description,
+        MultipartFile? picture,
+        Map<String, dynamic>? categories,
+        List<String>? matches,
+      }) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     queryParameters.removeWhere((k, v) => v == null);
@@ -362,32 +360,36 @@ class _StirredApiService implements StirredApiService {
         description,
       ));
     }
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture ?? <String, dynamic>{}),
-    ));
-    _data.fields.add(MapEntry(
-      'categories',
-      jsonEncode(categories),
-    ));
+    if (picture != null) {
+      _data.files.add(MapEntry(
+        'picture',
+        picture,
+      ));
+    }
+    if (categories != null) {
+      _data.fields.add(MapEntry(
+        'categories',
+        jsonEncode(categories),
+      ));
+    }
     matches?.forEach((i) {
       _data.fields.add(MapEntry('matches', i));
     });
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<IngredientPatchResponse>>(Options(
-      method: 'PATCH',
-      headers: _headers,
-      extra: _extra,
-      contentType: 'multipart/form-data',
-    )
+          method: 'PATCH',
+          headers: _headers,
+          extra: _extra,
+          contentType: 'multipart/form-data',
+        )
             .compose(
-              _dio.options,
-              '/ingredients/${id}/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/ingredients/${id}/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
@@ -408,13 +410,13 @@ class _StirredApiService implements StirredApiService {
       extra: _extra,
     )
         .compose(
-          _dio.options,
-          '/ingredients/${id}/',
-          queryParameters: queryParameters,
-          data: _data,
-        )
+      _dio.options,
+      '/ingredients/${id}/',
+      queryParameters: queryParameters,
+      data: _data,
+    )
         .copyWith(
-            baseUrl: _combineBaseUrls(
+        baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         ))));
@@ -428,18 +430,18 @@ class _StirredApiService implements StirredApiService {
     final Map<String, dynamic>? _data = null;
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<RecipesListResponse>>(Options(
-      method: 'GET',
-      headers: _headers,
-      extra: _extra,
-    )
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
             .compose(
-              _dio.options,
-              '/recipes/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
+          _dio.options,
+          '/recipes/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
             .copyWith(
-                baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
               _dio.options.baseUrl,
               baseUrl,
             ))));
