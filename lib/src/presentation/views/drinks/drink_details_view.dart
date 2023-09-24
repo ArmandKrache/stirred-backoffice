@@ -1,10 +1,9 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
-import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_details_cubit.dart';
-import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
-import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
+import 'package:cocktail_app/src/domain/models/drink.dart';
+import 'package:cocktail_app/src/presentation/cubits/drinks/drink_details_cubit.dart';
+import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widget.dart';
+import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/categories_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
@@ -15,34 +14,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-
 @RoutePage()
-class RecipeDetailsView extends HookWidget {
-  final Recipe recipe;
+class DrinkDetailsView extends HookWidget {
+  final Drink drink;
 
-  const RecipeDetailsView({Key? key, required this.recipe}) : super (key: key);
+  const DrinkDetailsView({Key? key, required this.drink}) : super (key: key);
 
 
   @override
   Widget build(BuildContext context) {
-    final recipeDetailsCubit = BlocProvider.of<RecipeDetailsCubit>(context);
+    final drinkDetailsCubit = BlocProvider.of<DrinkDetailsCubit>(context);
 
     useEffect(() {
-      recipeDetailsCubit.setRecipe(recipe);
+      drinkDetailsCubit.setDrink(drink);
       return;
     }, []);
 
     return Scaffold(
       appBar: AppBar(
-        title: BlocBuilder<RecipeDetailsCubit, RecipeDetailsState>(
+        title: BlocBuilder<DrinkDetailsCubit, DrinkDetailsState>(
           builder: (context, state) {
             return Column(
               children: [
-                Text(state.recipe?.name ?? "",
+                Text(state.drink?.name ?? "",
                   style: const TextStyle(color: Colors.black),
                 ),
                 SelectableText(
-                  "${state.recipe?.id}",
+                  "${state.drink?.id}",
                   style: const TextStyle(color: Colors.blueGrey, fontSize: 14),
                 ),
               ],
@@ -73,7 +71,7 @@ class RecipeDetailsView extends HookWidget {
                     await showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => Dialog(
-                          child: _editRecipeModal(context, recipeDetailsCubit)
+                          child: _editDrinkModal(context, drinkDetailsCubit)
                       ),
                     );
                   }
@@ -98,16 +96,16 @@ class RecipeDetailsView extends HookWidget {
                     await showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => CustomGenericAlertDialogWidget(
-                        item: recipeDetailsCubit.state.recipe,
+                        item: drinkDetailsCubit.state.drink,
                         onCancel: () {
                           appRouter.pop();
                         },
                         onConfirm: () {
-                          recipeDetailsCubit.deleteRecipe(recipeDetailsCubit.state.recipe!.id);
+                          drinkDetailsCubit.deleteDrink(drinkDetailsCubit.state.drink!.id);
                         },
                       ),
                     );
-                    if (recipeDetailsCubit.state.runtimeType == RecipeDeleteSuccess) {
+                    if (drinkDetailsCubit.state.runtimeType == DrinkDeleteSuccess) {
                       appRouter.pop("deleted");
                     }
                   }
@@ -116,9 +114,9 @@ class RecipeDetailsView extends HookWidget {
           ),
         ],
       ),
-      body: BlocBuilder<RecipeDetailsCubit, RecipeDetailsState>(
+      body: BlocBuilder<DrinkDetailsCubit, DrinkDetailsState>(
           builder: (context, state) {
-            if (state.runtimeType == RecipeDetailsLoading) {
+            if (state.runtimeType == DrinkDetailsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else {
               return SingleChildScrollView(
@@ -131,7 +129,7 @@ class RecipeDetailsView extends HookWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DescriptionAttributeWidget(text : state.recipe!.description),
+                          DescriptionAttributeWidget(text : state.drink!.description),
                         ],
                       ),
                       /// TODO: add attributes Widgets
@@ -143,13 +141,13 @@ class RecipeDetailsView extends HookWidget {
     );
   }
 
-  Widget _editRecipeModal(BuildContext context, RecipeDetailsCubit recipeDetailsCubit) {
-    return RecipeEditModalWidget(
+  Widget _editDrinkModal(BuildContext context, DrinkDetailsCubit drinkDetailsCubit) {
+    return DrinkEditModalWidget(
       onSave: (data) async {
-        await recipeDetailsCubit.patchRecipe(recipeDetailsCubit.state.recipe!.id, data);
+        await drinkDetailsCubit.patchDrink(drinkDetailsCubit.state.drink!.id, data);
       },
-      title: "Edit Recipe",
-      currentItem: recipeDetailsCubit.state.recipe,
+      title: "Edit Drink",
+      currentItem: drinkDetailsCubit.state.drink,
     );
   }
 }

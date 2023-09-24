@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/drinks/drinks_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients_list_response.dart';
@@ -90,6 +91,11 @@ abstract class StirredApiService {
   ///Recipes
   @GET('/recipes/')
   Future<HttpResponse<RecipesListResponse>> getRecipesList();
+
+
+  /// Drinks
+  @GET('/drinks/')
+  Future<HttpResponse<DrinksListResponse>> getDrinksList();
 
 /// @retrofit.Headers({"Content-Type" : "application/json",})
 

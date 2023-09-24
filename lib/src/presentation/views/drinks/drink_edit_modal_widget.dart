@@ -3,7 +3,7 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
@@ -16,14 +16,14 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
 
-class RecipeEditModalWidget extends StatefulWidget {
+class DrinkEditModalWidget extends StatefulWidget {
   final void Function() onClose;
   final void Function(Map<String, dynamic> data) onSave;
-  final Recipe? currentItem;
+  final Drink? currentItem;
   final String title;
   final String errorText;
 
-  const RecipeEditModalWidget({
+  const DrinkEditModalWidget({
     Key? key,
     required this.onSave,
     required this.title,
@@ -37,10 +37,10 @@ class RecipeEditModalWidget extends StatefulWidget {
   }
 
   @override
-  State<RecipeEditModalWidget> createState() => _RecipeEditModalWidgetState();
+  State<DrinkEditModalWidget> createState() => _DrinkEditModalWidgetState();
 }
 
-class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
+class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
 
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();

@@ -1,8 +1,10 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/presentation/views/drinks/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';
@@ -26,6 +28,7 @@ class AppRouter extends _$AppRouter {
         AutoRoute(page: RootRoute.page,),
         AutoRoute(page: LoginRoute.page, initial: true),
         AutoRoute(page: DrinksRoute.page,),
+        AutoRoute(page: DrinkDetailsRoute.page,),
         AutoRoute(page: RecipesRoute.page,),
         AutoRoute(page: RecipeDetailsRoute.page,),
         AutoRoute(page: IngredientsRoute.page,),

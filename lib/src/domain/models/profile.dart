@@ -32,6 +32,18 @@ class Profile extends Equatable {
     );
   }
 
+  factory Profile.empty() {
+    return Profile(
+      id: "",
+      email: "",
+      name : "",
+      description: "",
+      picture: "",
+      dateOfBirth: "",
+      preferences: Preferences.empty(),
+    );
+  }
+
   @override
   bool get stringify => true;
 

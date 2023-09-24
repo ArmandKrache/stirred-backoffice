@@ -2,6 +2,7 @@
 import 'package:cocktail_app/src/data/datasources/remote/base/base_api_repository.dart';
 import 'package:cocktail_app/src/data/datasources/remote/admin_api_service.dart';
 import 'package:cocktail_app/src/data/datasources/remote/stirred_api_service.dart';
+import 'package:cocktail_app/src/domain/models/requests/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
@@ -11,6 +12,7 @@ import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/drinks/drinks_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
@@ -155,6 +157,15 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     required RecipesListRequest request
   }) {
     return getState0f<RecipesListResponse>(request: () => _stirredApiService.getRecipesList(),
+    );
+  }
+
+  /// Drinks
+  @override
+  Future<DataState<DrinksListResponse>> getDrinksList({
+    required DrinksListRequest request
+  }) {
+    return getState0f<DrinksListResponse>(request: () => _stirredApiService.getDrinksList(),
     );
   }
 }
