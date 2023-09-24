@@ -1,4 +1,5 @@
 
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
@@ -24,10 +25,11 @@ class DrinksListResponse extends Equatable {
           name : element['name'] ?? "",
           description: element['description'] ?? "",
           picture: element['picture'] ?? "",
-          author: element['author'] ?? Profile.empty(),
-          glass: element['glass'] ?? Glass.empty(),
-          recipe: element['recipe'] ?? Recipe.empty(),
-          categories: element['categories'] ?? Categories.empty(),
+          author: element['author'] != null ? Profile.fromMap(element['author']) : Profile.empty(),
+          glass: element['glass'] != null ? Glass.fromMap(element['glass']) :  Glass.empty(),
+          ///recipe: element['recipe'] != null ? Recipe.fromMap(element['recipe']) : Recipe.empty(),
+          recipe: Recipe.empty(),
+          categories: element['categories'] != null ? Categories.fromMap(element['categories']) :  Categories.empty(),
           averageRating: element['average_rating'] ?? -1.0,
         );
       })),
