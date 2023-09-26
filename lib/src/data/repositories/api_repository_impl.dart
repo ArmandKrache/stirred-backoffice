@@ -160,6 +160,15 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     );
   }
 
+  @override
+  Future<void> deleteRecipe({
+    required RecipeDeleteRequest request
+  }) {
+    return _stirredApiService.deleteRecipe(
+        request.id
+    );
+  }
+
   /// Drinks
   @override
   Future<DataState<DrinksListResponse>> getDrinksList({

@@ -93,6 +93,11 @@ abstract class StirredApiService {
   Future<HttpResponse<RecipesListResponse>> getRecipesList();
 
 
+
+  @DELETE("/recipes/{id}/")
+  Future<void> deleteRecipe(@Path() String id);
+
+
   /// Drinks
   @GET('/drinks/')
   Future<HttpResponse<DrinksListResponse>> getDrinksList();

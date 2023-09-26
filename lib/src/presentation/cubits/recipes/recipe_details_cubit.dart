@@ -25,8 +25,6 @@ class RecipeDetailsCubit extends BaseCubit<RecipeDetailsState, Recipe> {
 
   Future<void> deleteRecipe(String id) async {
     if (isBusy) return;
-    /// TODO : Implement delete
-    /*
     try {
       await _apiRepository.deleteRecipe(
           request: RecipeDeleteRequest(id: id,)
@@ -35,7 +33,7 @@ class RecipeDetailsCubit extends BaseCubit<RecipeDetailsState, Recipe> {
       appRouter.pop();
     } catch (e) {
       emit(RecipeDeleteFailed(recipe: state.recipe));
-    }*/
+    }
   }
 
   Future<Recipe> patchRecipe(String id, Map<String, dynamic> data) async {

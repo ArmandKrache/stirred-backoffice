@@ -76,6 +76,10 @@ abstract class ApiRepository {
     required RecipesListRequest request,
   });
 
+  Future<void> deleteRecipe({
+    required RecipeDeleteRequest request,
+  });
+
 
   /// Drinks
   Future<DataState<DrinksListResponse>> getDrinksList({
