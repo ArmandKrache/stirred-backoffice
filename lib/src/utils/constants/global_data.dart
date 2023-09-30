@@ -1,7 +1,10 @@
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
+import 'package:cocktail_app/src/utils/constants/colors.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
+import 'package:cocktail_app/src/utils/resources/utils_data_functions.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 late Categories _allPossibleCategories;
@@ -28,6 +31,9 @@ Future<void> initialChoicesDataRetrieve() async {
         origins: data.origins,
         keywords: const [],
       );
+      allPossibleUnits = data.ingredientUnits;
+      data.ingredientUnits.sort(alphabeticalStringSort);
+      allPossibleDifficulties = data.difficulties;
       prefs.setStringList("seasons_choices", data.seasons);
       prefs.setStringList("diets_choices", data.diets);
       prefs.setStringList("strengths_choices", data.strengths);
@@ -45,5 +51,73 @@ Future<void> initialChoicesDataRetrieve() async {
         colors: prefs.getStringList("colors_choices") ?? [],
         origins: prefs.getStringList("origins_choices") ?? [],
         keywords: const [],
-      );}
+      );
+      allPossibleUnits = [];
+      allPossibleDifficulties = [];
+    }
+}
+
+
+/// Difficulties
+
+late List<String> _allPossibleDifficulties;
+
+List<String> get allPossibleDifficulties => _allPossibleDifficulties;
+
+set allPossibleDifficulties(List<String> difficulties) {
+  _allPossibleDifficulties = difficulties;
+}
+
+String getDifficultyTitle(String key) {
+  if (allPossibleDifficulties.contains(key)) {
+    switch (key) {
+      case "beginner" : return "Beginner";
+      case "intermediate" : return "Intermediate";
+      case "advanced" : return "Advanced";
+      case "expert" : return "Expert";
+      case "master" : return "Master";
+      default : "Unknown";
+    }
+  }
+  return "Unknown";
+}
+
+Color getDifficultyColor(String key) {
+  if (allPossibleDifficulties.contains(key)) {
+    switch (key) {
+      case "beginner" : return commonColor;
+      case "intermediate" : return unusualColor;
+      case "advanced" : return rareColor;
+      case "expert" : return epicColor;
+      case "master" : return legendaryColor;
+      default : commonColor;
+    }
+  }
+  return commonColor;
+}
+
+/// Units
+
+late List<String> _allPossibleUnits;
+
+List<String> get allPossibleUnits => _allPossibleUnits;
+
+set allPossibleUnits(List<String> units) {
+  _allPossibleUnits = units;
+}
+
+String getUnitTitle(String key) {
+  if (allPossibleUnits.contains(key)) {
+    switch (key) {
+      case "cup" : return "Cup";
+      case "teaspoon" : return "Teaspoon";
+      case "tablespoon" : return "TableSpoon";
+      case "gram" : return "Gram";
+      case "milliliter" : return "Milliliter";
+      case "slice" : return "Slice";
+      case "pinch" : return "Pinch";
+      default : "Unknown";
+    }
+  }
+  return "Unknown";
 }

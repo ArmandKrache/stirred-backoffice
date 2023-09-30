@@ -7,6 +7,7 @@ class Recipe extends Equatable {
   final int preparationTime;
   final String difficulty;
   final String instructions;
+  final List<RecipeIngredient> ingredients;
 
   const Recipe({
     required this.id,
@@ -15,6 +16,7 @@ class Recipe extends Equatable {
     required this.preparationTime,
     required this.difficulty,
     required this.instructions,
+    required this.ingredients,
   });
 
   factory Recipe.fromMap(Map<String, dynamic> map) {
@@ -25,6 +27,9 @@ class Recipe extends Equatable {
       preparationTime: map['preparation_time'] ?? 0,
       difficulty: map['difficulty'] ?? "",
       instructions: map['instructions'] ?? "",
+      ingredients: List<RecipeIngredient>.from((map['ingredients'] ?? []).map(
+              (element) => RecipeIngredient.fromMap(element))
+      ),
     );
   }
 
@@ -36,6 +41,7 @@ class Recipe extends Equatable {
       preparationTime: 0,
       difficulty: "",
       instructions: "",
+      ingredients: [],
     );
   }
 
@@ -44,5 +50,45 @@ class Recipe extends Equatable {
 
   @override
   List<Object?> get props => [id, name, description];
+
+}
+
+// ignore: must_be_immutable
+class RecipeIngredient extends Equatable {
+  String ingredientId;
+  String ingredientName;
+  double quantity;
+  String unit;
+
+  RecipeIngredient({
+    required this.ingredientId,
+    required this.ingredientName,
+    required this.quantity,
+    required this.unit,
+  });
+
+  factory RecipeIngredient.fromMap(Map<String, dynamic> map) {
+    return RecipeIngredient(
+      ingredientId: map['ingredient_id'] ?? "",
+      ingredientName : map['ingredient_name'] ?? "",
+      quantity: map['quantity'] ?? 0,
+      unit: map['unit'] ?? "",
+    );
+  }
+
+  factory RecipeIngredient.empty() {
+    return RecipeIngredient(
+      ingredientId: "",
+      ingredientName : "",
+      quantity: 0,
+      unit: "",
+    );
+  }
+
+  @override
+  bool get stringify => true;
+
+  @override
+  List<Object?> get props => [ingredientId, ingredientName, quantity, unit];
 
 }

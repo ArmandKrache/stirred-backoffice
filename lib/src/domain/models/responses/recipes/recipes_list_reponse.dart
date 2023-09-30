@@ -16,15 +16,7 @@ class RecipesListResponse extends Equatable {
   factory RecipesListResponse.fromMap(Map<String, dynamic> map) {
     return RecipesListResponse(
       recipes: List<Recipe>.from((map['results'] ?? []).map<dynamic>((element) {
-        return Recipe(
-          id: element["id"] ?? "",
-          name: element["name"] ?? "",
-          description: element["description"] ?? "",
-          preparationTime: element["preparation_time"] ?? 0,
-          difficulty: element["difficulty"] ?? "",
-          instructions: element["instructions"] ?? "",
-
-        );
+        return Recipe.fromMap(element);
       })),
     );
   }

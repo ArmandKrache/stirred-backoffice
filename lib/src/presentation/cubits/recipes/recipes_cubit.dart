@@ -1,5 +1,7 @@
 import 'dart:developer';
+import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -33,6 +35,17 @@ class RecipesCubit extends BaseCubit<RecipesState, List<Recipe>> {
           log(response.exception.toString());
         }
       });
+  }
+
+  Future<List<Ingredient>> searchIngredients(String query) async {
+    final response = await _apiRepository.searchIngredients(
+        request: IngredientsSearchRequest(query: query,));
+    if (response is DataSuccess) {
+      return response.data!.ingredients;
+    } else if (response is DataFailed) {
+      log(response.exception.toString());
+    }
+    return [];
   }
 
 }

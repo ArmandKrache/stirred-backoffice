@@ -6,10 +6,13 @@ import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_details_cubi
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/categories_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/matches_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
+import 'package:cocktail_app/src/utils/constants/global_data.dart';
+import 'package:cocktail_app/src/utils/resources/utils_data_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -120,6 +123,8 @@ class RecipeDetailsView extends HookWidget {
           builder: (context, state) {
             if (state.runtimeType == RecipeDetailsLoading) {
               return const Center(child: CircularProgressIndicator());
+            } else if (state.recipe == null) {
+              return const SizedBox();
             } else {
               return SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
@@ -134,7 +139,31 @@ class RecipeDetailsView extends HookWidget {
                           DescriptionAttributeWidget(text : state.recipe!.description),
                         ],
                       ),
-                      /// TODO: add attributes Widgets
+                      CustomGenericAttributeWidget(
+                        title: "Difficulty",
+                        child: Text(getDifficultyTitle(state.recipe!.difficulty)),
+                      ),
+                      CustomGenericAttributeWidget(
+                        title: "Preparation time",
+                        child: Text("${state.recipe!.preparationTime} minutes"),
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          DescriptionAttributeWidget(text : state.recipe!.instructions, title: "Instructions",),
+                        ],
+                      ),
+                      CustomGenericAttributeWidget(
+                        title: "Ingredients",
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            for ( var element in state.recipe!.ingredients )
+                              Text("- ${element.ingredientName} : ${element.quantity} of ${element.unit}")
+                          ],
+                        ),
+                      )
                     ],
                   )
               );

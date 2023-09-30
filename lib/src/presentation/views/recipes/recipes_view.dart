@@ -8,6 +8,7 @@ import 'package:cocktail_app/src/presentation/cubits/recipes/recipes_cubit.dart'
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
+import 'package:cocktail_app/src/utils/resources/utils_data_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
