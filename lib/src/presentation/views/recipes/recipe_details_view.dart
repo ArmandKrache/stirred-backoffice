@@ -159,8 +159,9 @@ class RecipeDetailsView extends HookWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            /// TODO: Make ingredient name clickable and send to ingredients details view
                             for ( var element in state.recipe!.ingredients )
-                              Text("- ${element.ingredientName} : ${element.quantity} of ${element.unit}")
+                              Text("- ${element.quantity} ${element.unit} of ${element.ingredientName}")
                           ],
                         ),
                       )

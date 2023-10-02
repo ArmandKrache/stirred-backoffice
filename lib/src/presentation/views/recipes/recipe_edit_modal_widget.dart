@@ -77,26 +77,26 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
       onSave: () {
         /// TODO : Handle data sending
         Map<String, dynamic> data = {};
-        /*
-        final http.MultipartFile? picture = selectedImage;
         if (nameController.text == "" ||
-            descriptionController.text == "") {
+            descriptionController.text == "" ||
+            instructionsController.text == "" ||
+            ingredients.isEmpty
+        ) {
           /// TODO: display error toast
           return ;
         }
         data["name"] = nameController.text;
         data["description"] = descriptionController.text;
-
-        if (picture != null) {
-          final MultipartFile multipartFilePicture = MultipartFile.fromStream(
-                () => picture.finalize(),
-            picture.length,
-            filename: picture.filename,
-            contentType: picture.contentType,
-          );
-          data["picture"] = multipartFilePicture;
-        }*/
-
+        data["instructions"] = instructionsController.text;
+        data["difficulty"] = difficulty;
+        data["preparation_time"] = int.parse(prepTimeController.text);
+        data["ingredients"] = List<Map<String, dynamic>>.from(ingredients.map((e) {
+          return {
+            "ingredient" : e.ingredientId,
+            "unit" : e.unit,
+            "quantity" : e.quantity
+          };
+        }));
         logger.d(data.toString());
         widget.onSave.call(data);
       },
@@ -131,7 +131,6 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
           maxLines: 3,
           keyboardType: TextInputType.multiline,
         ),
-        /// TODO: add other fields Widgets
         const SizedBox(height: 12,),
         TextField(
           controller: prepTimeController,
@@ -177,7 +176,6 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
   }
 
   Widget _ingredientsWidget() {
-
     List<Widget> ingredientsSearchResultsWidgetList = List<Widget>.from(ingredientsSearchResults.map((e) {
       return CustomTextTileWidget(
         text: e.name,
@@ -269,9 +267,30 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
             ),
           ),
           const SizedBox(width: 12,),
-          ElevatedButton(
-            onPressed: () {},
-            child: const Text("Quantity"),
+          SizedBox(
+            width: 96,
+            height: 48,
+            child: TextField(
+              onChanged: (value) {
+                setState(() {
+                  ingredients.firstWhere((element) => element == item).quantity = double.parse(value);
+                });
+              },
+              cursorColor: Colors.deepPurple,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.allow(RegExp('[0123456789.]'))
+              ],
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.deepPurple, style: BorderStyle.solid, width: 1),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  labelText: "Quantity"
+              ),
+            ),
           ),
           const SizedBox(width: 12,),
           PopupMenuButton<String>(
@@ -285,18 +304,19 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
               return [
                 for (var unit in allPossibleUnits)
                   PopupMenuItem<String>(
-                    value: unit, /// Key
-                    child: Text(getUnitTitle(unit)), /// Value
+                    value: unit,
+                    child: Text(getUnitTitle(unit)),
                   )
               ];
             },
             child: Container(
+              height: 48,
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.deepPurpleAccent),
                 borderRadius: const BorderRadius.all(Radius.circular(8))
               ),
               padding: const EdgeInsets.all(8),
-              child: Text(getUnitTitle(item.unit), style: const TextStyle(fontSize: 16),),
+              child: Center(child: Text(getUnitTitle(item.unit), style: const TextStyle(fontSize: 16),)),
             ),
           ),
           const Expanded(

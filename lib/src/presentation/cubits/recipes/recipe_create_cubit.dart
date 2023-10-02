@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';
@@ -23,27 +24,18 @@ class RecipeCreateCubit extends BaseCubit<RecipeCreateState, dynamic> {
 
   Future<void> createRecipe(Map<String, dynamic> data) async {
 
-    /// TODO: Handle creation flow
-    /*final String? name = data["name"];
-    final String? description = data["description"];
-    final MultipartFile? picture = data["picture"];
-
-    log("$name | $description | $picture");
-
-    if (picture == null || name == "" || description == "") {
-      emit(const RecipeCreateFailed());
-      return ;
-    }
-
     await run(() async {
       final response = await _apiRepository.createRecipe(
-          request: RecipesCreateRequest(
-            name: name,
-            description: description,
-            picture: picture,
+          request: RecipeCreateRequest(
+            name: data["name"],
+            description: data["description"],
+            instructions: data["instructions"],
+            difficulty: data["difficulty"],
+            preparationTime: data["preparation_time"],
+            ingredients: data["ingredients"],
           ));
       emit(const RecipeCreateSuccess());
-    });*/
+    });
   }
 
   void reset() {

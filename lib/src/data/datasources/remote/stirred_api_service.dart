@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/drinks/drinks_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
@@ -9,6 +10,7 @@ import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -92,7 +94,8 @@ abstract class StirredApiService {
   @GET('/recipes/')
   Future<HttpResponse<RecipesListResponse>> getRecipesList();
 
-
+  @POST('/recipes/create/')
+  Future<HttpResponse<RecipeCreateResponse>> createRecipe(@Body() Map<String, dynamic> body);
 
   @DELETE("/recipes/{id}/")
   Future<void> deleteRecipe(@Path() String id);
