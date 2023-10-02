@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
@@ -5,14 +7,18 @@ import 'package:cocktail_app/src/presentation/cubits/drinks/drink_details_cubit.
 import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/categories_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_clickable_text.dart';
+import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/glass_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/matches_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 @RoutePage()
 class DrinkDetailsView extends HookWidget {
@@ -119,6 +125,7 @@ class DrinkDetailsView extends HookWidget {
             if (state.runtimeType == DrinkDetailsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else {
+              Drink currentDrink = state.drink!;
               return SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
                   child: Wrap(
@@ -129,12 +136,57 @@ class DrinkDetailsView extends HookWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DescriptionAttributeWidget(text : state.drink!.description),
+                          PictureAttributeWidget(src : currentDrink.picture),
+                          const SizedBox(width: 16,),
+                          DescriptionAttributeWidget(text : currentDrink.description),
                         ],
                       ),
-                      /// TODO: add attributes Widgets
+                      CustomGenericAttributeWidget(
+                        title: "Average Rating",
+                        backgroundColor: Colors.white,
+                        child: RatingBarIndicator(
+                          rating: currentDrink.averageRating,
+                          itemBuilder: (context, index) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          itemCount: 5,
+                          itemSize: 24.0,
+                          direction: Axis.horizontal,
+                        ),
+                      ),
+                      CustomGenericAttributeWidget(
+                        title: "Recipe",
+                        child: CustomClickableText(
+                          text: Text(currentDrink.recipeId,
+                            style: const TextStyle(color: Colors.deepPurple,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          onTap: () {
+                            ///TODO: Go to Recipe Details View
+                          },
+                        ),
+                      ),
+                      CustomGenericAttributeWidget(
+                        title: "Author",
+                        child: CustomClickableText(
+                          text: Text(currentDrink.author.name,
+                            style: const TextStyle(color: Colors.deepPurple,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          onTap: () {
+                            ///TODO: Go to Author Details View
+                          },
+                        ),
+                      ),
+                      GlassAttributeWidget(glass: currentDrink.glass),
+                      CategoriesAttributeWidget(categories: currentDrink.categories)
                     ],
-                  )
+                  ),
               );
             }
           }),

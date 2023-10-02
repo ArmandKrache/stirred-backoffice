@@ -11,7 +11,7 @@ class Drink extends Equatable {
   final String picture;
   final Profile author;
   final Glass glass;
-  final Recipe recipe;
+  final String recipeId;
   final Categories categories;
   final double averageRating;
 
@@ -22,7 +22,7 @@ class Drink extends Equatable {
     required this.picture,
     required this.author,
     required this.glass,
-    required this.recipe,
+    required this.recipeId,
     required this.categories,
     required this.averageRating,
   });
@@ -33,11 +33,11 @@ class Drink extends Equatable {
       name : map['name'] ?? "",
       description: map['description'] ?? "",
       picture: map['picture'] ?? "",
-      author: map['author'] ?? Profile.empty(),
-      glass: map['glass'] ?? Glass.empty(),
-      recipe: map['recipe'] ?? Recipe.empty(),
-      categories: map['categories'] ?? Categories.empty(),
-      averageRating: map['average_rating'] ?? -1.0,
+      recipeId: map['recipe'] ?? "",
+      author: map['author'] != null ? Profile.fromMap(map['author']) : Profile.empty(),
+      glass: map['glass'] != null ? Glass.fromMap(map['glass']) :  Glass.empty(),
+      categories: map['categories'] != null ? Categories.fromMap(map['categories']) : Categories.empty(),
+      averageRating: map['average_rating'] ?? 0.0,
     );
   }
 
@@ -49,7 +49,7 @@ class Drink extends Equatable {
       picture: "",
       author: Profile.empty(),
       glass: Glass.empty(),
-      recipe: Recipe.empty(),
+      recipeId: "",
       categories: Categories.empty(),
       averageRating: -1.0,
     );

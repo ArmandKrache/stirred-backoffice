@@ -20,18 +20,7 @@ class DrinksListResponse extends Equatable {
   factory DrinksListResponse.fromMap(Map<String, dynamic> map) {
     return DrinksListResponse(
       drinks: List<Drink>.from((map['results'] ?? []).map<dynamic>((element) {
-        return Drink(
-          id: element['id'] ?? "",
-          name : element['name'] ?? "",
-          description: element['description'] ?? "",
-          picture: element['picture'] ?? "",
-          author: element['author'] != null ? Profile.fromMap(element['author']) : Profile.empty(),
-          glass: element['glass'] != null ? Glass.fromMap(element['glass']) :  Glass.empty(),
-          ///recipe: element['recipe'] != null ? Recipe.fromMap(element['recipe']) : Recipe.empty(),
-          recipe: Recipe.empty(),
-          categories: element['categories'] != null ? Categories.fromMap(element['categories']) :  Categories.empty(),
-          averageRating: element['average_rating'] ?? -1.0,
-        );
+        return Drink.fromMap(element);
       })),
     );
   }
