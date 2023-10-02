@@ -1,18 +1,12 @@
-
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
-import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/categories_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/description_attribute_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/matches_attribute_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/picture_attribute_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';
-import 'package:cocktail_app/src/utils/resources/utils_data_functions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -126,6 +120,7 @@ class RecipeDetailsView extends HookWidget {
             } else if (state.recipe == null) {
               return const SizedBox();
             } else {
+              Recipe currentRecipe = state.recipe!;
               return SingleChildScrollView(
                   padding: const EdgeInsets.all(24),
                   child: Wrap(
@@ -136,22 +131,22 @@ class RecipeDetailsView extends HookWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DescriptionAttributeWidget(text : state.recipe!.description),
+                          DescriptionAttributeWidget(text : currentRecipe.description),
                         ],
                       ),
                       CustomGenericAttributeWidget(
                         title: "Difficulty",
-                        child: Text(getDifficultyTitle(state.recipe!.difficulty)),
+                        child: Text(getDifficultyTitle(currentRecipe.difficulty)),
                       ),
                       CustomGenericAttributeWidget(
                         title: "Preparation time",
-                        child: Text("${state.recipe!.preparationTime} minutes"),
+                        child: Text("${currentRecipe.preparationTime} minutes"),
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DescriptionAttributeWidget(text : state.recipe!.instructions, title: "Instructions",),
+                          DescriptionAttributeWidget(text : currentRecipe.instructions, title: "Instructions",),
                         ],
                       ),
                       CustomGenericAttributeWidget(
@@ -160,7 +155,7 @@ class RecipeDetailsView extends HookWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             /// TODO: Make ingredient name clickable and send to ingredients details view
-                            for ( var element in state.recipe!.ingredients )
+                            for ( var element in currentRecipe.ingredients )
                               Text("- ${element.quantity} ${element.unit} of ${element.ingredientName}")
                           ],
                         ),

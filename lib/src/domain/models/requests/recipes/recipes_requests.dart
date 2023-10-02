@@ -31,6 +31,23 @@ class RecipeCreateRequest {
   }
 }
 
+class RecipePatchRequest {
+  final String id;
+  final Map<String, dynamic> body;
+
+  RecipePatchRequest({
+    required this.id,
+    required this.body,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'body': body,
+    };
+  }
+}
+
 class RecipeDeleteRequest {
   final String id;
 

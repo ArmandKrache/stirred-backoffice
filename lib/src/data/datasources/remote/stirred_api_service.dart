@@ -11,6 +11,7 @@ import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
@@ -96,6 +97,9 @@ abstract class StirredApiService {
 
   @POST('/recipes/create/')
   Future<HttpResponse<RecipeCreateResponse>> createRecipe(@Body() Map<String, dynamic> body);
+
+  @PATCH('/recipes/{id}/')
+  Future<HttpResponse<RecipePatchResponse>> patchRecipe(@Path() String id, @Body() Map<String, dynamic> body);
 
   @DELETE("/recipes/{id}/")
   Future<void> deleteRecipe(@Path() String id);

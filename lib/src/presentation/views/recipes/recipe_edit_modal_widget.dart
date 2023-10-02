@@ -75,7 +75,6 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
       onClose: widget.onClose,
       errorText: widget.errorText,
       onSave: () {
-        /// TODO : Handle data sending
         Map<String, dynamic> data = {};
         if (nameController.text == "" ||
             descriptionController.text == "" ||
@@ -167,7 +166,6 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
           maxLines: 5,
           keyboardType: TextInputType.multiline,
         ),
-        /// ingredients list with search + free numberfield for quantity + unit choices (single key)
         const SizedBox(height: 12,),
         _ingredientsWidget(),
         const SizedBox(height: 16,),
@@ -271,6 +269,7 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
             width: 96,
             height: 48,
             child: TextField(
+              /// TODO: add initial value from current ingredient quantity
               onChanged: (value) {
                 setState(() {
                   ingredients.firstWhere((element) => element == item).quantity = double.parse(value);

@@ -1,6 +1,7 @@
 
 import 'dart:developer';
 
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
@@ -39,22 +40,17 @@ class RecipeDetailsCubit extends BaseCubit<RecipeDetailsState, Recipe> {
   }
 
   Future<Recipe> patchRecipe(String id, Map<String, dynamic> data) async {
-    /// TODO : Implement patch
-    /*
     final response = await _apiRepository.patchRecipe(
         request: RecipePatchRequest(
             id: id,
             body: data
         ));
-    log(response.toString());
-    log(response.data.toString());
-    log(response.data!.recipe.toString());
 
+    logger.d(response.data!.recipe);
+    emit(const RecipeDetailsLoading());
     emit(RecipePatchSuccess(recipe: response.data!.recipe,));
     appRouter.pop();
     return response.data!.recipe;
-    */
-    return Recipe.empty();
   }
 
 }

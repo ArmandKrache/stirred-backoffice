@@ -22,6 +22,7 @@ import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
@@ -166,6 +167,13 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     required RecipeCreateRequest request
   }) {
     return getState0f<RecipeCreateResponse>(request: () => _stirredApiService.createRecipe(request.toJson()));
+  }
+
+  @override
+  Future<DataState<RecipePatchResponse>> patchRecipe({
+    required RecipePatchRequest request
+  }) {
+    return getState0f<RecipePatchResponse>(request: () => _stirredApiService.patchRecipe(request.id, request.body));
   }
 
   @override

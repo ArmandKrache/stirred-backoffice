@@ -18,6 +18,7 @@ import 'package:cocktail_app/src/domain/models/responses/ingredients/ingredients
 import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/profiles/profile_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_create_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/recipes/recipe_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/recipes/recipes_list_reponse.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 
@@ -79,6 +80,10 @@ abstract class ApiRepository {
 
   Future<DataState<RecipeCreateResponse>> createRecipe({
     required RecipeCreateRequest request,
+  });
+
+  Future<DataState<RecipePatchResponse>> patchRecipe({
+    required RecipePatchRequest request,
   });
 
   Future<void> deleteRecipe({
