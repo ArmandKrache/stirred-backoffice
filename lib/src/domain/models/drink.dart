@@ -1,4 +1,5 @@
 import 'package:cocktail_app/src/domain/models/categories.dart';
+import 'package:cocktail_app/src/domain/models/generic_id_with_name.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
@@ -9,9 +10,9 @@ class Drink extends Equatable {
   final String name;
   final String description;
   final String picture;
-  final Profile author;
+  final GenericPreviewModel author;
   final Glass glass;
-  final String recipeId;
+  final GenericPreviewModel recipe;
   final Categories categories;
   final double averageRating;
 
@@ -22,7 +23,7 @@ class Drink extends Equatable {
     required this.picture,
     required this.author,
     required this.glass,
-    required this.recipeId,
+    required this.recipe,
     required this.categories,
     required this.averageRating,
   });
@@ -33,8 +34,8 @@ class Drink extends Equatable {
       name : map['name'] ?? "",
       description: map['description'] ?? "",
       picture: map['picture'] ?? "",
-      recipeId: map['recipe'] ?? "",
-      author: map['author'] != null ? Profile.fromMap(map['author']) : Profile.empty(),
+      recipe: map['recipe'] != null ? GenericPreviewModel.fromMap(map['recipe']) : GenericPreviewModel.empty(),
+      author: map['author'] != null ? GenericPreviewModel.fromMap(map['author']) : GenericPreviewModel.empty(),
       glass: map['glass'] != null ? Glass.fromMap(map['glass']) :  Glass.empty(),
       categories: map['categories'] != null ? Categories.fromMap(map['categories']) : Categories.empty(),
       averageRating: map['average_rating'] ?? 0.0,
@@ -47,11 +48,11 @@ class Drink extends Equatable {
       name : "",
       description: "",
       picture: "",
-      author: Profile.empty(),
+      author: GenericPreviewModel.empty(),
       glass: Glass.empty(),
-      recipeId: "",
+      recipe: GenericPreviewModel.empty(),
       categories: Categories.empty(),
-      averageRating: -1.0,
+      averageRating: 0.0,
     );
   }
 

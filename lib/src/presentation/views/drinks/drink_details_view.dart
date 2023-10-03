@@ -144,21 +144,25 @@ class DrinkDetailsView extends HookWidget {
                       CustomGenericAttributeWidget(
                         title: "Average Rating",
                         backgroundColor: Colors.white,
-                        child: RatingBarIndicator(
-                          rating: currentDrink.averageRating,
-                          itemBuilder: (context, index) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                        child: currentDrink.averageRating == 0.0 ?
+                          const Text("No Ratings yet",
+                            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+                          ) :
+                          RatingBarIndicator(
+                            rating: currentDrink.averageRating,
+                            itemBuilder: (context, index) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            itemCount: 5,
+                            itemSize: 24.0,
+                            direction: Axis.horizontal,
                           ),
-                          itemCount: 5,
-                          itemSize: 24.0,
-                          direction: Axis.horizontal,
-                        ),
                       ),
                       CustomGenericAttributeWidget(
                         title: "Recipe",
                         child: CustomClickableText(
-                          text: Text(currentDrink.recipeId,
+                          text: Text(currentDrink.recipe.name ?? "",
                             style: const TextStyle(color: Colors.deepPurple,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
@@ -172,7 +176,7 @@ class DrinkDetailsView extends HookWidget {
                       CustomGenericAttributeWidget(
                         title: "Author",
                         child: CustomClickableText(
-                          text: Text(currentDrink.author.name,
+                          text: Text(currentDrink.author.name ?? "",
                             style: const TextStyle(color: Colors.deepPurple,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold
