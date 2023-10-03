@@ -1,6 +1,7 @@
+import 'package:cocktail_app/src/domain/models/generic_data_model.dart';
 import 'package:equatable/equatable.dart';
 
-class Recipe extends Equatable {
+class Recipe extends Equatable implements GenericDataModel {
   final String id;
   final String name;
   final String description;

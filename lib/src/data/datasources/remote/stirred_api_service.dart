@@ -30,9 +30,19 @@ abstract class StirredApiService {
   @GET('/profile/')
   Future<HttpResponse<ProfileListResponse>> getProfileList();
 
+  @GET('/profile/search/')
+  Future<HttpResponse<ProfileListResponse>> searchProfiles({
+    @Query("query") String? query,
+  });
+
   /// Glasses
   @GET('/glasses/')
   Future<HttpResponse<GlassesListResponse>> getGlassesList();
+
+  @GET('/glasses/search/')
+  Future<HttpResponse<GlassesListResponse>> searchGlasses({
+    @Query("query") String? query,
+  });
 
   @POST('/glasses/create/')
   @MultiPart()
@@ -95,6 +105,11 @@ abstract class StirredApiService {
   @GET('/recipes/')
   Future<HttpResponse<RecipesListResponse>> getRecipesList();
 
+  @GET('/recipes/search/')
+  Future<HttpResponse<RecipesListResponse>> searchRecipes({
+    @Query("query") String? query,
+  });
+
   @POST('/recipes/create/')
   Future<HttpResponse<RecipeCreateResponse>> createRecipe(@Body() Map<String, dynamic> body);
 
@@ -109,6 +124,5 @@ abstract class StirredApiService {
   @GET('/drinks/')
   Future<HttpResponse<DrinksListResponse>> getDrinksList();
 
-/// @retrofit.Headers({"Content-Type" : "application/json",})
 
 }

@@ -7,6 +7,7 @@ import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_requ
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_list_request.dart';
+import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
@@ -56,12 +57,28 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     );
   }
 
+  @override
+  Future<DataState<ProfileListResponse>> searchProfiles({
+    required ProfilesSearchRequest request
+  }) {
+    return getState0f<ProfileListResponse>(request: () => _stirredApiService.searchProfiles(query: request.query),
+    );
+  }
+
   /// Glasses
   @override
   Future<DataState<GlassesListResponse>> getGlassesList({
     required GlassesListRequest request
   }) {
     return getState0f<GlassesListResponse>(request: () => _stirredApiService.getGlassesList(),
+    );
+  }
+
+  @override
+  Future<DataState<GlassesListResponse>> searchGlasses({
+    required GlassesSearchRequest request
+  }) {
+    return getState0f<GlassesListResponse>(request: () => _stirredApiService.searchGlasses(query: request.query),
     );
   }
 
@@ -159,6 +176,14 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     required RecipesListRequest request
   }) {
     return getState0f<RecipesListResponse>(request: () => _stirredApiService.getRecipesList(),
+    );
+  }
+
+  @override
+  Future<DataState<RecipesListResponse>> searchRecipes({
+    required RecipesSearchRequest request
+  }) {
+    return getState0f<RecipesListResponse>(request: () => _stirredApiService.searchRecipes(query: request.query),
     );
   }
 

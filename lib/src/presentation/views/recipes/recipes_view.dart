@@ -54,7 +54,6 @@ class RecipesView extends HookWidget {
                 ),
               ),
               onPressed: () async {
-                /// TODO: Open create new item Modal
                 await showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => Dialog(

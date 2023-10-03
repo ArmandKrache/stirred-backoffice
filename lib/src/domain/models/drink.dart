@@ -1,18 +1,19 @@
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/generic_id_with_name.dart';
+import 'package:cocktail_app/src/domain/models/generic_data_model.dart';
+import 'package:cocktail_app/src/domain/models/generic_preview_data_model.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:equatable/equatable.dart';
 
-class Drink extends Equatable {
+class Drink extends Equatable implements GenericDataModel {
   final String id;
   final String name;
   final String description;
   final String picture;
-  final GenericPreviewModel author;
+  final GenericPreviewDataModel author;
   final Glass glass;
-  final GenericPreviewModel recipe;
+  final GenericPreviewDataModel recipe;
   final Categories categories;
   final double averageRating;
 
@@ -34,8 +35,8 @@ class Drink extends Equatable {
       name : map['name'] ?? "",
       description: map['description'] ?? "",
       picture: map['picture'] ?? "",
-      recipe: map['recipe'] != null ? GenericPreviewModel.fromMap(map['recipe']) : GenericPreviewModel.empty(),
-      author: map['author'] != null ? GenericPreviewModel.fromMap(map['author']) : GenericPreviewModel.empty(),
+      recipe: map['recipe'] != null ? GenericPreviewDataModel.fromMap(map['recipe']) : GenericPreviewDataModel.empty(),
+      author: map['author'] != null ? GenericPreviewDataModel.fromMap(map['author']) : GenericPreviewDataModel.empty(),
       glass: map['glass'] != null ? Glass.fromMap(map['glass']) :  Glass.empty(),
       categories: map['categories'] != null ? Categories.fromMap(map['categories']) : Categories.empty(),
       averageRating: map['average_rating'] ?? 0.0,
@@ -48,9 +49,9 @@ class Drink extends Equatable {
       name : "",
       description: "",
       picture: "",
-      author: GenericPreviewModel.empty(),
+      author: GenericPreviewDataModel.empty(),
       glass: Glass.empty(),
-      recipe: GenericPreviewModel.empty(),
+      recipe: GenericPreviewDataModel.empty(),
       categories: Categories.empty(),
       averageRating: 0.0,
     );

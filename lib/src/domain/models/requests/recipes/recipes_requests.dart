@@ -2,6 +2,11 @@ class RecipesListRequest {
   RecipesListRequest();
 }
 
+class RecipesSearchRequest {
+  final String query;
+  RecipesSearchRequest({this.query = ""});
+}
+
 class RecipeCreateRequest {
   final String name;
   final String description;

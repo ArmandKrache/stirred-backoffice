@@ -1,7 +1,8 @@
+import 'package:cocktail_app/src/domain/models/generic_data_model.dart';
 import 'package:cocktail_app/src/domain/models/preferences.dart';
 import 'package:equatable/equatable.dart';
 
-class Profile extends Equatable {
+class Profile extends Equatable implements GenericDataModel {
   final String id;
   final String email;
   final String name;

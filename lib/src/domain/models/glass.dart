@@ -1,6 +1,9 @@
+import 'package:cocktail_app/src/domain/models/generic_data_model.dart';
+import 'package:cocktail_app/src/domain/models/generic_preview_data_model.dart';
+import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/generic_object_picker_modal.dart';
 import 'package:equatable/equatable.dart';
 
-class Glass extends Equatable {
+class Glass extends Equatable implements GenericDataModel {
   final String id;
   final String name;
   final String description;

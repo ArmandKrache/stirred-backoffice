@@ -77,6 +77,36 @@ class _StirredApiService implements StirredApiService {
   }
 
   @override
+  Future<HttpResponse<ProfileListResponse>> searchProfiles(
+      {String? query}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'query': query};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<ProfileListResponse>>(Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+          _dio.options,
+          '/profile/search/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+            .copyWith(
+            baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = ProfileListResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<HttpResponse<GlassesListResponse>> getGlassesList() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -91,6 +121,37 @@ class _StirredApiService implements StirredApiService {
             .compose(
           _dio.options,
           '/glasses/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+            .copyWith(
+            baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = GlassesListResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+
+  @override
+  Future<HttpResponse<GlassesListResponse>> searchGlasses(
+      {String? query}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'query': query};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<GlassesListResponse>>(Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+          _dio.options,
+          '/glasses/search/',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -437,6 +498,36 @@ class _StirredApiService implements StirredApiService {
             .compose(
           _dio.options,
           '/recipes/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+            .copyWith(
+            baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = RecipesListResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
+  Future<HttpResponse<RecipesListResponse>> searchRecipes(
+      {String? query}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'query': query};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<RecipesListResponse>>(Options(
+          method: 'GET',
+          headers: _headers,
+          extra: _extra,
+        )
+            .compose(
+          _dio.options,
+          '/recipes/search/',
           queryParameters: queryParameters,
           data: _data,
         )
