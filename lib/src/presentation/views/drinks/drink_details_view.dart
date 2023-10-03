@@ -8,7 +8,7 @@ import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widg
 import 'package:cocktail_app/src/presentation/views/drinks/drink_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/categories_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_clickable_text.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/glass_attribute_widget.dart';

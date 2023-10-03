@@ -6,7 +6,7 @@ import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
+import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/custom_generic_edit_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';

@@ -3,7 +3,7 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
+import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/custom_generic_edit_modal.dart';
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';

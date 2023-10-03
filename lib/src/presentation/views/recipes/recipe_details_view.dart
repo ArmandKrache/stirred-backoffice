@@ -3,7 +3,7 @@ import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_attribute_widget.dart';
+import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_alert_dialog_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';

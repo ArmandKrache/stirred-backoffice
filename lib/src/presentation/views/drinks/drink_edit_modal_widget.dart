@@ -10,7 +10,7 @@ import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
 import 'package:cocktail_app/src/domain/models/recipe.dart';
 import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/categories_edit_field_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_edit_modal.dart';
+import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/custom_generic_edit_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/generic_object_picker_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
@@ -51,9 +51,9 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final keywordsController = TextEditingController();
-  String recipeId = "";
-  String glassId = "";
-  String authorId = "";
+  Recipe recipe = Recipe.empty();
+  Glass glass = Glass.empty();
+  Profile author = Profile.empty();
   Categories categories = Categories.empty();
   http.MultipartFile? selectedImage;
   final TextEditingController _searchController = TextEditingController();
@@ -74,7 +74,7 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
     } else {
       picturePreviewWidget = Text(selectedImage == null ? "No picture selected yet" :
       selectedImage!.filename ?? "",
-        style: const TextStyle(color: Colors.grey),
+        style: TextStyle(color: selectedImage == null ? Colors.grey : Colors.black),
       );
     }
 
@@ -173,14 +173,14 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
         ),
         const SizedBox(height: 8,),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton( /// Recipe
               onPressed: () async {
-                String? res = await showDialog<String>(
+                Recipe? res = await showDialog<Recipe>(
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: GenericObjectPickerModal(
+                      title: "Recipe",
                       searchFunction: (String query) async {
                         List<Recipe> recipes = await searchRecipes(query);
                         return recipes;
@@ -190,18 +190,30 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                   ),
                 );
                 if (res != null) {
-                  recipeId = res;
-                  logger.d(recipeId);
+                  setState(() {
+                    recipe = res;
+                  });
                 }
               },
-              child: const Text("Recipe"),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
+              child: const Text("Select Recipe"),
             ),
+            const SizedBox(width: 16,),
+            Text(recipe.name,),
+            const SizedBox(width: 4,),
+            Text(recipe.id, style: const TextStyle(color: Colors.grey, fontSize: 10),),
+          ],
+        ),
+        const SizedBox(height: 8,),
+        Row(
+          children: [
             ElevatedButton( /// Glass
               onPressed: () async {
-                String? res = await showDialog<String>(
+                Glass? res = await showDialog<Glass>(
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: GenericObjectPickerModal(
+                      title: "Glass",
                       searchFunction: (String query) async {
                         List<Glass> glasses = await searchGlasses(query);
                         return glasses;
@@ -211,18 +223,30 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                   ),
                 );
                 if (res != null) {
-                  glassId = res;
-                  logger.d(glassId);
+                  setState(() {
+                    glass = res;
+                  });
                 }
               },
-              child: const Text("Glass"),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
+              child: const Text("Select Glass"),
             ),
+            const SizedBox(width: 16,),
+            Text(glass.name,),
+            const SizedBox(width: 4,),
+            Text(glass.id, style: const TextStyle(color: Colors.grey, fontSize: 10),),
+          ],
+        ),
+        const SizedBox(height: 8,),
+        Row(
+          children: [
             ElevatedButton( /// Author
               onPressed: () async {
-                String? res = await showDialog<String>(
+                Profile? res = await showDialog<Profile>(
                   context: context,
                   builder: (BuildContext context) => Dialog(
                     child: GenericObjectPickerModal(
+                      title: "Author",
                       searchFunction: (String query) async {
                         List<Profile> profiles = await searchProfiles(query);
                         return profiles;
@@ -232,12 +256,18 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                   ),
                 );
                 if (res != null) {
-                  authorId = res;
-                  logger.d(authorId);
+                  setState(() {
+                    author = res;
+                  });
                 }
               },
-              child: const Text("Author"),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent)),
+              child: const Text("Select Author"),
             ),
+            const SizedBox(width: 16,),
+            Text(author.name,),
+            const SizedBox(width: 4,),
+            Text(author.id, style: const TextStyle(color: Colors.grey, fontSize: 10),),
           ],
         ),
         const SizedBox(height: 8,),

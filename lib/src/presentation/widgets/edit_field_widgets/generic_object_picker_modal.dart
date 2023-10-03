@@ -13,10 +13,12 @@ import 'package:flutter/material.dart';
 class GenericObjectPickerModal<T extends GenericDataModel> extends StatefulWidget {
   final Future<List<T>> Function(String query) searchFunction;
   final T? currentItem;
+  final String title;
 
   const GenericObjectPickerModal({
     super.key,
     required this.searchFunction,
+    this.title = "",
     this.currentItem,
   });
 
@@ -82,6 +84,8 @@ class _GenericObjectPickerModal<T extends GenericDataModel> extends State<Generi
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Center(child: Text(widget.title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)),
+              const SizedBox(height: 8,),
               CustomSearchBar(
                 hintText: "Search",
                 controller: _searchController,
@@ -126,7 +130,7 @@ class _GenericObjectPickerModal<T extends GenericDataModel> extends State<Generi
                         padding: MaterialStateProperty.all(const EdgeInsets.all(16))
                       ),
                     onPressed: () {
-                      appRouter.pop(selectedItem?.id);
+                      appRouter.pop(selectedItem);
                     },
                     child: const Text("Confirm", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))
                   ),
