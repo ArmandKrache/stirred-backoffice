@@ -23,3 +23,9 @@ class DrinkCreateRequest {
     required this.categories,
   });
 }
+
+class DrinkDeleteRequest {
+  final String id;
+
+  DrinkDeleteRequest({required this.id});
+}

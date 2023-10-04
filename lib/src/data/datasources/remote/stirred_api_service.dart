@@ -138,4 +138,7 @@ abstract class StirredApiService {
   });
 
 
+  @DELETE("/drinks/{id}/")
+  Future<void> deleteDrink(@Path() String id);
+
 }

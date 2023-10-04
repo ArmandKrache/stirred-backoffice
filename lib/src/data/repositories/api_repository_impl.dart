@@ -235,4 +235,13 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
       categories: request.categories
     ));
   }
+
+  @override
+  Future<void> deleteDrink({
+    required DrinkDeleteRequest request
+  }) {
+    return _stirredApiService.deleteDrink(
+        request.id
+    );
+  }
 }

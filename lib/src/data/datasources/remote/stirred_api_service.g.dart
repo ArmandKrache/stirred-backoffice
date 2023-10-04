@@ -182,9 +182,9 @@ class _StirredApiService implements StirredApiService {
       'description',
       description,
     ));
-    _data.fields.add(MapEntry(
+    _data.files.add(MapEntry(
       'picture',
-      jsonEncode(picture),
+      picture,
     ));
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassesCreateResponse>>(Options(
@@ -233,10 +233,12 @@ class _StirredApiService implements StirredApiService {
         description,
       ));
     }
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture ?? <String, dynamic>{}),
-    ));
+    if (picture != null) {
+      _data.files.add(MapEntry(
+        'picture',
+        picture,
+      ));
+    }
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<HttpResponse<GlassPatchResponse>>(Options(
       method: 'PATCH',
@@ -355,19 +357,19 @@ class _StirredApiService implements StirredApiService {
     final _headers = <String, dynamic>{};
     final _data = FormData();
     _data.fields.add(MapEntry(
-      'name',
+      "name",
       name,
     ));
     _data.fields.add(MapEntry(
-      'description',
+      "description",
       description,
     ));
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture),
+    _data.files.add(MapEntry(
+      "picture",
+      picture,
     ));
     _data.fields.add(MapEntry(
-      'categories',
+      "categories",
       jsonEncode(categories),
     ));
     matches.forEach((i) {
@@ -422,14 +424,18 @@ class _StirredApiService implements StirredApiService {
         description,
       ));
     }
-    _data.fields.add(MapEntry(
-      'picture',
-      jsonEncode(picture ?? <String, dynamic>{}),
-    ));
-    _data.fields.add(MapEntry(
-      'categories',
-      jsonEncode(categories),
-    ));
+    if (picture != null) {
+      _data.files.add(MapEntry(
+        'picture',
+        picture,
+      ));
+    }
+    if (categories != null) {
+      _data.fields.add(MapEntry(
+        'categories',
+        jsonEncode(categories),
+      ));
+    }
     matches?.forEach((i) {
       _data.fields.add(MapEntry('matches', i));
     });
@@ -715,6 +721,30 @@ class _StirredApiService implements StirredApiService {
     final value = DrinkCreateResponse.fromMap(_result.data!);
     final httpResponse = HttpResponse(value, _result);
     return httpResponse;
+  }
+
+  @override
+  Future<void> deleteDrink(String id) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    await _dio.fetch<void>(_setStreamType<void>(Options(
+      method: 'DELETE',
+      headers: _headers,
+      extra: _extra,
+    )
+        .compose(
+      _dio.options,
+      '/drinks/${id}/',
+      queryParameters: queryParameters,
+      data: _data,
+    )
+        .copyWith(
+        baseUrl: _combineBaseUrls(
+          _dio.options.baseUrl,
+          baseUrl,
+        ))));
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

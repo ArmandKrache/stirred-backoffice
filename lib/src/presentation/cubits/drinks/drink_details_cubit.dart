@@ -26,8 +26,6 @@ class DrinkDetailsCubit extends BaseCubit<DrinkDetailsState, Drink> {
 
   Future<void> deleteDrink(String id) async {
     if (isBusy) return;
-    /// TODO : Implement delete
-    /*
     try {
       await _apiRepository.deleteDrink(
           request: DrinkDeleteRequest(id: id,)
@@ -36,7 +34,7 @@ class DrinkDetailsCubit extends BaseCubit<DrinkDetailsState, Drink> {
       appRouter.pop();
     } catch (e) {
       emit(DrinkDeleteFailed(drink: state.drink));
-    }*/
+    }
   }
 
   Future<Drink> patchDrink(String id, Map<String, dynamic> data) async {

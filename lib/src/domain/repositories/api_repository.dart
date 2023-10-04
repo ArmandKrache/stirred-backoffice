@@ -114,4 +114,8 @@ abstract class ApiRepository {
     required DrinkCreateRequest request,
   });
 
+  Future<void> deleteDrink({
+    required DrinkDeleteRequest request,
+  });
+
 }
