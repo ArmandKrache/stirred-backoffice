@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:cocktail_app/src/domain/models/requests/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';
@@ -22,28 +23,34 @@ class DrinkCreateCubit extends BaseCubit<DrinkCreateState, dynamic> {
   }
 
   Future<void> createDrink(Map<String, dynamic> data) async {
-
-    /// TODO: Handle creation flow
-    /*final String? name = data["name"];
+    final String? name = data["name"];
     final String? description = data["description"];
+    final String? recipe = data["recipe"];
+    final String? author = data["author"];
+    final String? glass = data["glass"];
     final MultipartFile? picture = data["picture"];
+    final Map<String, List<String>> categories = data["categories"];
 
-    log("$name | $description | $picture");
-
-    if (picture == null || name == "" || description == "") {
+    if (picture == null || name == null ||
+        description == null || recipe == null ||
+        author == null || glass == null) {
       emit(const DrinkCreateFailed());
       return ;
     }
 
     await run(() async {
       final response = await _apiRepository.createDrink(
-          request: DrinksCreateRequest(
+          request: DrinkCreateRequest(
             name: name,
             description: description,
             picture: picture,
+            recipe: recipe,
+            author: author,
+            glass: glass,
+            categories: categories
           ));
       emit(const DrinkCreateSuccess());
-    });*/
+    });
   }
 
   void reset() {

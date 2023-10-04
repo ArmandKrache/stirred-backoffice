@@ -5,6 +5,7 @@ import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/drink.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
+import 'package:cocktail_app/src/domain/models/generic_preview_data_model.dart';
 import 'package:cocktail_app/src/domain/models/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profile.dart';
@@ -51,9 +52,9 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final keywordsController = TextEditingController();
-  Recipe recipe = Recipe.empty();
+  GenericPreviewDataModel recipe = GenericPreviewDataModel.empty();
+  GenericPreviewDataModel author = GenericPreviewDataModel.empty();
   Glass glass = Glass.empty();
-  Profile author = Profile.empty();
   Categories categories = Categories.empty();
   http.MultipartFile? selectedImage;
   final TextEditingController _searchController = TextEditingController();
@@ -63,6 +64,10 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
     super.initState();
     nameController.text = widget.currentItem?.name ?? "";
     descriptionController.text = widget.currentItem?.description ?? "";
+    recipe = widget.currentItem?.recipe ?? GenericPreviewDataModel.empty();
+    author = widget.currentItem?.author ?? GenericPreviewDataModel.empty();
+    glass = widget.currentItem?.glass ?? Glass.empty();
+    categories = widget.currentItem?.categories ?? Categories.empty();
   }
 
   @override
@@ -85,15 +90,21 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
       onSave: () {
         /// TODO : Handle data sending
         Map<String, dynamic> data = {};
-        /*
         final http.MultipartFile? picture = selectedImage;
         if (nameController.text == "" ||
-            descriptionController.text == "") {
+            descriptionController.text == "" ||
+            recipe.id == "" ||
+            author.id == "" ||
+            glass.id == ""
+        ) {
           /// TODO: display error toast
           return ;
         }
         data["name"] = nameController.text;
         data["description"] = descriptionController.text;
+        data["recipe"] = recipe.id;
+        data["author"] = author.id;
+        data["glass"] = glass.id;
 
         if (picture != null) {
           final MultipartFile multipartFilePicture = MultipartFile.fromStream(
@@ -103,7 +114,19 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
             contentType: picture.contentType,
           );
           data["picture"] = multipartFilePicture;
-        }*/
+        }
+
+        Map<String, List<String>> categoriesData = {};
+        categories.keywords = keywordsController.text.split(",").map((e) => e.trim()).toList();
+        categoriesData["origins"] = categories.origins;
+        categoriesData["eras"] = categories.eras;
+        categoriesData["strengths"] = categories.strengths;
+        categoriesData["diets"] = categories.diets;
+        categoriesData["seasons"] = categories.seasons;
+        categoriesData["colors"] = categories.colors;
+        categoriesData["keywords"] = categories.keywords;
+
+        data["categories"] = categoriesData;
 
         logger.d(data.toString());
         widget.onSave.call(data);
@@ -191,7 +214,7 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                 );
                 if (res != null) {
                   setState(() {
-                    recipe = res;
+                    recipe = GenericPreviewDataModel(id: res.id, name: res.name, description: res.description);
                   });
                 }
               },
@@ -199,9 +222,9 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
               child: const Text("Select Recipe"),
             ),
             const SizedBox(width: 16,),
-            Text(recipe.name,),
+            Text(recipe.name ?? "",),
             const SizedBox(width: 4,),
-            Text(recipe.id, style: const TextStyle(color: Colors.grey, fontSize: 10),),
+            Text(recipe.id ?? "", style: const TextStyle(color: Colors.grey, fontSize: 10),),
           ],
         ),
         const SizedBox(height: 8,),
@@ -257,7 +280,7 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                 );
                 if (res != null) {
                   setState(() {
-                    author = res;
+                    author = GenericPreviewDataModel(id: res.id, name: res.name);
                   });
                 }
               },
@@ -265,9 +288,9 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
               child: const Text("Select Author"),
             ),
             const SizedBox(width: 16,),
-            Text(author.name,),
+            Text(author.name ?? "",),
             const SizedBox(width: 4,),
-            Text(author.id, style: const TextStyle(color: Colors.grey, fontSize: 10),),
+            Text(author.id ?? "", style: const TextStyle(color: Colors.grey, fontSize: 10),),
           ],
         ),
         const SizedBox(height: 8,),

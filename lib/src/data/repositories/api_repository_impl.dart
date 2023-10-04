@@ -13,6 +13,7 @@ import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/profile_list_request.dart';
 import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/models/responses/all_choices_response.dart';
+import 'package:cocktail_app/src/domain/models/responses/drinks/drink_create_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/drinks/drinks_list_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glass_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/responses/glasses/glasses_create_response.dart';
@@ -217,5 +218,21 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
   }) {
     return getState0f<DrinksListResponse>(request: () => _stirredApiService.getDrinksList(),
     );
+  }
+
+
+  @override
+  Future<DataState<DrinkCreateResponse>> createDrink({
+    required DrinkCreateRequest request
+  }) {
+    return getState0f<DrinkCreateResponse>(request: () => _stirredApiService.createDrink(
+      name: request.name,
+      description: request.description,
+      picture: request.picture,
+      recipe: request.recipe,
+      author: request.author,
+      glass: request.glass,
+      categories: request.categories
+    ));
   }
 }
