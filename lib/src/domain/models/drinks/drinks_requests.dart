@@ -24,6 +24,28 @@ class DrinkCreateRequest {
   });
 }
 
+class DrinkPatchRequest {
+  final String id;
+  final String? name;
+  final String? description;
+  final MultipartFile? picture;
+  final String? recipe;
+  final String? glass;
+  final String? author;
+  final Map<String, List<String>>? categories;
+
+  DrinkPatchRequest({
+    required this.id,
+    this.name,
+    this.description,
+    this.picture,
+    this.recipe,
+    this.glass,
+    this.author,
+    this.categories,
+  });
+}
+
 class DrinkDeleteRequest {
   final String id;
 

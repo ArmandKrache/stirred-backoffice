@@ -724,6 +724,87 @@ class _StirredApiService implements StirredApiService {
   }
 
   @override
+  Future<HttpResponse<DrinkPatchResponse>> patchDrink(
+    String id, {
+    String? name,
+    String? description,
+    MultipartFile? picture,
+    Map<String, dynamic>? categories,
+    String? recipe,
+    String? author,
+    String? glass,
+  }) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    queryParameters.removeWhere((k, v) => v == null);
+    final _headers = <String, dynamic>{};
+    final _data = FormData();
+    if (name != null) {
+      _data.fields.add(MapEntry(
+        'name',
+        name,
+      ));
+    }
+    if (description != null) {
+      _data.fields.add(MapEntry(
+        'description',
+        description,
+      ));
+    }
+    if (picture != null) {
+     _data.files.add(MapEntry(
+       'picture',
+       picture,
+     ));
+    }
+    if (categories != null) {
+      _data.fields.add(MapEntry(
+        'categories',
+        jsonEncode(categories),
+      ));
+    }
+    if (recipe != null) {
+      _data.fields.add(MapEntry(
+        'recipe',
+        recipe,
+      ));
+    }
+    if (author != null) {
+      _data.fields.add(MapEntry(
+        'author',
+        author,
+      ));
+    }
+    if (glass != null) {
+      _data.fields.add(MapEntry(
+        'glass',
+        glass,
+      ));
+    }
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<HttpResponse<DrinkPatchResponse>>(Options(
+      method: 'PATCH',
+      headers: _headers,
+      extra: _extra,
+      contentType: 'multipart/form-data',
+    )
+            .compose(
+              _dio.options,
+              '/drinks/${id}/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(
+                baseUrl: _combineBaseUrls(
+              _dio.options.baseUrl,
+              baseUrl,
+            ))));
+    final value = DrinkPatchResponse.fromMap(_result.data!);
+    final httpResponse = HttpResponse(value, _result);
+    return httpResponse;
+  }
+
+  @override
   Future<void> deleteDrink(String id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
@@ -735,13 +816,13 @@ class _StirredApiService implements StirredApiService {
       extra: _extra,
     )
         .compose(
-      _dio.options,
-      '/drinks/${id}/',
-      queryParameters: queryParameters,
-      data: _data,
-    )
+          _dio.options,
+          '/drinks/${id}/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
         .copyWith(
-        baseUrl: _combineBaseUrls(
+            baseUrl: _combineBaseUrls(
           _dio.options.baseUrl,
           baseUrl,
         ))));

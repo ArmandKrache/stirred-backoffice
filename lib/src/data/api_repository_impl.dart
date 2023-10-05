@@ -2,6 +2,7 @@
 import 'package:cocktail_app/src/data/datasources/remote/base/base_api_repository.dart';
 import 'package:cocktail_app/src/data/datasources/remote/admin_api_service.dart';
 import 'package:cocktail_app/src/data/datasources/remote/stirred_api_service.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/models/profiles/profile_requests.dart';
 import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
@@ -229,6 +230,22 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
       author: request.author,
       glass: request.glass,
       categories: request.categories
+    ));
+  }
+
+  @override
+  Future<DataState<DrinkPatchResponse>> patchDrink({
+    required DrinkPatchRequest request
+  }) {
+    return getState0f<DrinkPatchResponse>(request: () => _stirredApiService.patchDrink(
+        request.id,
+        name: request.name,
+        description: request.description,
+        picture: request.picture,
+        recipe: request.recipe,
+        author: request.author,
+        glass: request.glass,
+        categories: request.categories
     ));
   }
 

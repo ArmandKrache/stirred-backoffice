@@ -1,3 +1,4 @@
+import 'package:cocktail_app/src/domain/models/drinks/drink_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/models/profiles/profile_requests.dart';
 import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
@@ -108,6 +109,10 @@ abstract class ApiRepository {
 
   Future<DataState<DrinkCreateResponse>> createDrink({
     required DrinkCreateRequest request,
+  });
+
+  Future<DataState<DrinkPatchResponse>> patchDrink({
+    required DrinkPatchRequest request,
   });
 
   Future<void> deleteDrink({

@@ -37,13 +37,25 @@ class DrinkDetailsCubit extends BaseCubit<DrinkDetailsState, Drink> {
     }
   }
 
-  Future<Drink> patchDrink(String id, Map<String, dynamic> data) async {
-    /// TODO : Implement patch
-    /*
+  Future<Drink?> patchDrink(String id, Map<String, dynamic> data) async {
+    final String? name = data["name"];
+    final String? description = data["description"];
+    final String? recipe = data["recipe"];
+    final String? author = data["author"];
+    final String? glass = data["glass"];
+    final MultipartFile? picture = data["picture"];
+    final Map<String, List<String>> categories = data["categories"];
+
     final response = await _apiRepository.patchDrink(
         request: DrinkPatchRequest(
-            id: id,
-            body: data
+          id: id,
+          name: name,
+          description: description,
+          recipe: recipe,
+          author: author,
+          glass: glass,
+          picture: picture,
+          categories: categories
         ));
     log(response.toString());
     log(response.data.toString());
@@ -52,8 +64,6 @@ class DrinkDetailsCubit extends BaseCubit<DrinkDetailsState, Drink> {
     emit(DrinkPatchSuccess(drink: response.data!.drink,));
     appRouter.pop();
     return response.data!.drink;
-    */
-    return Drink.empty();
   }
 
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cocktail_app/src/domain/models/drinks/drink_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/models/all_choices_response.dart';
 import 'package:cocktail_app/src/domain/models/drinks/drink_create_response.dart';
@@ -136,6 +137,21 @@ abstract class StirredApiService {
     @Part() required String author,
     @Part() required String glass,
   });
+
+  @PATCH("/drinks/{id}/")
+  @MultiPart()
+  Future<HttpResponse<DrinkPatchResponse>> patchDrink(
+    @Path() String id,
+    {
+      @Part() String? name,
+      @Part() String? description,
+      @Part() MultipartFile? picture,
+      @Part() Map<String, dynamic>? categories,
+      @Part() String? recipe,
+      @Part() String? author,
+      @Part() String? glass,
+    }
+  );
 
 
   @DELETE("/drinks/{id}/")
