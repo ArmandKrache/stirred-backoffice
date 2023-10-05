@@ -23,7 +23,7 @@ class ProfilesView extends HookWidget {
 
 
     useEffect(() {
-      profilesCubit.handleEvent(event: ProfileListEvent(request: ProfileListRequest()));
+      profilesCubit.fetchList();
       return ;
     }, []);
 
@@ -35,49 +35,35 @@ class ProfilesView extends HookWidget {
           ),
           actions: const [],
         ),
-      body: BlocBuilder<ProfilesCubit, ProfilesState>(
-          builder: (context, state) {
-            if (state.runtimeType == ProfilesLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.profiles.isEmpty) {
-              return const Center(child: Text("Profile list is empty"),);
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSearchBar(
-                    controller: _searchController,
-                    onChanged: (query) {
-                      /* remoteDrinksCubit.handleEvent(
-                    event: SearchDrinksEvent(
-                      request: SearchedCocktailsRequest(name: query),
-                    )
-                );*/
-                    },
-                    margin: const EdgeInsets.all(8),
-                  ),
-                  const SizedBox(height: 4,),
-                  BlocBuilder<ProfilesCubit, ProfilesState>(
-                      builder: (context, state) {
-                        switch (state.runtimeType) {
-                          case ProfilesLoading:
-                            return const Center(child: CupertinoActivityIndicator());
-                          case ProfilesFailed:
-                            return const Center(child: Icon(Ionicons.refresh));
-                          case ProfilesSuccess:
-                            return Expanded(
-                              child: _buildDataTable(state.profiles)
-                            );
-                          default:
-                            return const SizedBox();
-                        }
-                      }
-                  ),
-                ],
-              );
-            }
-          }),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSearchBar(
+            controller: _searchController,
+            onChanged: (query) {
+              profilesCubit.fetchList(query: query);
+            },
+            margin: const EdgeInsets.all(8),
+          ),
+          const SizedBox(height: 4,),
+          BlocBuilder<ProfilesCubit, ProfilesState>(
+              builder: (context, state) {
+                switch (state.runtimeType) {
+                  case ProfilesLoading:
+                    return const Center(child: CupertinoActivityIndicator());
+                  case ProfilesFailed:
+                    return const Center(child: Icon(Ionicons.refresh));
+                  case ProfilesSuccess:
+                    return Expanded(
+                        child: _buildDataTable(state.profiles)
+                    );
+                  default:
+                    return const SizedBox();
+                }
+              }
+          ),
+        ],
+      ),
     );
   }
 

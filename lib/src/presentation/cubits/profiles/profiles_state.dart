@@ -16,7 +16,7 @@ abstract class ProfilesState extends Equatable {
 }
 
 class ProfilesLoading extends ProfilesState {
-  const ProfilesLoading();
+  const ProfilesLoading({super.profiles, super.noMoreData});
 }
 
 class ProfilesSuccess extends ProfilesState {
