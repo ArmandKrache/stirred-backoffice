@@ -17,7 +17,7 @@ abstract class RecipesState extends Equatable {
 }
 
 class RecipesLoading extends RecipesState {
-  const RecipesLoading();
+  const RecipesLoading({super.recipes, super.noMoreData});
 }
 
 class RecipesSuccess extends RecipesState {

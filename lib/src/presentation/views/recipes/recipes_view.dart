@@ -26,7 +26,7 @@ class RecipesView extends HookWidget {
 
 
     useEffect(() {
-      recipesCubit.fetchList(request: RecipesListRequest());
+      recipesCubit.fetchList();
       return ;
     }, const []);
 
@@ -64,36 +64,29 @@ class RecipesView extends HookWidget {
             ),
           ],
         ),
-      body: BlocBuilder<RecipesCubit, RecipesState>(
-          builder: (context, state) {
-            if (state.runtimeType == RecipesLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.recipes.isEmpty) {
-              return const Center(child: Text("Ingredients list is empty"),);
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSearchBar(
-                    controller: _searchController,
-                    onChanged: (query) {
-                      /* remoteDrinksCubit.handleEvent(
-                    event: SearchDrinksEvent(
-                      request: SearchedCocktailsRequest(name: query),
-                    )
-                );*/
-                    },
-                    margin: const EdgeInsets.all(8),
-                  ),
-                  const SizedBox(height: 4,),
-                  Expanded(
-                      child: _buildDataTable(state.recipes, recipesCubit)
-                  ),
-                ],
-              );
-            }
-          }),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSearchBar(
+            controller: _searchController,
+            onChanged: (query) {
+              recipesCubit.fetchList(query: query);
+            },
+            margin: const EdgeInsets.all(8),
+          ),
+          const SizedBox(height: 4,),
+          Expanded(
+            child: BlocBuilder<RecipesCubit, RecipesState>(
+              builder: (context, state) {
+                if (state.recipes.isEmpty) {
+                  return const Center(child: Text("Recipes list is empty"),);
+                } else {
+                  return _buildDataTable(state.recipes, recipesCubit);
+                }
+              }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -143,7 +136,7 @@ class RecipesView extends HookWidget {
                   onTap: () async {
                     final deleted = await appRouter.push(RecipeDetailsRoute(recipe: item));
                     if (deleted == "deleted") {
-                      recipesCubit.fetchList(request: RecipesListRequest());
+                      recipesCubit.fetchList();
                     }
                   },
                 ),
@@ -172,7 +165,7 @@ class RecipesView extends HookWidget {
           if (state.runtimeType == RecipeCreateSuccess) {
             recipeCreateCubit.reset();
             appRouter.pop();
-            recipesCubit.fetchList(request: RecipesListRequest());
+            recipesCubit.fetchList();
             return const SizedBox();
           } else if (state.runtimeType == RecipeCreateFailed) {
             errorText = "Some fields are missing";
