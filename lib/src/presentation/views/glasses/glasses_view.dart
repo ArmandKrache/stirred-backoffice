@@ -27,7 +27,7 @@ class GlassesView extends HookWidget {
 
 
     useEffect(() {
-      glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+      glassesCubit.fetchList();
       return;
     }, []);
 
@@ -66,36 +66,32 @@ class GlassesView extends HookWidget {
           ),
         ],
       ),
-      body: BlocBuilder<GlassesCubit, GlassesState>(
-          builder: (context, state) {
-            if (state.runtimeType == GlassesLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.glasses.isEmpty) {
-              return const Center(child: Text("Glasses list is empty"),);
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSearchBar(
-                    controller: _searchController,
-                    onChanged: (query) {
-                      /* remoteDrinksCubit.handleEvent(
-                    event: SearchDrinksEvent(
-                      request: SearchedCocktailsRequest(name: query),
-                    )
-                );*/
-                    },
-                    margin: const EdgeInsets.all(8),
-                  ),
-                  const SizedBox(height: 4,),
-                  Expanded(
-                    child: _buildDataTable(state.glasses, glassesCubit)
-                  ),
-                ],
-              );
-            }
-          }),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSearchBar(
+            controller: _searchController,
+            onChanged: (query) {
+              glassesCubit.fetchList(query: query);
+            },
+            margin: const EdgeInsets.all(8),
+          ),
+          const SizedBox(height: 4,),
+          Expanded(
+            child: BlocBuilder<GlassesCubit, GlassesState>(
+              builder: (context, state) {
+                if (state.runtimeType == GlassesLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state.glasses.isEmpty) {
+                  return const Center(child: Text("Glasses list is empty"),);
+                } else {
+                  return _buildDataTable(state.glasses, glassesCubit);
+                }
+              }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -145,7 +141,7 @@ class GlassesView extends HookWidget {
                   onTap: () async {
                     final deleted = await appRouter.push(GlassDetailsRoute(glass: item));
                     if (deleted == "deleted") {
-                      glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+                      glassesCubit.fetchList();
                     }
                   },
                 ),
@@ -173,7 +169,7 @@ class GlassesView extends HookWidget {
           if (state.runtimeType == GlassCreateSuccess) {
             glassCreateCubit.reset();
             appRouter.pop();
-            glassesCubit.handleEvent(event: GlassesListEvent(request: GlassesListRequest()));
+            glassesCubit.fetchList();
             return const SizedBox();
           } else if (state.runtimeType == GlassCreateFailed) {
             errorText = "Some fields are missing";

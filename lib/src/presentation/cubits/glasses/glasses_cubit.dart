@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glasses_list_response.dart';
 import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -16,29 +17,31 @@ class GlassesCubit extends BaseCubit<GlassesState, List<Glass>> {
 
   GlassesCubit(this._apiRepository) : super(const GlassesLoading(), []);
 
-  Future<void> handleEvent({dynamic event}) async {
+  Future<void> fetchList({String query = ""}) async {
     if (isBusy) return;
-    if (event == null) return;
 
 
-    if (event is GlassesListEvent) {
-      await run(() async {
-        emit(const GlassesLoading());
-        final response = await _apiRepository.getGlassesList(request: event.request!);
+    await run(() async {
+      emit(const GlassesLoading());
+      late DataState<GlassesListResponse> response;
+      if (query == "") {
+        response = await _apiRepository.getGlassesList(request: GlassesListRequest());
+      } else {
+        response = await _apiRepository.searchGlasses(request: GlassesSearchRequest(query: query));
+      }
 
-        if (response is DataSuccess) {
-          final glasses = response.data!.glasses;
-          final noMoreData = glasses.isEmpty;
+      if (response is DataSuccess) {
+        final glasses = response.data!.glasses;
+        final noMoreData = glasses.isEmpty;
 
-          data.clear();
-          data.addAll(glasses);
+        data.clear();
+        data.addAll(glasses);
 
-          emit(GlassesSuccess(glasses: data, noMoreData: noMoreData));
-        } else if (response is DataFailed) {
-          log(response.exception.toString());
-        }
-      });
-    }
+        emit(GlassesSuccess(glasses: data, noMoreData: noMoreData));
+      } else if (response is DataFailed) {
+        log(response.exception.toString());
+      }
+    });
   }
 
 }
