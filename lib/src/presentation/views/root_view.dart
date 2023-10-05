@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/nav_bar_items.dart';
 import 'package:cocktail_app/src/presentation/cubits/root_navigation/root_navigation_cubit.dart';
+import 'package:cocktail_app/src/presentation/data/global_data_functions.dart';
 import 'package:cocktail_app/src/presentation/views/drinks/drinks_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredients_view.dart';

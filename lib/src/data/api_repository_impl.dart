@@ -22,7 +22,7 @@ import 'package:cocktail_app/src/domain/models/profiles/profile_list_response.da
 import 'package:cocktail_app/src/domain/models/recipes/recipe_create_response.dart';
 import 'package:cocktail_app/src/domain/models/recipes/recipe_patch_response.dart';
 import 'package:cocktail_app/src/domain/models/recipes/recipes_list_reponse.dart';
-import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
+import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 
 class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {

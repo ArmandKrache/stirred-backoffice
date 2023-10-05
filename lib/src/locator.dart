@@ -1,7 +1,7 @@
 import 'package:cocktail_app/src/data/datasources/remote/admin_api_service.dart';
 import 'package:cocktail_app/src/data/datasources/remote/stirred_api_service.dart';
-import 'package:cocktail_app/src/data/repositories/api_repository_impl.dart';
-import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
+import 'package:cocktail_app/src/data/api_repository_impl.dart';
+import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 

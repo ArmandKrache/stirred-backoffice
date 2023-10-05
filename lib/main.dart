@@ -1,6 +1,6 @@
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/config/themes/app_themes.dart';
-import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
+import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/presentation/cubits/drinks/drink_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/drinks/drink_details_cubit.dart';

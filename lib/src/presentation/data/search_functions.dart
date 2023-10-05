@@ -7,13 +7,9 @@ import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/models/recipes/recipes_requests.dart';
-import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
+import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
-
-int alphabeticalStringSort(String a, String b) {
-  return a.toLowerCase().compareTo(b.toLowerCase());
-}
 
 Future<List<Ingredient>> searchIngredients(String query) async {
   ApiRepository apiRepository = locator<ApiRepository>();
