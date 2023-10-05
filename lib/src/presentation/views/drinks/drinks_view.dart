@@ -78,9 +78,6 @@ class DrinksView extends HookWidget {
           Expanded(
             child: BlocBuilder<DrinksCubit, DrinksState>(
               builder: (context, state) {
-                if (state.runtimeType == DrinksLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 if (state.drinks.isEmpty) {
                   return const Center(child: Text("Drinks list is empty"),);
                 } else {

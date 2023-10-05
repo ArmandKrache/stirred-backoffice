@@ -16,7 +16,7 @@ abstract class GlassesState extends Equatable {
 }
 
 class GlassesLoading extends GlassesState {
-  const GlassesLoading();
+  const GlassesLoading({super.glasses, super.noMoreData});
 }
 
 class GlassesSuccess extends GlassesState {

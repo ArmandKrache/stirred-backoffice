@@ -80,9 +80,6 @@ class GlassesView extends HookWidget {
           Expanded(
             child: BlocBuilder<GlassesCubit, GlassesState>(
               builder: (context, state) {
-                if (state.runtimeType == GlassesLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
                 if (state.glasses.isEmpty) {
                   return const Center(child: Text("Glasses list is empty"),);
                 } else {

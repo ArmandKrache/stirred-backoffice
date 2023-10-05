@@ -16,7 +16,7 @@ abstract class IngredientsState extends Equatable {
 }
 
 class IngredientsLoading extends IngredientsState {
-  const IngredientsLoading();
+  const IngredientsLoading({super.ingredients, super.noMoreData});
 }
 
 class IngredientsSuccess extends IngredientsState {

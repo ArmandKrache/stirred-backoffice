@@ -2,6 +2,7 @@
 import 'dart:developer';
 
 import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredients_list_response.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -16,12 +17,17 @@ class IngredientsCubit extends BaseCubit<IngredientsState, List<Ingredient>> {
 
   IngredientsCubit(this._apiRepository) : super(const IngredientsLoading(), []);
 
-  Future<void> fetchList({IngredientsListRequest? request}) async {
-    if (isBusy || request == null) return;
+  Future<void> fetchList({String query = ""}) async {
+    if (isBusy) return;
 
     await run(() async {
-      emit(const IngredientsLoading());
-      final response = await _apiRepository.getIngredientsList(request: request);
+      emit(IngredientsLoading(ingredients: data));
+      late DataState<IngredientsListResponse> response;
+      if (query == "") {
+        response = await _apiRepository.getIngredientsList(request: IngredientsListRequest());
+      } else {
+        response = await _apiRepository.searchIngredients(request: IngredientsSearchRequest(query: query));
+      }
 
       if (response is DataSuccess) {
         final ingredients = response.data!.ingredients;

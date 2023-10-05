@@ -17,7 +17,7 @@ abstract class DrinksState extends Equatable {
 }
 
 class DrinksLoading extends DrinksState {
-  const DrinksLoading();
+  const DrinksLoading({super.drinks, super.noMoreData});
 }
 
 class DrinksSuccess extends DrinksState {

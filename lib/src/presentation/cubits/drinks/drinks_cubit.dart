@@ -19,7 +19,7 @@ class DrinksCubit extends BaseCubit<DrinksState, List<Drink>> {
     if (isBusy) return;
 
      await run(() async {
-        emit(const DrinksLoading());
+        emit(DrinksLoading(drinks: data));
         late DataState<DrinksListResponse> response;
         if (query == "") {
           response = await _apiRepository.getDrinksList(request: DrinksListRequest());

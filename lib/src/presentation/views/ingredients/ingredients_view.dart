@@ -26,7 +26,7 @@ class IngredientsView extends HookWidget {
 
 
     useEffect(() {
-      ingredientsCubit.fetchList(request: IngredientsListRequest());
+      ingredientsCubit.fetchList();
       return;
     }, []);
 
@@ -65,36 +65,29 @@ class IngredientsView extends HookWidget {
           ),
         ],
       ),
-      body: BlocBuilder<IngredientsCubit, IngredientsState>(
-          builder: (context, state) {
-            if (state.runtimeType == IngredientsLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.ingredients.isEmpty) {
-              return const Center(child: Text("Ingredients list is empty"),);
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSearchBar(
-                    controller: _searchController,
-                    onChanged: (query) {
-                      /* remoteDrinksCubit.handleEvent(
-                    event: SearchDrinksEvent(
-                      request: SearchedCocktailsRequest(name: query),
-                    )
-                );*/
-                    },
-                    margin: const EdgeInsets.all(8),
-                  ),
-                  const SizedBox(height: 4,),
-                  Expanded(
-                      child: _buildDataTable(state.ingredients, ingredientsCubit)
-                  ),
-                ],
-              );
-            }
-          }),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSearchBar(
+            controller: _searchController,
+            onChanged: (query) {
+              ingredientsCubit.fetchList(query: query);
+            },
+            margin: const EdgeInsets.all(8),
+          ),
+          const SizedBox(height: 4,),
+          Expanded(
+            child: BlocBuilder<IngredientsCubit, IngredientsState>(
+              builder: (context, state) {
+                if (state.ingredients.isEmpty) {
+                  return const Center(child: Text("Ingredients list is empty"),);
+                } else {
+                  return _buildDataTable(state.ingredients, ingredientsCubit);
+                }
+              }),
+          ),
+        ],
+      ),
     );
   }
 
@@ -160,7 +153,7 @@ class IngredientsView extends HookWidget {
                   onTap: () async {
                     final deleted = await appRouter.push(IngredientDetailsRoute(ingredient: item));
                     if (deleted == "deleted") {
-                      ingredientsCubit.fetchList(request: IngredientsListRequest());
+                      ingredientsCubit.fetchList();
                     }
                   },
                 ),
@@ -196,7 +189,7 @@ class IngredientsView extends HookWidget {
 
       /// ingredientsCubit.setLoading();
       appRouter.pop();
-      ingredientsCubit.fetchList(request: IngredientsListRequest());
+      ingredientsCubit.fetchList();
       return const SizedBox();
     } else if (state.runtimeType == IngredientCreateFailed) {
       errorText = "Some fields are missing";
@@ -205,7 +198,7 @@ class IngredientsView extends HookWidget {
       onSave: (Map<String, dynamic> data) {
         ingredientsCubit.createIngredient(data, () async {
           await appRouter.pop();
-          ingredientsCubit.fetchList(request: IngredientsListRequest());
+          ingredientsCubit.fetchList();
         });
       },
       title: "New Ingredient",
