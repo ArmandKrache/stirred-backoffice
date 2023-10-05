@@ -25,7 +25,7 @@ class DrinksView extends HookWidget {
 
 
     useEffect(() {
-      drinksCubit.fetchList(request: DrinksListRequest());
+      drinksCubit.fetchList();
       return ;
     }, const []);
 
@@ -64,36 +64,32 @@ class DrinksView extends HookWidget {
           ),
         ],
       ),
-      body: BlocBuilder<DrinksCubit, DrinksState>(
-          builder: (context, state) {
-            if (state.runtimeType == DrinksLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            if (state.drinks.isEmpty) {
-              return const Center(child: Text("Ingredients list is empty"),);
-            } else {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomSearchBar(
-                    controller: _searchController,
-                    onChanged: (query) {
-                      /* remoteDrinksCubit.handleEvent(
-                    event: SearchDrinksEvent(
-                      request: SearchedCocktailsRequest(name: query),
-                    )
-                );*/
-                    },
-                    margin: const EdgeInsets.all(8),
-                  ),
-                  const SizedBox(height: 4,),
-                  Expanded(
-                      child: _buildDataTable(state.drinks, drinksCubit)
-                  ),
-                ],
-              );
-            }
-          }),
+      body : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomSearchBar(
+            controller: _searchController,
+            onChanged: (query) async {
+              drinksCubit.fetchList(query: query);
+            },
+            margin: const EdgeInsets.all(8),
+          ),
+          const SizedBox(height: 4,),
+          Expanded(
+            child: BlocBuilder<DrinksCubit, DrinksState>(
+              builder: (context, state) {
+                if (state.runtimeType == DrinksLoading) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state.drinks.isEmpty) {
+                  return const Center(child: Text("Drinks list is empty"),);
+                } else {
+                  return _buildDataTable(state.drinks, drinksCubit);
+                }
+              }),
+        ),
+        ],
+      ),
     );
   }
 
@@ -143,7 +139,7 @@ class DrinksView extends HookWidget {
                   onTap: () async {
                     final deleted = await appRouter.push(DrinkDetailsRoute(drink: item));
                     if (deleted == "deleted") {
-                      drinksCubit.fetchList(request: DrinksListRequest());
+                      drinksCubit.fetchList();
                     }
                   },
                 ),
@@ -172,7 +168,7 @@ class DrinksView extends HookWidget {
           if (state.runtimeType == DrinkCreateSuccess) {
             drinkCreateCubit.reset();
             appRouter.pop();
-            drinksCubit.fetchList(request: DrinksListRequest());
+            drinksCubit.fetchList();
             return const SizedBox();
           } else if (state.runtimeType == DrinkCreateFailed) {
             errorText = "Some fields are missing";

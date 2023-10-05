@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drinks_list_response.dart';
 import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
@@ -14,12 +15,17 @@ class DrinksCubit extends BaseCubit<DrinksState, List<Drink>> {
 
   DrinksCubit(this._apiRepository) : super(const DrinksLoading(), []);
 
-  Future<void> fetchList({required DrinksListRequest request}) async {
+  Future<void> fetchList({String query = ""}) async {
     if (isBusy) return;
 
      await run(() async {
         emit(const DrinksLoading());
-        final response = await _apiRepository.getDrinksList(request: request);
+        late DataState<DrinksListResponse> response;
+        if (query == "") {
+          response = await _apiRepository.getDrinksList(request: DrinksListRequest());
+        } else {
+          response = await _apiRepository.searchDrinks(request: DrinksSearchRequest(query: query));
+        }
 
         if (response is DataSuccess) {
           final drinks = response.data!.drinks;
