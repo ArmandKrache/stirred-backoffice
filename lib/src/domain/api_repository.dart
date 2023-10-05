@@ -107,6 +107,10 @@ abstract class ApiRepository {
     required DrinksListRequest request,
   });
 
+  Future<DataState<DrinksListResponse>> searchDrinks({
+    required DrinksSearchRequest request,
+  });
+
   Future<DataState<DrinkCreateResponse>> createDrink({
     required DrinkCreateRequest request,
   });

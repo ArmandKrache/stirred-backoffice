@@ -217,6 +217,13 @@ class ApiRepositoryImpl extends BaseApiRepository implements ApiRepository {
     );
   }
 
+  @override
+  Future<DataState<DrinksListResponse>> searchDrinks({
+    required DrinksSearchRequest request
+  }) {
+    return getState0f<DrinksListResponse>(request: () => _stirredApiService.searchDrinks(query: request.query),
+    );
+  }
 
   @override
   Future<DataState<DrinkCreateResponse>> createDrink({

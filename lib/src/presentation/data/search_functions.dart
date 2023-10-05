@@ -1,4 +1,6 @@
 import 'package:cocktail_app/src/config/config.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
@@ -54,6 +56,18 @@ Future<List<Profile>> searchProfiles(String query) async {
       request: ProfilesSearchRequest(query: query,));
   if (response is DataSuccess) {
     return response.data!.profiles;
+  } else if (response is DataFailed) {
+    logger.d(response.exception.toString());
+  }
+  return [];
+}
+
+Future<List<Drink>> searchDrinks(String query) async {
+  ApiRepository apiRepository = locator<ApiRepository>();
+  final response = await apiRepository.searchDrinks(
+      request: DrinksSearchRequest(query: query,));
+  if (response is DataSuccess) {
+    return response.data!.drinks;
   } else if (response is DataFailed) {
     logger.d(response.exception.toString());
   }

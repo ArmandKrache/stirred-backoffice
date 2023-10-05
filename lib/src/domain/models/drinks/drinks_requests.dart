@@ -46,6 +46,12 @@ class DrinkPatchRequest {
   });
 }
 
+class DrinksSearchRequest {
+  final String query;
+
+  DrinksSearchRequest({this.query = ""});
+}
+
 class DrinkDeleteRequest {
   final String id;
 
