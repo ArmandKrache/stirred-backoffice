@@ -1,5 +1,5 @@
 import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:equatable/equatable.dart';
 
 class RecipePatchResponse extends Equatable {

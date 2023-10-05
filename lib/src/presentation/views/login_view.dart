@@ -1,6 +1,6 @@
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
+import 'package:cocktail_app/src/domain/models/login_request.dart';
 import 'package:cocktail_app/src/presentation/cubits/login/login_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';

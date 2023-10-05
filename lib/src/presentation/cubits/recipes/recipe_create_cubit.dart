@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cocktail_app/src/domain/models/requests/recipes/recipes_requests.dart';
+import 'package:cocktail_app/src/domain/models/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';

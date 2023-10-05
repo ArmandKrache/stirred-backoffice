@@ -2,9 +2,9 @@
 import 'dart:developer';
 
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
-import 'package:cocktail_app/src/domain/models/requests/drinks/drinks_requests.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';

@@ -2,9 +2,8 @@
 import 'dart:developer';
 
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
-import 'package:cocktail_app/src/domain/models/requests/glasses/glass_patch_request.dart';
-import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_delete_request.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';

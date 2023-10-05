@@ -31,7 +31,7 @@ CustomGenericAttributeWidget(
                       ),
  */
 
-import 'package:cocktail_app/src/domain/models/glass.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_clickable_text.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/utils/constants/constants.dart';

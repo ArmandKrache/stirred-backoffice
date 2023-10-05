@@ -1,8 +1,8 @@
 
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:equatable/equatable.dart';
 
 class DrinkCreateResponse extends Equatable {

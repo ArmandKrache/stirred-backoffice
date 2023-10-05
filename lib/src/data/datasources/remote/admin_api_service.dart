@@ -1,5 +1,5 @@
 import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/responses/login_response.dart';
+import 'package:cocktail_app/src/domain/models/login_response.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
 

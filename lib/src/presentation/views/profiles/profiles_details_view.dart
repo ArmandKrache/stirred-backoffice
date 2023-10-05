@@ -2,7 +2,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
+import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/picture_attribute_widget.dart';

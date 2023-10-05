@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';

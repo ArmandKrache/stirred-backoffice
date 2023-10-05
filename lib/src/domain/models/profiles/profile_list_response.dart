@@ -1,5 +1,5 @@
 import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
+import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
 import 'package:equatable/equatable.dart';
 
 class ProfileListResponse extends Equatable {

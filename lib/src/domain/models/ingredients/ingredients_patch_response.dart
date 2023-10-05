@@ -1,19 +1,19 @@
 
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:equatable/equatable.dart';
 
-class IngredientCreateResponse extends Equatable {
+class IngredientPatchResponse extends Equatable {
   final Ingredient ingredient;
 
 
-  const IngredientCreateResponse({
+  const IngredientPatchResponse({
     required this.ingredient,
   });
 
 
-  factory IngredientCreateResponse.fromMap(Map<String, dynamic> map) {
-    return IngredientCreateResponse(
+  factory IngredientPatchResponse.fromMap(Map<String, dynamic> map) {
+    return IngredientPatchResponse(
       ingredient: Ingredient(
         id: map["id"] ?? "",
         name: map["name"] ?? "",

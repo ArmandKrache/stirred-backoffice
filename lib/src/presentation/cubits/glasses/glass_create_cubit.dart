@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'package:cocktail_app/src/domain/models/requests/glasses/glasses_create_request.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';

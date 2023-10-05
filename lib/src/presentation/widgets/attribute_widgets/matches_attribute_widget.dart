@@ -1,4 +1,4 @@
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:flutter/material.dart';
 

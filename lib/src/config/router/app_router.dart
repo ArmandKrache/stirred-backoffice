@@ -1,9 +1,9 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
+import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:cocktail_app/src/presentation/views/drinks/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';

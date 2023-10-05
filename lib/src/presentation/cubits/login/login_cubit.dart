@@ -1,7 +1,7 @@
 
 import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/requests/login_request.dart';
+import 'package:cocktail_app/src/domain/models/login_request.dart';
 import 'package:cocktail_app/src/domain/repositories/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';

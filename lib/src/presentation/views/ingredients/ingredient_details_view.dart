@@ -1,7 +1,7 @@
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredient_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredient_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/categories_attribute_widget.dart';

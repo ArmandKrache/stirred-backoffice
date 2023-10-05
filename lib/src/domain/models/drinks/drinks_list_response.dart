@@ -1,11 +1,11 @@
 
 import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/drink.dart';
+import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
 import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/glass.dart';
-import 'package:cocktail_app/src/domain/models/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/profile.dart';
-import 'package:cocktail_app/src/domain/models/recipe.dart';
+import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
+import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
+import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
+import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:equatable/equatable.dart';
 
 class DrinksListResponse extends Equatable {
