@@ -89,7 +89,6 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
       onClose: widget.onClose,
       errorText: widget.errorText,
       onSave: () {
-        /// TODO : Handle data sending
         Map<String, dynamic> data = {};
         final http.MultipartFile? picture = selectedImage;
         if (nameController.text == "" ||
@@ -163,7 +162,6 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
           maxLines: 5,
           keyboardType: TextInputType.multiline,
         ),
-        /// TODO: add other fields Widgets
         const SizedBox(height: 8,),
         Row(
           children: [

@@ -9,6 +9,7 @@ import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.
 import 'package:cocktail_app/src/domain/models/recipes/recipes_requests.dart';
 import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
+import 'package:cocktail_app/src/presentation/data/search_functions.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -20,9 +21,23 @@ class RecipeDetailsCubit extends BaseCubit<RecipeDetailsState, Recipe> {
 
   RecipeDetailsCubit(this._apiRepository) : super(const RecipeDetailsLoading(), Recipe.empty());
 
-  Future<void> setRecipe(Recipe recipe) async {
-    data = recipe;
+  Future<void> setRecipe({Recipe? recipe, String? id}) async {
+    if (recipe == null) {
+      if (id == null) {
+        emit(const RecipeDetailsFailedInit());
+        return;
+      }
+      List<Recipe> recipes = await searchRecipes(id);
+      if (recipes.isEmpty) {
+        emit(const RecipeDetailsFailedInit());
+        return;
+      }
+      data = recipes.first;
+    } else {
+      data = recipe;
+    }
     emit(RecipeDetailsSuccess(recipe: data));
+    return;
   }
 
 

@@ -59,16 +59,11 @@ class GlassAttributeWidget extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomClickableText(
-                  text: Text(glass.name,
-                    style: const TextStyle(color: Colors.deepPurple,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold
-                    ),
+                Text(glass.name,
+                  style: const TextStyle(color: Colors.deepPurple,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold
                   ),
-                  onTap: () {
-                    /// TODO: Go to Glass Details Page
-                  },
                 ),
                 Text(glass.description),
               ],

@@ -25,6 +25,10 @@ class RecipeDetailsFailed extends RecipeDetailsState {
   const RecipeDetailsFailed({super.recipe,});
 }
 
+class RecipeDetailsFailedInit extends RecipeDetailsState {
+  const RecipeDetailsFailedInit({super.recipe,});
+}
+
 class RecipeDeleteSuccess extends RecipeDetailsState {
   const RecipeDeleteSuccess({super.recipe,});
 }

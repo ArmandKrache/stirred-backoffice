@@ -48,12 +48,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     IngredientDetailsRoute.name: (routeData) {
-      final args = routeData.argsAs<IngredientDetailsRouteArgs>();
+      final args = routeData.argsAs<IngredientDetailsRouteArgs>(
+          orElse: () => const IngredientDetailsRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: IngredientDetailsView(
           key: args.key,
           ingredient: args.ingredient,
+          id: args.id,
+          editButtonsVisibility: args.editButtonsVisibility,
         ),
       );
     },
@@ -88,12 +91,15 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     RecipeDetailsRoute.name: (routeData) {
-      final args = routeData.argsAs<RecipeDetailsRouteArgs>();
+      final args = routeData.argsAs<RecipeDetailsRouteArgs>(
+          orElse: () => const RecipeDetailsRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: RecipeDetailsView(
           key: args.key,
           recipe: args.recipe,
+          id: args.id,
+          editButtonsVisibility: args.editButtonsVisibility,
         ),
       );
     },
@@ -221,13 +227,17 @@ class GlassesRoute extends PageRouteInfo<void> {
 class IngredientDetailsRoute extends PageRouteInfo<IngredientDetailsRouteArgs> {
   IngredientDetailsRoute({
     Key? key,
-    required Ingredient ingredient,
+    Ingredient? ingredient,
+    String? id,
+    bool editButtonsVisibility = true,
     List<PageRouteInfo>? children,
   }) : super(
           IngredientDetailsRoute.name,
           args: IngredientDetailsRouteArgs(
             key: key,
             ingredient: ingredient,
+            id: id,
+            editButtonsVisibility: editButtonsVisibility,
           ),
           initialChildren: children,
         );
@@ -241,16 +251,22 @@ class IngredientDetailsRoute extends PageRouteInfo<IngredientDetailsRouteArgs> {
 class IngredientDetailsRouteArgs {
   const IngredientDetailsRouteArgs({
     this.key,
-    required this.ingredient,
+    this.ingredient,
+    this.id,
+    this.editButtonsVisibility = true,
   });
 
   final Key? key;
 
-  final Ingredient ingredient;
+  final Ingredient? ingredient;
+
+  final String? id;
+
+  final bool editButtonsVisibility;
 
   @override
   String toString() {
-    return 'IngredientDetailsRouteArgs{key: $key, ingredient: $ingredient}';
+    return 'IngredientDetailsRouteArgs{key: $key, ingredient: $ingredient, id: $id, editButtonsVisibility: $editButtonsVisibility}';
   }
 }
 
@@ -353,13 +369,17 @@ class ProfilesRoute extends PageRouteInfo<void> {
 class RecipeDetailsRoute extends PageRouteInfo<RecipeDetailsRouteArgs> {
   RecipeDetailsRoute({
     Key? key,
-    required Recipe recipe,
+    Recipe? recipe,
+    String? id,
+    bool editButtonsVisibility = true,
     List<PageRouteInfo>? children,
   }) : super(
           RecipeDetailsRoute.name,
           args: RecipeDetailsRouteArgs(
             key: key,
             recipe: recipe,
+            id: id,
+            editButtonsVisibility: editButtonsVisibility,
           ),
           initialChildren: children,
         );
@@ -373,16 +393,22 @@ class RecipeDetailsRoute extends PageRouteInfo<RecipeDetailsRouteArgs> {
 class RecipeDetailsRouteArgs {
   const RecipeDetailsRouteArgs({
     this.key,
-    required this.recipe,
+    this.recipe,
+    this.id,
+    this.editButtonsVisibility = true,
   });
 
   final Key? key;
 
-  final Recipe recipe;
+  final Recipe? recipe;
+
+  final String? id;
+
+  final bool editButtonsVisibility;
 
   @override
   String toString() {
-    return 'RecipeDetailsRouteArgs{key: $key, recipe: $recipe}';
+    return 'RecipeDetailsRouteArgs{key: $key, recipe: $recipe, id: $id, editButtonsVisibility: $editButtonsVisibility}';
   }
 }
 

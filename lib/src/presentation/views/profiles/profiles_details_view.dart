@@ -11,14 +11,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
-const Preferences dumbPreferences = Preferences(
-    id: "id",
-    favorites: ["fav 1", "fav 2"],
-    likes: ["like 1", "like 2", "like 3"],
-    dislikes: ["dislike 1", "dislikes 2", "dislike 3", "dislike 4"],
-    allergies: ["allergie 1",],
-    diets: ["diet 1", "diet 2"],);
-
 @RoutePage()
 class ProfileDetailsView extends HookWidget {
   final Profile profile;

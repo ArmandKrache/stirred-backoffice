@@ -28,8 +28,7 @@ class Preferences extends Equatable {
     );
   }
 
-  factory Preferences.empty() {
-    return const Preferences(
+  factory Preferences.empty() => const Preferences(
       id: "-1",
       favorites: [],
       likes : [],
@@ -37,7 +36,6 @@ class Preferences extends Equatable {
       allergies: [],
       diets: [],
     );
-  }
 
   @override
   bool get stringify => true;

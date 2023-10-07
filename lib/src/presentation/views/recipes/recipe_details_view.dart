@@ -8,6 +8,7 @@ import 'package:cocktail_app/src/presentation/widgets/custom_generic_delete_aler
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -15,9 +16,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 @RoutePage()
 class RecipeDetailsView extends HookWidget {
-  final Recipe recipe;
+  final Recipe? recipe;
+  final String? id;
+  final bool editButtonsVisibility;
 
-  const RecipeDetailsView({Key? key, required this.recipe}) : super (key: key);
+  const RecipeDetailsView({Key? key, this.recipe, this.id, this.editButtonsVisibility = true}) : super (key: key);
 
 
   @override
@@ -25,7 +28,7 @@ class RecipeDetailsView extends HookWidget {
     final recipeDetailsCubit = BlocProvider.of<RecipeDetailsCubit>(context);
 
     useEffect(() {
-      recipeDetailsCubit.setRecipe(recipe);
+      recipeDetailsCubit.setRecipe(recipe: recipe, id: id);
       return;
     }, []);
 
@@ -48,68 +51,71 @@ class RecipeDetailsView extends HookWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black, size: 28),
         actions: [
-          Row(
-            children: [
-              GestureDetector(
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(2),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.edit, color: Colors.deepPurpleAccent,),
-                          Text("Edit", style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.w600, fontSize: 16),),
-                        ],
+          Visibility(
+            visible: editButtonsVisibility,
+            child: Row(
+              children: [
+                GestureDetector(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: const EdgeInsets.all(2),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.edit, color: Colors.deepPurpleAccent,),
+                            Text("Edit", style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.w600, fontSize: 16),),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  onTap: () async {
-                    await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                          child: _editRecipeModal(context, recipeDetailsCubit)
-                      ),
-                    );
-                  }
-              ),
-              GestureDetector(
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(2),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.delete, color: Colors.red,),
-                          Text("Delete", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),),
-                        ],
-                      ),
-                    ),
-                  ),
-                  onTap: () async {
-                    await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => CustomGenericAlertDialogWidget(
-                        item: recipeDetailsCubit.state.recipe,
-                        onCancel: () {
-                          appRouter.pop();
-                        },
-                        onConfirm: () {
-                          recipeDetailsCubit.deleteRecipe(recipeDetailsCubit.state.recipe!.id);
-                        },
-                      ),
-                    );
-                    if (recipeDetailsCubit.state.runtimeType == RecipeDeleteSuccess) {
-                      appRouter.pop("deleted");
+                    onTap: () async {
+                      await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                            child: _editRecipeModal(context, recipeDetailsCubit)
+                        ),
+                      );
                     }
-                  }
-              ),
-            ],
+                ),
+                GestureDetector(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: const EdgeInsets.all(2),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.delete, color: Colors.red,),
+                            Text("Delete", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => CustomGenericAlertDialogWidget(
+                          item: recipeDetailsCubit.state.recipe,
+                          onCancel: () {
+                            appRouter.pop();
+                          },
+                          onConfirm: () {
+                            recipeDetailsCubit.deleteRecipe(recipeDetailsCubit.state.recipe!.id);
+                          },
+                        ),
+                      );
+                      if (recipeDetailsCubit.state.runtimeType == RecipeDeleteSuccess) {
+                        appRouter.pop("deleted");
+                      }
+                    }
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -154,9 +160,19 @@ class RecipeDetailsView extends HookWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            /// TODO: Make ingredient name clickable and send to ingredients details view
                             for ( var element in currentRecipe.ingredients )
-                              Text("- ${element.quantity} ${element.unit} of ${element.ingredientName}")
+
+                              RichText(text: TextSpan(text : "- ${element.quantity} ${element.unit} of ",
+                                children: [
+                                  TextSpan(
+                                    text: element.ingredientName,
+                                    recognizer: TapGestureRecognizer()..onTap = () {
+                                      appRouter.push(IngredientDetailsRoute(id: element.ingredientId, editButtonsVisibility: false));
+                                    },
+                                    style: const TextStyle(color: Colors.deepPurple, fontSize: 14.5, fontWeight: FontWeight.bold)
+                                  ),
+                                ]
+                              ),)
                           ],
                         ),
                       )

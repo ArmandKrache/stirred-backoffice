@@ -33,8 +33,7 @@ class Profile extends Equatable implements GenericDataModel {
     );
   }
 
-  factory Profile.empty() {
-    return Profile(
+  factory Profile.empty() => Profile(
       id: "",
       email: "",
       name : "",
@@ -43,7 +42,7 @@ class Profile extends Equatable implements GenericDataModel {
       dateOfBirth: "",
       preferences: Preferences.empty(),
     );
-  }
+
 
   @override
   bool get stringify => true;

@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
@@ -17,9 +19,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 @RoutePage()
 class IngredientDetailsView extends HookWidget {
-  final Ingredient ingredient;
+  final Ingredient? ingredient;
+  final String? id;
+  final bool editButtonsVisibility;
 
-  const IngredientDetailsView({Key? key, required this.ingredient}) : super (key: key);
+  const IngredientDetailsView({Key? key, this.ingredient, this.id, this.editButtonsVisibility = true}) : super (key: key);
 
 
   @override
@@ -27,7 +31,7 @@ class IngredientDetailsView extends HookWidget {
     final ingredientDetailsCubit = BlocProvider.of<IngredientDetailsCubit>(context);
 
     useEffect(() {
-      ingredientDetailsCubit.setIngredient(ingredient);
+      ingredientDetailsCubit.setIngredient(ingredient: ingredient, id: id);
       return;
     }, []);
 
@@ -35,6 +39,11 @@ class IngredientDetailsView extends HookWidget {
       appBar: AppBar(
         title: BlocBuilder<IngredientDetailsCubit, IngredientDetailsState>(
           builder: (context, state) {
+            if (state.runtimeType == IngredientDetailsFailedInit) {
+              /// TODO: Toast error
+              appRouter.pop();
+              return const SizedBox();
+            }
             return Column(
               children: [
                 Text(state.ingredient?.name ?? "",
@@ -50,68 +59,71 @@ class IngredientDetailsView extends HookWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black, size: 28),
         actions: [
-          Row(
-            children: [
-              GestureDetector(
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(2),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.edit, color: Colors.deepPurpleAccent,),
-                          Text("Edit", style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.w600, fontSize: 16),),
-                        ],
+          Visibility(
+            visible: editButtonsVisibility,
+            child: Row(
+              children: [
+                GestureDetector(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: const EdgeInsets.all(2),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.edit, color: Colors.deepPurpleAccent,),
+                            Text("Edit", style: TextStyle(color: Colors.deepPurpleAccent, fontWeight: FontWeight.w600, fontSize: 16),),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  onTap: () async {
-                    await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => Dialog(
-                          child: _editIngredientModal(context, ingredientDetailsCubit)
-                      ),
-                    );
-                  }
-              ),
-              GestureDetector(
-                  child: MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 16),
-                      padding: const EdgeInsets.all(2),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Icon(Icons.delete, color: Colors.red,),
-                          Text("Delete", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),),
-                        ],
-                      ),
-                    ),
-                  ),
-                  onTap: () async {
-                    await showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => CustomGenericAlertDialogWidget(
-                        item: ingredientDetailsCubit.state.ingredient,
-                        onCancel: () {
-                          appRouter.pop();
-                        },
-                        onConfirm: () {
-                           ingredientDetailsCubit.deleteIngredient(ingredientDetailsCubit.state.ingredient!.id);
-                        },
-                      ),
-                    );
-                    if (ingredientDetailsCubit.state.runtimeType == IngredientDeleteSuccess) {
-                      appRouter.pop("deleted");
+                    onTap: () async {
+                      await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => Dialog(
+                            child: _editIngredientModal(context, ingredientDetailsCubit)
+                        ),
+                      );
                     }
-                  }
-              ),
-            ],
+                ),
+                GestureDetector(
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: const EdgeInsets.all(2),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Icon(Icons.delete, color: Colors.red,),
+                            Text("Delete", style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 16),),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) => CustomGenericAlertDialogWidget(
+                          item: ingredientDetailsCubit.state.ingredient,
+                          onCancel: () {
+                            appRouter.pop();
+                          },
+                          onConfirm: () {
+                             ingredientDetailsCubit.deleteIngredient(ingredientDetailsCubit.state.ingredient!.id);
+                          },
+                        ),
+                      );
+                      if (ingredientDetailsCubit.state.runtimeType == IngredientDeleteSuccess) {
+                        appRouter.pop("deleted");
+                      }
+                    }
+                ),
+              ],
+            ),
           ),
         ],
       ),

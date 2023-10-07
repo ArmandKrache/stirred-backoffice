@@ -25,6 +25,10 @@ class IngredientDetailsFailed extends IngredientDetailsState {
   const IngredientDetailsFailed({super.ingredient,});
 }
 
+class IngredientDetailsFailedInit extends IngredientDetailsState {
+  const IngredientDetailsFailedInit({super.ingredient,});
+}
+
 class IngredientDeleteSuccess extends IngredientDetailsState {
   const IngredientDeleteSuccess({super.ingredient,});
 }

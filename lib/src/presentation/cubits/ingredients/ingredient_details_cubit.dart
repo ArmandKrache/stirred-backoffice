@@ -1,11 +1,13 @@
 
 import 'dart:developer';
 
+import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.dart';
 import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
+import 'package:cocktail_app/src/presentation/data/search_functions.dart';
 import 'package:cocktail_app/src/utils/resources/data_state.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
@@ -17,9 +19,23 @@ class IngredientDetailsCubit extends BaseCubit<IngredientDetailsState, Ingredien
 
   IngredientDetailsCubit(this._apiRepository) : super(const IngredientDetailsLoading(), Ingredient.empty());
 
-  Future<void> setIngredient(Ingredient ingredient) async {
-    data = ingredient;
+  Future<void> setIngredient({Ingredient? ingredient, String? id}) async {
+    if (ingredient == null) {
+      if (id == null) {
+        emit(const IngredientDetailsFailedInit());
+        return;
+      }
+      List<Ingredient> ingredients = await searchIngredients(id);
+      if (ingredients.isEmpty) {
+        emit(const IngredientDetailsFailedInit());
+        return;
+      }
+      data = ingredients.first;
+    } else {
+      data = ingredient;
+    }
     emit(IngredientDetailsSuccess(ingredient: data));
+    return;
   }
 
 
