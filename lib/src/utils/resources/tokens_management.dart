@@ -1,5 +1,6 @@
 // Store access token
 import 'package:cocktail_app/src/config/config.dart';
+import 'package:dio/dio.dart';
 
 Future<void> storeAccessToken(String token) async {
   await storage.write(key: 'access_token', value: token);
@@ -22,4 +23,28 @@ Future<String?> getRefreshToken() async {
 Future<void> deleteTokens() async {
   await storage.delete(key: 'access_token');
   await storage.delete(key: 'refresh_token');
+}
+
+class TokenInterceptor extends Interceptor {
+
+  @override
+  Future onRequest(
+      RequestOptions options,
+      RequestInterceptorHandler handler,
+      ) async {
+    final token = await getAccessToken();
+    options.headers['Authorization'] = 'JWT $token';
+    super.onRequest(options, handler);
+  }
+
+  @override
+  void onResponse(Response response, ResponseInterceptorHandler handler) => super.onResponse(response, handler);
+
+  @override
+  Future onError(
+      DioException err,
+      ErrorInterceptorHandler handler,
+      ) async {
+    super.onError(err, handler);
+  }
 }
