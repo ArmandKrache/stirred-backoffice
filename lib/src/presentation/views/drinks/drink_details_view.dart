@@ -168,7 +168,6 @@ class DrinkDetailsView extends HookWidget {
                             ),
                           ),
                           onTap: () {
-                            ///TODO: Handle deletion
                             appRouter.push(RecipeDetailsRoute(id: currentDrink.recipe.id, editButtonsVisibility: false));
                           },
                         ),
