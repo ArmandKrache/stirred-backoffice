@@ -3,7 +3,6 @@ import 'dart:developer';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
 import 'package:cocktail_app/src/presentation/cubits/ingredients/ingredient_details_cubit.dart';
 import 'package:cocktail_app/src/presentation/views/ingredients/ingredient_edit_modal_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/categories_attribute_widget.dart';
@@ -15,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 
 @RoutePage()

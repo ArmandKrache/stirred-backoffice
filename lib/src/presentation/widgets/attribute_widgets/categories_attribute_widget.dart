@@ -1,6 +1,6 @@
-import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class CategoriesAttributeWidget extends StatelessWidget {
   final Categories categories;

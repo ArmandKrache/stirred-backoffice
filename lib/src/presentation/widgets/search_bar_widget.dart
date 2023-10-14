@@ -1,5 +1,5 @@
-import 'package:cocktail_app/src/utils/resources/debouncer.dart';
 import 'package:flutter/material.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final TextEditingController controller;

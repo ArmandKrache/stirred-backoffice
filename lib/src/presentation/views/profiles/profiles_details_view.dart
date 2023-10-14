@@ -1,8 +1,4 @@
-
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/preferences.dart';
-import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/description_attribute_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/picture_attribute_widget.dart';
@@ -10,6 +6,7 @@ import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/preferen
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 @RoutePage()
 class ProfileDetailsView extends HookWidget {
@@ -45,7 +42,7 @@ class ProfileDetailsView extends HookWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  PictureAttributeWidget(src : baseMediaUrl + profile.picture),
+                  PictureAttributeWidget(src : profile.picture),
                   const SizedBox(width: 16,),
                   DescriptionAttributeWidget(text : profile.description),
                 ],

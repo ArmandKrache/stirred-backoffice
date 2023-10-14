@@ -1,8 +1,8 @@
-import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_clickable_text.dart';
 import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:cocktail_app/src/utils/constants/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class GlassAttributeWidget extends StatelessWidget {
   final Glass glass;
@@ -18,6 +18,7 @@ class GlassAttributeWidget extends StatelessWidget {
       title: "Glass",
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Image.network(glass.picture, height: 96,),
           const SizedBox(width: 8,),

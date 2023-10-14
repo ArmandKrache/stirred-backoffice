@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  stirred_common_domain:
+    path: ../stirred_common_domain
   flutter:
     sdk: flutter
   retrofit: ^4.0.1

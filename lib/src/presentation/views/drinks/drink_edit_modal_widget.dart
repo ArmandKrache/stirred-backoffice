@@ -1,15 +1,7 @@
 import 'dart:developer';
 import 'dart:html' as html;
 import 'dart:typed_data';
-import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
-import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/generic_preview_data_model.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
-import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:cocktail_app/src/presentation/data/search_functions.dart';
 import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/categories_edit_field_widget.dart';
 import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/custom_generic_edit_modal.dart';
@@ -17,11 +9,11 @@ import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:cocktail_app/src/presentation/widgets/edit_field_widgets/generic_object_picker_modal.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';
-import 'package:cocktail_app/src/utils/resources/utils_functions.dart';
 import 'package:dio/dio.dart';
 import 'package:expandable/expandable.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 
 class DrinkEditModalWidget extends StatefulWidget {

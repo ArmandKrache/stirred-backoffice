@@ -1,14 +1,10 @@
-
-import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/categories.dart';
-import 'package:cocktail_app/src/domain/models/generic_data_model.dart';
-import 'package:cocktail_app/src/domain/models/generic_preview_data_model.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
 import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class GenericObjectPickerModal<T extends GenericDataModel> extends StatefulWidget {
   final Future<List<T>> Function(String query) searchFunction;

@@ -1,7 +1,5 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glass_create_cubit.dart';
 import 'package:cocktail_app/src/presentation/cubits/glasses/glasses_cubit.dart';
 import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
@@ -11,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 
 @RoutePage()

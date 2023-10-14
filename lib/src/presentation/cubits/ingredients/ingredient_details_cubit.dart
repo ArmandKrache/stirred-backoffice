@@ -1,16 +1,11 @@
 
 import 'dart:developer';
-
-import 'package:cocktail_app/src/config/config.dart';
 import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.dart';
-import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
 import 'package:cocktail_app/src/presentation/data/search_functions.dart';
-import 'package:cocktail_app/src/utils/resources/data_state.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 part 'ingredient_details_state.dart';
 

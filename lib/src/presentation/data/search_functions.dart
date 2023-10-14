@@ -1,17 +1,5 @@
-import 'package:cocktail_app/src/config/config.dart';
-import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
-import 'package:cocktail_app/src/domain/models/drinks/drinks_requests.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
-import 'package:cocktail_app/src/domain/models/profiles/profile_requests.dart';
-import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glasses_requests.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredients_requests.dart';
-import 'package:cocktail_app/src/domain/models/recipes/recipes_requests.dart';
-import 'package:cocktail_app/src/domain/api_repository.dart';
 import 'package:cocktail_app/src/locator.dart';
-import 'package:cocktail_app/src/utils/resources/data_state.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 Future<List<Ingredient>> searchIngredients(String query) async {
   ApiRepository apiRepository = locator<ApiRepository>();

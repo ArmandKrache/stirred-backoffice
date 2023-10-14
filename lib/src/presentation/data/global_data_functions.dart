@@ -1,10 +1,7 @@
-import 'package:cocktail_app/src/domain/api_repository.dart';
-import 'package:cocktail_app/src/domain/models/categories.dart';
 import 'package:cocktail_app/src/locator.dart';
 import 'package:cocktail_app/src/utils/constants/global_data.dart';
-import 'package:cocktail_app/src/utils/resources/data_state.dart';
-import 'package:cocktail_app/src/utils/resources/utils_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 Future<void> initialChoicesDataRetrieve() async {
   final ApiRepository apiRepository = locator<ApiRepository>();

@@ -1,9 +1,4 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/domain/models/drinks/drink.dart';
-import 'package:cocktail_app/src/domain/models/glasses/glass.dart';
-import 'package:cocktail_app/src/domain/models/ingredients/ingredient.dart';
-import 'package:cocktail_app/src/domain/models/profiles/profile.dart';
-import 'package:cocktail_app/src/domain/models/recipes/recipe.dart';
 import 'package:cocktail_app/src/presentation/views/drinks/drink_details_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glasses_view.dart';
 import 'package:cocktail_app/src/presentation/views/glasses/glass_details_view.dart';
@@ -17,6 +12,7 @@ import 'package:cocktail_app/src/presentation/views/recipes/recipes_view.dart';
 import 'package:cocktail_app/src/presentation/views/root_view.dart';
 import 'package:cocktail_app/src/presentation/views/drinks/drinks_view.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 part 'app_router.gr.dart';
 
 
