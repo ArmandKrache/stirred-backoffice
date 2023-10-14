@@ -1,12 +1,11 @@
 
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/presentation/cubits/recipes/recipe_create_cubit.dart';
-import 'package:cocktail_app/src/presentation/cubits/recipes/recipes_cubit.dart';
-import 'package:cocktail_app/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:stirred_backoffice/src/config/router/app_router.dart';
+import 'package:stirred_backoffice/src/presentation/cubits/recipes/recipe_create_cubit.dart';
+import 'package:stirred_backoffice/src/presentation/cubits/recipes/recipes_cubit.dart';
+import 'package:stirred_backoffice/src/presentation/views/recipes/recipe_edit_modal_widget.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/custom_generic_data_table_widget.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -20,7 +19,7 @@ class RecipesView extends HookWidget {
   Widget build(BuildContext context) {
     final recipesCubit = BlocProvider.of<RecipesCubit>(context);
     final scrollController = useScrollController();
-    final TextEditingController _searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
 
 
     useEffect(() {
@@ -66,7 +65,7 @@ class RecipesView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSearchBar(
-            controller: _searchController,
+            controller: searchController,
             onChanged: (query) {
               recipesCubit.fetchList(query: query);
             },

@@ -1,4 +1,4 @@
-import 'package:cocktail_app/src/config/router/app_router.dart';
+import 'package:stirred_backoffice/src/config/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 class CustomGenericEditModalWidget extends StatelessWidget {

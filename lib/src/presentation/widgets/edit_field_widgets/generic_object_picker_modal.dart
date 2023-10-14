@@ -1,8 +1,5 @@
-import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_text_tile.dart';
-import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
-import 'package:cocktail_app/src/utils/constants/global_data.dart';
-import 'package:expandable/expandable.dart';
+import 'package:stirred_backoffice/src/config/router/app_router.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 

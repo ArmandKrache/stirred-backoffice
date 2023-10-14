@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.flutter.test.tech.cocktail_app">
+    package="app.flutter.test.tech.stirred_backoffice">
    <application
-        android:label="cocktail_app"
+        android:label="stirred_backoffice"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,4 +1,4 @@
-import 'package:cocktail_app/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/attribute_widgets/custom_generic_attribute_widget.dart';
 import 'package:flutter/material.dart';
 
 class DescriptionAttributeWidget extends StatelessWidget {

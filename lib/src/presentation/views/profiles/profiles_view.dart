@@ -1,8 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:cocktail_app/src/config/router/app_router.dart';
-import 'package:cocktail_app/src/presentation/cubits/profiles/profiles_cubit.dart';
-import 'package:cocktail_app/src/presentation/widgets/custom_generic_data_table_widget.dart';
-import 'package:cocktail_app/src/presentation/widgets/search_bar_widget.dart';
+import 'package:stirred_backoffice/src/config/router/app_router.dart';
+import 'package:stirred_backoffice/src/presentation/cubits/profiles/profiles_cubit.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/custom_generic_data_table_widget.dart';
+import 'package:stirred_backoffice/src/presentation/widgets/search_bar_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +18,7 @@ class ProfilesView extends HookWidget {
   Widget build(BuildContext context) {
     final profilesCubit = BlocProvider.of<ProfilesCubit>(context);
     final scrollController = useScrollController();
-    final TextEditingController _searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
 
 
     useEffect(() {
@@ -38,7 +38,7 @@ class ProfilesView extends HookWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomSearchBar(
-            controller: _searchController,
+            controller: searchController,
             onChanged: (query) {
               profilesCubit.fetchList(query: query);
             },

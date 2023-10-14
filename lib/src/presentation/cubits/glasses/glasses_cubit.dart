@@ -1,6 +1,6 @@
 
 import 'dart:developer';
-import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
+import 'package:stirred_backoffice/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';

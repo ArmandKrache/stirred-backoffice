@@ -1,6 +1,6 @@
-import 'package:cocktail_app/src/config/router/app_router.dart';
+import 'package:stirred_backoffice/src/config/router/app_router.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
-import 'package:cocktail_app/src/presentation/cubits/base/base_cubit.dart';
+import 'package:stirred_backoffice/src/presentation/cubits/base/base_cubit.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 
@@ -41,8 +41,9 @@ class LoginCubit extends BaseCubit<LoginState, Map<String, dynamic>> {
     final refresh = await getRefreshToken();
     logger.d("Access : $access | Refresh : $refresh");
 
-    if (access == null || refresh == null)
+    if (access == null || refresh == null) {
       return ;
+    }
 
     appRouter.push(const RootRoute());
     emit(const LoginSuccess());

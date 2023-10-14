@@ -1,6 +1,6 @@
 {
-    "name": "cocktail_app",
-    "short_name": "cocktail_app",
+    "name": "stirred_backoffice",
+    "short_name": "stirred_backoffice",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
