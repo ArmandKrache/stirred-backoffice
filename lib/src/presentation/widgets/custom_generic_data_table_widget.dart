@@ -15,10 +15,12 @@ class CustomGenericDataTableWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: DataTable(
-        columns: columns,
-        rows: data.map((item) => buildRow(item)).toList(),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: DataTable(
+          columns: columns,
+          rows: data.map((item) => buildRow(item)).toList(),
+        ),
       ),
     );
   }

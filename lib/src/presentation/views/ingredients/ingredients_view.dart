@@ -184,7 +184,6 @@ class IngredientsView extends HookWidget {
     final IngredientsState state = ingredientsCubit.state;
 
     if (state.runtimeType == IngredientCreateSuccess) {
-
       /// ingredientsCubit.setLoading();
       appRouter.pop();
       ingredientsCubit.fetchList();
