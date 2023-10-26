@@ -22,7 +22,7 @@ class DrinkDetailsSuccess extends DrinkDetailsState {
 }
 
 class DrinkDetailsFailed extends DrinkDetailsState {
-  const DrinkDetailsFailed({super.drink,});
+  const DrinkDetailsFailed({super.drink, super.exception});
 }
 
 class DrinkDeleteSuccess extends DrinkDetailsState {
@@ -30,7 +30,7 @@ class DrinkDeleteSuccess extends DrinkDetailsState {
 }
 
 class DrinkDeleteFailed extends DrinkDetailsState {
-  const DrinkDeleteFailed({super.drink,});
+  const DrinkDeleteFailed({super.drink, super.exception,});
 }
 
 class DrinkPatchSuccess extends DrinkDetailsState {

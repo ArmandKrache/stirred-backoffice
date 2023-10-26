@@ -40,8 +40,8 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final keywordsController = TextEditingController();
-  GenericPreviewDataModel recipe = GenericPreviewDataModel.empty();
-  GenericPreviewDataModel author = GenericPreviewDataModel.empty();
+  Recipe recipe = Recipe.empty();
+  Profile author = Profile.empty();
   Glass glass = Glass.empty();
   Categories categories = Categories.empty();
   http.MultipartFile? selectedImage;
@@ -52,8 +52,8 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
     super.initState();
     nameController.text = widget.currentItem?.name ?? "";
     descriptionController.text = widget.currentItem?.description ?? "";
-    recipe = widget.currentItem?.recipe ?? GenericPreviewDataModel.empty();
-    author = widget.currentItem?.author ?? GenericPreviewDataModel.empty();
+    recipe = widget.currentItem?.recipe ?? Recipe.empty();
+    author = widget.currentItem?.author ?? Profile.empty();
     glass = widget.currentItem?.glass ?? Glass.empty();
     categories = widget.currentItem?.categories ?? Categories.empty();
   }
@@ -200,7 +200,7 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                 );
                 if (res != null) {
                   setState(() {
-                    recipe = GenericPreviewDataModel(id: res.id, name: res.name, description: res.description);
+                    recipe = res;
                   });
                 }
               },
@@ -266,7 +266,7 @@ class _DrinkEditModalWidgetState extends State<DrinkEditModalWidget> {
                 );
                 if (res != null) {
                   setState(() {
-                    author = GenericPreviewDataModel(id: res.id, name: res.name);
+                    author = res;
                   });
                 }
               },

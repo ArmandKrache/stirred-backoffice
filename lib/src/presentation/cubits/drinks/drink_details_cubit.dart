@@ -14,9 +14,25 @@ class DrinkDetailsCubit extends BaseCubit<DrinkDetailsState, Drink> {
 
   DrinkDetailsCubit(this._apiRepository) : super(const DrinkDetailsLoading(), Drink.empty());
 
-  Future<void> setDrink(Drink drink) async {
-    data = drink;
-    emit(DrinkDetailsSuccess(drink: data));
+  Future<void> retrieveDrink({required String id}) async {
+    if (isBusy) return;
+
+    await run(() async {
+      emit(const DrinkDetailsLoading());
+      late DataState<Drink> response;
+      response = await _apiRepository.retrieveDrink(request: DrinkRetrieveRequest(id: id));
+
+      if (response is DataSuccess) {
+        final drink = response.data!;
+
+        data = drink;
+
+        emit(DrinkDetailsSuccess(drink: data));
+      } else if (response is DataFailed) {
+        log(response.exception.toString());
+        emit(DrinkDetailsFailed(exception: response.exception));
+      }
+    });
   }
 
 

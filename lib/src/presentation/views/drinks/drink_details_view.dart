@@ -30,7 +30,7 @@ class DrinkDetailsView extends HookWidget {
     final drinkDetailsCubit = BlocProvider.of<DrinkDetailsCubit>(context);
 
     useEffect(() {
-      drinkDetailsCubit.setDrink(drink);
+      drinkDetailsCubit.retrieveDrink(id: drink.id);
       return;
     }, []);
 
