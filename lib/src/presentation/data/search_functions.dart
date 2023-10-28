@@ -1,4 +1,3 @@
-import 'package:stirred_backoffice/src/locator.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 Future<List<Ingredient>> searchIngredients(String query) async {

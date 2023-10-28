@@ -1,4 +1,3 @@
-import 'package:stirred_backoffice/src/locator.dart';
 import 'package:stirred_backoffice/src/utils/constants/global_data.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';

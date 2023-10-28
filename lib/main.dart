@@ -1,6 +1,5 @@
 import 'package:stirred_backoffice/src/config/router/app_router.dart';
 import 'package:stirred_backoffice/src/config/themes/app_themes.dart';
-import 'package:stirred_backoffice/src/locator.dart';
 import 'package:stirred_backoffice/src/presentation/cubits/drinks/drink_create_cubit.dart';
 import 'package:stirred_backoffice/src/presentation/cubits/drinks/drink_details_cubit.dart';
 import 'package:stirred_backoffice/src/presentation/cubits/drinks/drinks_cubit.dart';
