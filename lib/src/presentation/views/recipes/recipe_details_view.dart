@@ -151,7 +151,7 @@ class RecipeDetailsView extends HookWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          DescriptionAttributeWidget(text : currentRecipe.instructions, title: "Instructions",),
+                          DescriptionAttributeWidget(text : currentRecipe.instructions.join("\n"), title: "Instructions",),
                         ],
                       ),
                       CustomGenericAttributeWidget(

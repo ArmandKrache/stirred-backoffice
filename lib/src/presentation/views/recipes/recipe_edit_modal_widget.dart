@@ -34,12 +34,14 @@ class RecipeEditModalWidget extends StatefulWidget {
   State<RecipeEditModalWidget> createState() => _RecipeEditModalWidgetState();
 }
 
+///TODO: implement instructions edit field
 class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
 
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final prepTimeController = TextEditingController();
   final instructionsController = TextEditingController();
+  List<String> instructions = [];
   String difficulty = allPossibleDifficulties.first;
   List<RecipeIngredient> ingredients = [];
   int preparationTime = 0;
@@ -51,7 +53,8 @@ class _RecipeEditModalWidgetState extends State<RecipeEditModalWidget> {
     super.initState();
     nameController.text = widget.currentItem?.name ?? "";
     descriptionController.text = widget.currentItem?.description ?? "";
-    instructionsController.text = widget.currentItem?.instructions ?? "";
+    ///instructionsController.text = widget.currentItem?.instructions ?? [];
+    instructions = widget.currentItem?.instructions ?? [];
     ingredients = widget.currentItem?.ingredients ?? [];
     difficulty = widget.currentItem?.difficulty ?? allPossibleDifficulties.first;
     preparationTime = widget.currentItem?.preparationTime ?? 0;
