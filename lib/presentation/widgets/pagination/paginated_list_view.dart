@@ -20,6 +20,8 @@ class PaginatedListView<T> extends ConsumerWidget {
     this.filterBottomSheet,
     this.title = 'Items',
     this.columns = const [],
+    this.onCreatePressed,
+    this.createButtonLabel,
   });
 
   /// The current state of the pagination
@@ -48,6 +50,12 @@ class PaginatedListView<T> extends ConsumerWidget {
 
   /// Column headers for the table
   final List<String> columns;
+
+  /// Callback when create button is pressed
+  final VoidCallback? onCreatePressed;
+
+  /// Label for the create button
+  final String? createButtonLabel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -93,7 +101,7 @@ class PaginatedListView<T> extends ConsumerWidget {
   Widget _buildHeader(BuildContext context) {
     return Row(
       children: [
-        const StirText.titleLarge('Items'),
+        StirText.titleLarge(title),
         const SizedBox(width: StirSpacings.medium24),
         Expanded(
           child: StirTextField(
@@ -108,6 +116,14 @@ class PaginatedListView<T> extends ConsumerWidget {
           icon: const Icon(Icons.filter_list),
           onPressed: onFilterPressed,
         ),
+        if (onCreatePressed != null) ...[
+          const SizedBox(width: StirSpacings.small16),
+          FilledButton.icon(
+            onPressed: onCreatePressed,
+            icon: const Icon(Icons.add),
+            label: Text(createButtonLabel ?? 'Create'),
+          ),
+        ],
       ],
     );
   }

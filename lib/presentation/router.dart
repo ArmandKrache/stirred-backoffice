@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stirred_backoffice/presentation/views/dashboard/dashboard_view.dart';
-import 'package:stirred_backoffice/presentation/views/recipes/recipes_view.dart';
 import 'package:stirred_backoffice/presentation/views/glasses/glasses_view.dart';
 import 'package:stirred_backoffice/presentation/views/ingredients/ingredients_view.dart';
 import 'package:stirred_backoffice/presentation/views/drink_details/drink_details_view.dart';
@@ -16,7 +15,6 @@ import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _drinksNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'drinks');
-final _recipesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'recipes');
 final _ingredientsNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'ingredients');
 final _glassesNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'glasses');
 final _usersNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'users');
@@ -78,15 +76,13 @@ class LoginRoute extends GoRoute {
 class HomeTabConstants {
   static const int defaultTabIndex = drinksTabIndex;
   static const int drinksTabIndex = 0;
-  static const int recipesTabIndex = 1;
-  static const int ingredientsTabIndex = 2;
-  static const int glassesTabIndex = 3;
-  static const int usersTabIndex = 4;
-  static const int dashboardTabIndex = 5;
+  static const int ingredientsTabIndex = 1;
+  static const int glassesTabIndex = 2;
+  static const int usersTabIndex = 3;
+  static const int dashboardTabIndex = 4;
 
   static const Map<int, String> routesName = {
     drinksTabIndex: DrinksRoute.route,
-    recipesTabIndex: RecipesRoute.route,
     ingredientsTabIndex: IngredientsRoute.route,
     glassesTabIndex: GlassesRoute.route,
     usersTabIndex: UsersRoute.route,
@@ -106,13 +102,6 @@ class HomeRoute extends StatefulShellRoute {
               observers: [],
               routes: [
                 DrinksRoute(),
-              ],
-            ),
-            StatefulShellBranch(
-              navigatorKey: _recipesNavigatorKey,
-              observers: [],
-              routes: [
-                RecipesRoute(),
               ],
             ),
             StatefulShellBranch(
@@ -149,11 +138,10 @@ class HomeRoute extends StatefulShellRoute {
   static String route(int index) {
     return switch (index) {
       0 => DrinksRoute.route,
-      1 => RecipesRoute.route,
-      2 => IngredientsRoute.route,
-      3 => GlassesRoute.route,
-      4 => UsersRoute.route,
-      5 => DashboardRoute.route,
+      1 => IngredientsRoute.route,
+      2 => GlassesRoute.route,
+      3 => UsersRoute.route,
+      4 => DashboardRoute.route,
       _ => DrinksRoute.route,
     };
   }
@@ -174,20 +162,6 @@ class DrinksRoute extends GoRoute {
         );
 
   static const String route = '/drinks';
-}
-
-class RecipesRoute extends GoRoute {
-  RecipesRoute()
-      : super(
-          path: route,
-          pageBuilder: (context, state) {
-            return const NoTransitionPage(
-              child: RecipesView(),
-            );
-          },
-        );
-
-  static const String route = '/recipes';
 }
 
 class IngredientsRoute extends GoRoute {

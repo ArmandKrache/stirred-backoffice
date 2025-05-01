@@ -5,13 +5,13 @@ import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_no
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_state.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
-part 'drinks_notifier.g.dart';
+part 'users_notifier.g.dart';
 
-/// The Notifier enclosing the `DrinksView` logic.
+/// The Notifier enclosing the `UsersView` logic.
 @riverpod
-class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink> {
+class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile> {
   @override
-  Future<PaginationState<Drink>> build() async {
+  Future<PaginationState<Profile>> build() async {
     final controller = await _load();
 
     state = AsyncData(controller);
@@ -19,8 +19,8 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
     return controller;
   }
 
-  Future<PaginationState<Drink>> _load() async {
-    final result = await ref.read(drinksRepositoryProvider).getDrinksList();
+  Future<PaginationState<Profile>> _load() async {
+    final result = await ref.read(profileRepositoryProvider).getProfilesList();
 
     final response = result.when(
       success: (response) => response,
@@ -28,7 +28,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
     );
 
     return PaginationState(
-      items: response?.drinks ?? [],
+      items: response?.profiles ?? [],
     );
   }
 
@@ -48,15 +48,13 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getDrinksList(
-          offset: offset,
-        );
+        final result = await ref.read(profileRepositoryProvider).getProfilesList();
 
         return result.when(
           success: (response) {
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.drinks,
+                items: state.items + response.profiles,
               ),
             );
             return true;
@@ -115,4 +113,4 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
       ),
     );
   }
-}
+} 

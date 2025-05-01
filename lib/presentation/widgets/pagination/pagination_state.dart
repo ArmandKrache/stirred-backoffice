@@ -7,7 +7,7 @@ part 'pagination_state.freezed.dart';
 class PaginationState<T> with _$PaginationState<T> {
   const factory PaginationState({
     /// The list of items
-    @Default([]) List<T> items,
+    required List<T> items,
     
     /// Whether more items are being loaded
     @Default(false) bool isLoadingMore,
@@ -23,5 +23,8 @@ class PaginationState<T> with _$PaginationState<T> {
     
     /// The active filters
     @Default({}) Map<String, dynamic> activeFilters,
+    
+    /// Whether the list has reached the end
+    @Default(false) bool hasReachedEnd,
   }) = _PaginationState<T>;
 } 

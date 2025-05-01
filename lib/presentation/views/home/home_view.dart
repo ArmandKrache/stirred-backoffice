@@ -49,15 +49,6 @@ class HomeView extends ConsumerWidget {
       ),
       const BottomNavigationBarItem(
         icon: StirIconNotificationBadge(
-          iconData: Icons.restaurant_menu_outlined,
-        ),
-        activeIcon: StirIconNotificationBadge(
-          iconData: Icons.restaurant_menu,
-        ),
-        label: 'Recipes',
-      ),
-      const BottomNavigationBarItem(
-        icon: StirIconNotificationBadge(
           iconData: Icons.add_shopping_cart_outlined,
         ),
         activeIcon: StirIconNotificationBadge(

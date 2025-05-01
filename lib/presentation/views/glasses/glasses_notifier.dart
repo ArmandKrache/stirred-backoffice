@@ -5,13 +5,13 @@ import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_no
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_state.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
-part 'drinks_notifier.g.dart';
+part 'glasses_notifier.g.dart';
 
-/// The Notifier enclosing the `DrinksView` logic.
+/// The Notifier enclosing the `GlassesView` logic.
 @riverpod
-class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink> {
+class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Glass> {
   @override
-  Future<PaginationState<Drink>> build() async {
+  Future<PaginationState<Glass>> build() async {
     final controller = await _load();
 
     state = AsyncData(controller);
@@ -19,8 +19,8 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
     return controller;
   }
 
-  Future<PaginationState<Drink>> _load() async {
-    final result = await ref.read(drinksRepositoryProvider).getDrinksList();
+  Future<PaginationState<Glass>> _load() async {
+    final result = await ref.read(drinksRepositoryProvider).getGlassesList();
 
     final response = result.when(
       success: (response) => response,
@@ -28,7 +28,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
     );
 
     return PaginationState(
-      items: response?.drinks ?? [],
+      items: response?.glasses ?? [],
     );
   }
 
@@ -48,7 +48,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getDrinksList(
+        final result = await ref.read(drinksRepositoryProvider).getGlassesList(
           offset: offset,
         );
 
@@ -56,7 +56,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
           success: (response) {
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.drinks,
+                items: state.items + response.glasses,
               ),
             );
             return true;

@@ -5,8 +5,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/router.dart';
 import 'package:stirred_backoffice/presentation/views/drinks/drinks_notifier.dart';
+import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text.dart';
-import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
@@ -30,7 +30,9 @@ class DrinksView extends ConsumerWidget {
             onFilterPressed: () => _showFilterBottomSheet(context, drinksNotifier),
             onLoadMore: drinksNotifier.loadMore,
             title: 'Drinks Overview',
-            searchHint: 'Search drinks...', 
+            searchHint: 'Search drinks...',
+            onCreatePressed: () => _showCreateDrinkModal(context),
+            createButtonLabel: 'Add New Drink',
             itemBuilder: (context, drink) => _DrinkRow(
               drink: drink,
               onTap: () {
@@ -76,44 +78,25 @@ class DrinksView extends ConsumerWidget {
       ),
     );
   }
-}
 
-class _DrinksHeader extends StatelessWidget {
-  const _DrinksHeader({
-    required this.onSearch,
-    required this.onFilterPressed,
-  });
-
-  final Function(String) onSearch;
-  final VoidCallback onFilterPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        const StirText.headlineMedium('Drinks Overview'),
-        const Spacer(),
-        SizedBox(
-          width: 300,
-          child: StirTextField(
-            hint: 'Search drinks...',
-            onChanged: onSearch,
-            leadingIconData: Icons.search,
-            showLabel: false,
-          ),
+  void _showCreateDrinkModal(BuildContext context) {
+    StirModal.show(
+      context: context,
+      title: 'Create New Drink',
+      content: const Center(
+        child: Text('Form content will go here'),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text('Cancel'),
         ),
-        const SizedBox(width: StirSpacings.small16),
-        IconButton(
-          icon: const Icon(Icons.filter_list),
-          onPressed: onFilterPressed,
-        ),
-        const SizedBox(width: StirSpacings.small16),
-        FilledButton.icon(
+        FilledButton(
           onPressed: () {
-            // TODO: Implement add new drink
+            // TODO: Implement create drink
+            Navigator.pop(context);
           },
-          icon: const Icon(Icons.add),
-          label: const Text('Add New Drink'),
+          child: const Text('Create'),
         ),
       ],
     );
