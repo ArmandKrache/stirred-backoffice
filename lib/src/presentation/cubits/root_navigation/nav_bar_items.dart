@@ -1,1 +1,0 @@
-enum NavbarItem { drinks, profiles, recipes, glasses, ingredients }
