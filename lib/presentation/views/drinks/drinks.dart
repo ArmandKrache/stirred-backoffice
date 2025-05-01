@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/router.dart';
@@ -8,8 +9,8 @@ import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text.
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
+import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 
 class DrinksView extends ConsumerWidget {
   const DrinksView({super.key});
@@ -21,41 +22,40 @@ class DrinksView extends ConsumerWidget {
 
     return Scaffold(
       body: SafeArea(
-        minimum: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+        minimum: const EdgeInsets.all(StirSpacings.small16),
         child: notifier.when(
-          data: (data) {
-            return Column(
-              children: [
-                const Gap(StirSpacings.small16),
-                DrinksHeader(
-                  onSearch: (query) => drinksNotifier.searchDrinks(query),
-                  onFilterPressed: () => _showFilterBottomSheet(context, drinksNotifier),
-                ),
-                const SizedBox(height: StirSpacings.small16),
-                Expanded(
-                  child: GridView.builder(
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.75,
-                      crossAxisSpacing: StirSpacings.small16,
-                      mainAxisSpacing: StirSpacings.small16,
-                    ),
-                    itemCount: data.drinks.length,
-                    itemBuilder: (context, index) {
-                      return DrinkCardItem(drink: data.drinks[index]);
-                    },
-                  ),
-                ),
-              ],
-            );
-          },
+          data: (data) => PaginatedListView<Drink>(
+            state: data,
+            onSearch: drinksNotifier.search,
+            onFilterPressed: () => _showFilterBottomSheet(context, drinksNotifier),
+            onLoadMore: drinksNotifier.loadMore,
+            title: 'Drinks Overview',
+            searchHint: 'Search drinks...', 
+            itemBuilder: (context, drink) => _DrinkRow(
+              drink: drink,
+              onTap: () {
+                context.push(
+                  DrinkDetailsRoute.route(drink.id),
+                  extra: drink,
+                );
+              },
+            ),
+            filterBottomSheet: FilterBottomSheet(
+              onApplyFilters: (filters) {
+                drinksNotifier.applyFilters(filters);
+                Navigator.pop(context);
+              },
+              onClearFilters: () {
+                drinksNotifier.clearFilters();
+                Navigator.pop(context);
+              },
+            ),
+          ),
           error: (error, stacktrace) => ErrorPlaceholder(
             message: error.toString(),
             stackTrace: stacktrace,
           ),
-          loading: () {
-            return const LoadingPlaceholder();
-          },
+          loading: () => const LoadingPlaceholder(),
         ),
       ),
     );
@@ -78,9 +78,8 @@ class DrinksView extends ConsumerWidget {
   }
 }
 
-class DrinksHeader extends ConsumerWidget {
-  const DrinksHeader({
-    super.key,
+class _DrinksHeader extends StatelessWidget {
+  const _DrinksHeader({
     required this.onSearch,
     required this.onFilterPressed,
   });
@@ -89,25 +88,241 @@ class DrinksHeader extends ConsumerWidget {
   final VoidCallback onFilterPressed;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Row(
       children: [
-        IconButton(
-          icon: const Icon(Icons.filter_list, size: 32),
-          onPressed: onFilterPressed,
-        ),
-        const SizedBox(width: 8),
-        const StirText.titleLarge('Trending'),
-        const SizedBox(width: 24),
-        Expanded(
+        const StirText.headlineMedium('Drinks Overview'),
+        const Spacer(),
+        SizedBox(
+          width: 300,
           child: StirTextField(
-            hint: 'Search',
+            hint: 'Search drinks...',
             onChanged: onSearch,
             leadingIconData: Icons.search,
             showLabel: false,
           ),
         ),
+        const SizedBox(width: StirSpacings.small16),
+        IconButton(
+          icon: const Icon(Icons.filter_list),
+          onPressed: onFilterPressed,
+        ),
+        const SizedBox(width: StirSpacings.small16),
+        FilledButton.icon(
+          onPressed: () {
+            // TODO: Implement add new drink
+          },
+          icon: const Icon(Icons.add),
+          label: const Text('Add New Drink'),
+        ),
       ],
+    );
+  }
+}
+
+class _DrinkRow extends StatelessWidget {
+  const _DrinkRow({
+    required this.drink,
+    required this.onTap,
+  });
+
+  final Drink drink;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: StirSpacings.small16,
+          vertical: StirSpacings.small12,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            bottom: BorderSide(
+              color: Colors.grey.shade200,
+              width: 1,
+            ),
+          ),
+        ),
+        child: Row(
+          children: [
+            // ID
+            Expanded(
+              flex: 1,
+              child: StirText.labelSmall(drink.id, overflow: TextOverflow.ellipsis),
+            ),
+            const Gap(StirSpacings.small4),
+            Expanded(
+              flex: 3,
+              child: StirText.titleSmall(drink.name),
+            ),
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                child: _CategoryChip(category: drink.categories?.toString() ?? 'Uncategorized'),
+              ),
+            ),
+            // Difficulty
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 120,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                child: _DifficultyChip(difficulty: _getDifficulty(drink)),
+              ),
+            ),
+            // Prep Time
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 100,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                child: Text('${drink.recipe?.preparationTime ?? 5} min'),
+              ),
+            ),
+            // Status
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 120,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                child: const _StatusChip(status: 'Published'),
+              ),
+            ),
+            // Actions
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 100,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.edit, size: 20),
+                    onPressed: onTap,
+                    visualDensity: VisualDensity.compact,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete, size: 20),
+                    onPressed: () {
+                      logger.d('Delete drink ${drink.id}');
+                    },
+                    visualDensity: VisualDensity.compact,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _getDifficulty(Drink drink) {
+    final time = drink.recipe?.preparationTime ?? 5;
+    if (time <= 5) return 'Easy';
+    if (time <= 10) return 'Medium';
+    return 'Hard';
+  }
+}
+
+class _CategoryChip extends StatelessWidget {
+  const _CategoryChip({required this.category});
+
+  final String category;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.orange.shade50,
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        category,
+        style: TextStyle(color: Colors.orange.shade700),
+      ),
+    );
+  }
+}
+
+class _DifficultyChip extends StatelessWidget {
+  const _DifficultyChip({required this.difficulty});
+
+  final String difficulty;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (difficulty.toLowerCase()) {
+      'easy' => Colors.green,
+      'medium' => Colors.orange,
+      'hard' => Colors.red,
+      _ => Colors.grey,
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        difficulty,
+        style: TextStyle(color: color),
+      ),
+    );
+  }
+}
+
+class _StatusChip extends StatelessWidget {
+  const _StatusChip({required this.status});
+
+  final String status;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = switch (status.toLowerCase()) {
+      'published' => Colors.green,
+      'draft' => Colors.orange,
+      'archived' => Colors.red,
+      _ => Colors.grey,
+    };
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Text(
+        status,
+        style: TextStyle(color: color),
+      ),
     );
   }
 }
@@ -143,79 +358,11 @@ class FilterBottomSheet extends StatelessWidget {
           const SizedBox(height: StirSpacings.small16),
           // TODO: Add filter options here
           const SizedBox(height: StirSpacings.small16),
-          ElevatedButton(
+          FilledButton(
             onPressed: () => onApplyFilters({}),
             child: const Text('Apply Filters'),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class DrinkCardItem extends StatelessWidget {
-  const DrinkCardItem({super.key, required this.drink});
-
-  final Drink drink;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: InkWell(
-        onTap: () => router.push(
-          DrinkDetailsRoute.route(drink.id),
-          extra: drink,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Hero(
-                tag: 'drink_image_${drink.id}',
-                child: CachedNetworkImage(
-                  imageUrl: drink.picture,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  placeholder: (context, url) => const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  StirText.bodyLarge(
-                    drink.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.star,
-                        size: 16,
-                        color: Colors.amber,
-                      ),
-                      const SizedBox(width: 4),
-                      StirText.bodySmall(
-                        drink.averageRating.toStringAsFixed(1),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
