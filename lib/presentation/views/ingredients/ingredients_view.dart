@@ -7,6 +7,11 @@ import 'package:stirred_backoffice/presentation/views/ingredients/ingredients_no
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
@@ -36,11 +41,35 @@ class IngredientsView extends ConsumerWidget {
               'Category',
               'Actions',
             ],
-            itemBuilder: (context, ingredient) => _IngredientRow(
-              ingredient: ingredient,
+            itemBuilder: (context, ingredient) => ListItemRow(
+              picture: ingredient.picture,
+              pictureIcon: Icons.local_bar,
               onTap: () {
                 // TODO: Navigate to ingredient details
               },
+              children: [
+                NameIdColumn(
+                  name: ingredient.name,
+                  id: ingredient.id,
+                ),
+                const ColumnDivider(),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                    child: _CategoryChip(category: 'Categories'),
+                  ),
+                ),
+                const ColumnDivider(),
+                ActionsColumn(
+                  onEdit: () {
+                    // TODO: Navigate to ingredient details
+                  },
+                  onDelete: () {
+                    // TODO: Implement delete
+                  },
+                ),
+              ],
             ),
             filterBottomSheet: FilterBottomSheet(
               onApplyFilters: (filters) {
@@ -103,89 +132,6 @@ class IngredientsView extends ConsumerWidget {
   }
 }
 
-class _IngredientRow extends StatelessWidget {
-  const _IngredientRow({
-    required this.ingredient,
-    required this.onTap,
-  });
-
-  final Ingredient ingredient;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: StirSpacings.small16,
-          vertical: StirSpacings.small12,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey.shade200,
-              width: 1,
-            ),
-          ),
-        ),
-        child: Row(
-          children: [
-            // Name
-            Expanded(
-              flex: 3,
-              child: Text(
-                ingredient.name,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
-            ),
-            // Category
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
-                child: _CategoryChip(category: ingredient.categories.keywords.firstOrNull ?? ''),
-              ),
-            ),
-            // Actions
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 20),
-                    onPressed: onTap,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
-                    onPressed: () {
-                      // TODO: Implement delete
-                    },
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _CategoryChip extends StatelessWidget {
   const _CategoryChip({required this.category});
 
@@ -202,47 +148,6 @@ class _CategoryChip extends StatelessWidget {
       child: Text(
         category,
         style: const TextStyle(color: Colors.blue),
-      ),
-    );
-  }
-}
-
-class FilterBottomSheet extends StatelessWidget {
-  const FilterBottomSheet({
-    super.key,
-    required this.onApplyFilters,
-    required this.onClearFilters,
-  });
-
-  final Function(Map<String, dynamic>) onApplyFilters;
-  final VoidCallback onClearFilters;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(StirSpacings.small16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Filters', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: onClearFilters,
-                child: const Text('Clear'),
-              ),
-            ],
-          ),
-          const SizedBox(height: StirSpacings.small16),
-          // TODO: Add filter options here
-          const SizedBox(height: StirSpacings.small16),
-          FilledButton(
-            onPressed: () => onApplyFilters({}),
-            child: const Text('Apply Filters'),
-          ),
-        ],
       ),
     );
   }

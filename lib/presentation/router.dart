@@ -4,7 +4,7 @@ import 'package:stirred_backoffice/presentation/views/dashboard/dashboard_view.d
 import 'package:stirred_backoffice/presentation/views/glasses/glasses_view.dart';
 import 'package:stirred_backoffice/presentation/views/ingredients/ingredients_view.dart';
 import 'package:stirred_backoffice/presentation/views/drink_details/drink_details_view.dart';
-import 'package:stirred_backoffice/presentation/views/drinks/drinks.dart';
+import 'package:stirred_backoffice/presentation/views/drinks/drinks_view.dart';
 import 'package:stirred_backoffice/presentation/views/home/home_view.dart';
 import 'package:stirred_backoffice/presentation/views/login/login_view.dart';
 import 'package:stirred_backoffice/presentation/views/root.dart';

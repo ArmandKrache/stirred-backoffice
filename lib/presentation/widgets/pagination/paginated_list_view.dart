@@ -145,23 +145,82 @@ class PaginatedListView<T> extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          for (var i = 0; i < columns.length; i++) ...[
-            if (i > 0)
-              Container(
-                width: 1,
-                height: 24,
-                color: Colors.grey.shade200,
+          // Picture column (fixed width)
+          SizedBox(
+            width: 48,
+            child: Text(
+              '',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
               ),
+            ),
+          ),
+          const SizedBox(width: StirSpacings.small16),
+          // Name/ID column
+          Expanded(
+            flex: 2,
+            child: Text(
+              columns.isNotEmpty ? columns[0] : '',
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+          ),
+          if (columns.length > 1) ...[
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
             Expanded(
-              flex: i == 0 ? 3 : 2,
+              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
                 child: Text(
-                  columns[i],
+                  columns[1],
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey,
                   ),
+                ),
+              ),
+            ),
+          ],
+          if (columns.length > 2) ...[
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 120,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                child: Text(
+                  columns[2],
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ),
+          ],
+          if (columns.length > 3) ...[
+            Container(
+              width: 1,
+              height: 24,
+              color: Colors.grey.shade200,
+            ),
+            SizedBox(
+              width: 100,
+              child: Text(
+                columns[3],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
                 ),
               ),
             ),

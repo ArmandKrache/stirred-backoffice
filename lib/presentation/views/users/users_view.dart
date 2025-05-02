@@ -4,6 +4,11 @@ import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/users/users_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
@@ -33,11 +38,43 @@ class UsersView extends ConsumerWidget {
               'Date of Birth',
               'Actions',
             ],
-            itemBuilder: (context, user) => _UserRow(
-              user: user,
+            itemBuilder: (context, user) => ListItemRow(
+              picture: user.picture,
+              pictureIcon: Icons.person,
               onTap: () {
                 // TODO: Navigate to user details
               },
+              children: [
+                NameIdColumn(
+                  name: user.name ?? 'Unknown',
+                  id: user.id,
+                ),
+                const ColumnDivider(),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                    child: Text(user.email ?? 'Unknown'),
+                  ),
+                ),
+                const ColumnDivider(),
+                SizedBox(
+                  width: 120,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
+                    child: _RoleChip(role: user.dateOfBirth ?? 'Unknown'),
+                  ),
+                ),
+                const ColumnDivider(),
+                ActionsColumn(
+                  onEdit: () {
+                    // TODO: Navigate to user details
+                  },
+                  onDelete: () {
+                    // TODO: Implement delete
+                  },
+                ),
+              ],
             ),
             filterBottomSheet: FilterBottomSheet(
               onApplyFilters: (filters) {
@@ -77,102 +114,6 @@ class UsersView extends ConsumerWidget {
   }
 }
 
-class _UserRow extends StatelessWidget {
-  const _UserRow({
-    required this.user,
-    required this.onTap,
-  });
-
-  final Profile user;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: StirSpacings.small16,
-          vertical: StirSpacings.small12,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey.shade200,
-              width: 1,
-            ),
-          ),
-        ),
-        child: Row(
-          children: [
-            // Name
-            Expanded(
-              flex: 2,
-              child: Text(
-                user.name ?? 'Unknown',
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
-            ),
-            // Email
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            Expanded(
-              flex: 2,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
-                child: Text(user.email ?? 'Unknown'),
-              ),
-            ),
-            // Role
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            SizedBox(
-              width: 120,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
-                child: _RoleChip(role: user.dateOfBirth ?? 'Unknown'),
-              ),
-            ),
-            // Actions
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 20),
-                    onPressed: onTap,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
-                    onPressed: () {
-                      // TODO: Implement delete
-                    },
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class _RoleChip extends StatelessWidget {
   const _RoleChip({required this.role});
 
@@ -189,47 +130,6 @@ class _RoleChip extends StatelessWidget {
       child: Text(
         role,
         style: const TextStyle(color: Colors.purple),
-      ),
-    );
-  }
-}
-
-class FilterBottomSheet extends StatelessWidget {
-  const FilterBottomSheet({
-    super.key,
-    required this.onApplyFilters,
-    required this.onClearFilters,
-  });
-
-  final Function(Map<String, dynamic>) onApplyFilters;
-  final VoidCallback onClearFilters;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(StirSpacings.small16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Filters', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: onClearFilters,
-                child: const Text('Clear'),
-              ),
-            ],
-          ),
-          const SizedBox(height: StirSpacings.small16),
-          // TODO: Add filter options here
-          const SizedBox(height: StirSpacings.small16),
-          FilledButton(
-            onPressed: () => onApplyFilters({}),
-            child: const Text('Apply Filters'),
-          ),
-        ],
       ),
     );
   }

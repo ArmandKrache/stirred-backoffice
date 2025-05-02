@@ -5,6 +5,11 @@ import 'package:stirred_backoffice/presentation/views/glasses/glasses_notifier.d
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
@@ -31,15 +36,29 @@ class GlassesView extends ConsumerWidget {
             createButtonLabel: 'Add New Glass',
             columns: const [
               'Name',
-              'Volume (ml)',
-              'Status',
               'Actions',
             ],
-            itemBuilder: (context, glass) => _GlassRow(
-              glass: glass,
+            itemBuilder: (context, glass) => ListItemRow(
+              picture: glass.picture,
+              pictureIcon: Icons.wine_bar,
               onTap: () {
                 // TODO: Navigate to glass details
               },
+              children: [
+                NameIdColumn(
+                  name: glass.name,
+                  id: glass.id,
+                ),
+                const ColumnDivider(),
+                ActionsColumn(
+                  onEdit: () {
+                    // TODO: Navigate to glass details
+                  },
+                  onDelete: () {
+                    // TODO: Implement delete
+                  },
+                ),
+              ],
             ),
             filterBottomSheet: FilterBottomSheet(
               onApplyFilters: (filters) {
@@ -98,117 +117,6 @@ class GlassesView extends ConsumerWidget {
           child: const Text('Create'),
         ),
       ],
-    );
-  }
-}
-
-class _GlassRow extends StatelessWidget {
-  const _GlassRow({
-    required this.glass,
-    required this.onTap,
-  });
-
-  final Glass glass;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: StirSpacings.small16,
-          vertical: StirSpacings.small12,
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            bottom: BorderSide(
-              color: Colors.grey.shade200,
-              width: 1,
-            ),
-          ),
-        ),
-        child: Row(
-          children: [
-            // Name
-            Expanded(
-              flex: 3,
-              child: Text(
-                glass.name,
-                style: const TextStyle(fontWeight: FontWeight.w500),
-              ),
-            ),
-            // Actions
-            Container(
-              width: 1,
-              height: 24,
-              color: Colors.grey.shade200,
-            ),
-            SizedBox(
-              width: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.edit, size: 20),
-                    onPressed: onTap,
-                    visualDensity: VisualDensity.compact,
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.delete, size: 20),
-                    onPressed: () {
-                      // TODO: Implement delete
-                    },
-                    visualDensity: VisualDensity.compact,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class FilterBottomSheet extends StatelessWidget {
-  const FilterBottomSheet({
-    super.key,
-    required this.onApplyFilters,
-    required this.onClearFilters,
-  });
-
-  final Function(Map<String, dynamic>) onApplyFilters;
-  final VoidCallback onClearFilters;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(StirSpacings.small16),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Filters', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              TextButton(
-                onPressed: onClearFilters,
-                child: const Text('Clear'),
-              ),
-            ],
-          ),
-          const SizedBox(height: StirSpacings.small16),
-          // TODO: Add filter options here
-          const SizedBox(height: StirSpacings.small16),
-          FilledButton(
-            onPressed: () => onApplyFilters({}),
-            child: const Text('Apply Filters'),
-          ),
-        ],
-      ),
     );
   }
 }
