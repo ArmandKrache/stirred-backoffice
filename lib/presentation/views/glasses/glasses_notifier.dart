@@ -68,6 +68,58 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
     );
   }
 
+  /// Creates a new glass
+  Future<bool> createGlass({
+    required GlassesCreateRequest request,
+  }) async {
+    final result = await ref.read(drinksRepositoryProvider).createGlass(
+      request: request,
+    );
+
+    return result.when(
+      success: (_) {
+        // Refresh the list
+        fetchItems(resetList: true);
+        return true;
+      },
+      failure: (_) => false,
+    );
+  }
+
+  /// Updates an existing glass
+  Future<bool> updateGlass(
+    String id, {
+    required GlassPatchRequest request,
+  }) async {
+    final result = await ref.read(drinksRepositoryProvider).patchGlass(
+      id,
+      request,
+    );
+
+    return result.when(
+      success: (_) {
+        // Refresh the list
+        fetchItems(resetList: true);
+        return true;
+      },
+      failure: (_) => false,
+    );
+  }
+
+  /// Deletes a glass
+  Future<bool> deleteGlass(String id) async {
+    final result = await ref.read(drinksRepositoryProvider).deleteGlass(id);
+
+    return result.when(
+      success: (_) {
+        // Refresh the list
+        fetchItems(resetList: true);
+        return true;
+      },
+      failure: (_) => false,
+    );
+  }
+
   @override
   Future<void> search(String query) async {
     state = state.whenData(

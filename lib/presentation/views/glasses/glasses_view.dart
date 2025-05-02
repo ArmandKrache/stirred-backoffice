@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/glasses/glasses_notifier.dart';
-import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
@@ -11,6 +10,8 @@ import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
+import 'package:stirred_backoffice/presentation/widgets/entity/glass_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/entity/base_entity_modal.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class GlassesView extends ConsumerWidget {
@@ -32,7 +33,7 @@ class GlassesView extends ConsumerWidget {
             onLoadMore: glassesNotifier.loadMore,
             title: 'Glasses Overview',
             searchHint: 'Search glasses...',
-            onCreatePressed: () => _showCreateGlassModal(context),
+            onCreatePressed: () => _showCreateGlassModal(context, ref),
             createButtonLabel: 'Add New Glass',
             columns: const [
               'Name',
@@ -41,9 +42,7 @@ class GlassesView extends ConsumerWidget {
             itemBuilder: (context, glass) => ListItemRow(
               picture: glass.picture,
               pictureIcon: Icons.wine_bar,
-              onTap: () {
-                // TODO: Navigate to glass details
-              },
+              onTap: () => _showGlassModal(context, glass, EntityModalMode.view, ref),
               children: [
                 NameIdColumn(
                   name: glass.name,
@@ -51,12 +50,8 @@ class GlassesView extends ConsumerWidget {
                 ),
                 const ColumnDivider(),
                 ActionsColumn(
-                  onEdit: () {
-                    // TODO: Navigate to glass details
-                  },
-                  onDelete: () {
-                    // TODO: Implement delete
-                  },
+                  onEdit: () => _showGlassModal(context, glass, EntityModalMode.edit, ref),
+                  onDelete: () => _showGlassModal(context, glass, EntityModalMode.view, ref),
                 ),
               ],
             ),
@@ -97,26 +92,76 @@ class GlassesView extends ConsumerWidget {
     );
   }
 
-  void _showCreateGlassModal(BuildContext context) {
-    StirModal.show(
+  void _showGlassModal(BuildContext context, Glass glass, EntityModalMode mode, WidgetRef ref) {
+    showDialog(
       context: context,
-      title: 'Create New Glass',
-      content: const Center(
-        child: Text('Glass form content will go here'),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        FilledButton(
-          onPressed: () {
-            // TODO: Implement create glass
+      builder: (context) => GlassModal(
+        mode: mode,
+        entity: glass,
+        onSave: (data) async {
+          if (mode == EntityModalMode.create) {
+            final request = data as GlassesCreateRequest;
+            final success = await ref.read(glassesNotifierProvider.notifier).createGlass(
+              request: request,
+            );
+
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to create glass')),
+              );
+            }
+          } else {
+            final request = data as GlassPatchRequest;
+            final success = await ref.read(glassesNotifierProvider.notifier).updateGlass(
+              request.id,
+              request: request,
+            );
+
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to update glass')),
+              );
+            }
+          }
+        },
+        onDelete: mode == EntityModalMode.view ? () async {
+          final success = await ref.read(glassesNotifierProvider.notifier).deleteGlass(glass.id);
+          if (success) {
             Navigator.pop(context);
-          },
-          child: const Text('Create'),
-        ),
-      ],
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to delete glass')),
+            );
+          }
+        } : null,
+      ),
+    );
+  }
+
+  void _showCreateGlassModal(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => GlassModal(
+        mode: EntityModalMode.create,
+        entity: null,
+        onSave: (request) async {
+          final success = await ref.read(glassesNotifierProvider.notifier).createGlass(
+            request: request as GlassesCreateRequest,
+          );
+
+          if (success) {
+            Navigator.pop(context);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to create glass')),
+            );
+          }
+        },
+      ),
     );
   }
 }

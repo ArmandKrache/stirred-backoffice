@@ -47,6 +47,7 @@ class StirTextField extends ConsumerWidget {
     this.enabledBorder,
     this.onTap,
     this.onFieldSubmitted,
+    this.enabled = true,
   });
 
   /// The label of the text field.
@@ -155,6 +156,9 @@ class StirTextField extends ConsumerWidget {
   /// Callback executed when the field is submitted.
   final void Function(String)? onFieldSubmitted;
 
+  /// Boolean to enable or disable the field.
+  final bool enabled;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = ref.colors;
@@ -209,6 +213,7 @@ class StirTextField extends ConsumerWidget {
           autofillHints: autofillHints,
           controller: controller,
           focusNode: focusNode,
+          enabled: enabled,
           inputFormatters: inputFormatters,
           maxLines: minLines != null ? null : 1,
           minLines: minLines,
