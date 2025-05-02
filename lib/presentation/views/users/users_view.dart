@@ -4,7 +4,6 @@ import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/users/users_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
@@ -36,7 +35,6 @@ class UsersView extends ConsumerWidget {
               'Name',
               'Email',
               'Date of Birth',
-              'Actions',
             ],
             itemBuilder: (context, user) => ListItemRow(
               picture: user.picture,
@@ -64,15 +62,6 @@ class UsersView extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
                     child: _RoleChip(role: user.dateOfBirth ?? 'Unknown'),
                   ),
-                ),
-                const ColumnDivider(),
-                ActionsColumn(
-                  onEdit: () {
-                    // TODO: Navigate to user details
-                  },
-                  onDelete: () {
-                    // TODO: Implement delete
-                  },
                 ),
               ],
             ),

@@ -63,9 +63,20 @@ class BaseEntityModalState<T> extends State<BaseEntityModal<T>> {
                 ],
               ),
               const Gap(StirSpacings.medium24),
-              buildContent(context),
-              const Gap(StirSpacings.medium24),
-              buildActions(context, setState),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: buildContent(context),
+                      ),
+                    ),
+                    const Gap(StirSpacings.small16),
+                    buildActions(context, setState),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

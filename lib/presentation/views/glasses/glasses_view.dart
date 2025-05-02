@@ -4,8 +4,6 @@ import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/glasses/glasses_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
@@ -37,7 +35,6 @@ class GlassesView extends ConsumerWidget {
             createButtonLabel: 'Add New Glass',
             columns: const [
               'Name',
-              'Actions',
             ],
             itemBuilder: (context, glass) => ListItemRow(
               picture: glass.picture,
@@ -47,11 +44,6 @@ class GlassesView extends ConsumerWidget {
                 NameIdColumn(
                   name: glass.name,
                   id: glass.id,
-                ),
-                const ColumnDivider(),
-                ActionsColumn(
-                  onEdit: () => _showGlassModal(context, glass, EntityModalMode.edit, ref),
-                  onDelete: () => _showGlassModal(context, glass, EntityModalMode.view, ref),
                 ),
               ],
             ),
@@ -129,13 +121,33 @@ class GlassesView extends ConsumerWidget {
           }
         },
         onDelete: mode == EntityModalMode.view ? () async {
-          final success = await ref.read(glassesNotifierProvider.notifier).deleteGlass(glass.id);
-          if (success) {
-            Navigator.pop(context);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Failed to delete glass')),
-            );
+          final shouldDelete = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Delete Glass'),
+              content: const Text('Are you sure you want to delete this glass? This action cannot be undone.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Delete'),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldDelete == true) {
+            final success = await ref.read(glassesNotifierProvider.notifier).deleteGlass(glass.id);
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to delete glass')),
+              );
+            }
           }
         } : null,
       ),

@@ -7,7 +7,6 @@ import 'package:stirred_backoffice/presentation/views/ingredients/ingredients_no
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/actions_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
@@ -39,7 +38,6 @@ class IngredientsView extends ConsumerWidget {
             columns: const [
               'Name',
               'Category',
-              'Actions',
             ],
             itemBuilder: (context, ingredient) => ListItemRow(
               picture: ingredient.picture,
@@ -59,15 +57,6 @@ class IngredientsView extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
                     child: _CategoryChip(category: 'Categories'),
                   ),
-                ),
-                const ColumnDivider(),
-                ActionsColumn(
-                  onEdit: () {
-                    // TODO: Navigate to ingredient details
-                  },
-                  onDelete: () {
-                    // TODO: Implement delete
-                  },
                 ),
               ],
             ),

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
-import 'package:stirred_backoffice/presentation/router.dart';
 import 'package:stirred_backoffice/presentation/views/drinks/drinks_notifier.dart';
-import 'package:stirred_backoffice/presentation/views/drinks/widgets/drinks_row.dart';
-import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/entity/drink_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
+import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
+import 'package:stirred_backoffice/presentation/widgets/entity/base_entity_modal.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class DrinksView extends ConsumerWidget {
@@ -31,16 +31,21 @@ class DrinksView extends ConsumerWidget {
             onLoadMore: drinksNotifier.loadMore,
             title: 'Drinks Overview',
             searchHint: 'Search drinks...',
-            onCreatePressed: () => _showCreateDrinkModal(context),
+            onCreatePressed: () => _showCreateDrinkModal(context, ref),
             createButtonLabel: 'Add New Drink',
-            itemBuilder: (context, drink) => DrinkRow(
-              drink: drink,
-              onTap: () {
-                context.push(
-                  DrinkDetailsRoute.route(drink.id),
-                  extra: drink,
-                );
-              },
+            columns: const [
+              'Name',
+            ],
+            itemBuilder: (context, drink) => ListItemRow(
+              picture: drink.picture,
+              pictureIcon: Icons.local_bar,
+              onTap: () => _showDrinkModal(context, drink, EntityModalMode.view, ref),
+              children: [
+                NameIdColumn(
+                  name: drink.name,
+                  id: drink.id,
+                ),
+              ],
             ),
             filterBottomSheet: FilterBottomSheet(
               onApplyFilters: (filters) {
@@ -79,26 +84,96 @@ class DrinksView extends ConsumerWidget {
     );
   }
 
-  void _showCreateDrinkModal(BuildContext context) {
-    StirModal.show(
+  void _showDrinkModal(BuildContext context, Drink drink, EntityModalMode mode, WidgetRef ref) {
+    showDialog(
       context: context,
-      title: 'Create New Drink',
-      content: const Center(
-        child: Text('Form content will go here'),
+      builder: (context) => DrinkModal(
+        mode: mode,
+        entity: drink,
+        onSave: (data) async {
+          /*if (mode == EntityModalMode.create) {
+            final request = data as DrinksCreateRequest;
+            final success = await ref.read(drinksNotifierProvider.notifier).createDrink(
+              request: request,
+            );
+
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to create drink')),
+              );
+            }
+          } else {
+            final request = data as DrinkPatchRequest;
+            final success = await ref.read(drinksNotifierProvider.notifier).updateDrink(
+              request.id,
+              request: request,
+            );
+
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to update drink')),
+              );
+            }
+          }*/
+        },
+        onDelete: mode == EntityModalMode.view ? () async {
+          final shouldDelete = await showDialog<bool>(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Delete Drink'),
+              content: const Text('Are you sure you want to delete this drink? This action cannot be undone.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                FilledButton(
+                  onPressed: () => Navigator.pop(context, true),
+                  child: const Text('Delete'),
+                ),
+              ],
+            ),
+          );
+
+          if (shouldDelete == true) {
+            /*final success = await ref.read(drinksNotifierProvider.notifier).deleteDrink(drink.id);
+            if (success) {
+              Navigator.pop(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to delete drink')),
+              );
+            }*/
+          }
+        } : null,
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        FilledButton(
-          onPressed: () {
-            // TODO: Implement create drink
+    );
+  }
+
+  void _showCreateDrinkModal(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => DrinkModal(
+        mode: EntityModalMode.create,
+        entity: null,
+        onSave: (request) async {
+          /*final success = await ref.read(drinksNotifierProvider.notifier).createDrink(
+            request: request as DrinksCreateRequest,
+          );
+
+          if (success) {
             Navigator.pop(context);
-          },
-          child: const Text('Create'),
-        ),
-      ],
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Failed to create drink')),
+            );
+          }*/
+        },
+      ),
     );
   }
 }
