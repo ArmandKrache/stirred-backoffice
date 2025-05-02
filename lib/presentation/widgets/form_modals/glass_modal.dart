@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart' show MultipartFile;
 import 'package:stirred_backoffice/core/constants/spacing.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/base_entity_modal.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/form_fields.dart' as custom;
+import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/form_fields.dart' as custom;
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class GlassModal extends BaseEntityModal<Glass> {

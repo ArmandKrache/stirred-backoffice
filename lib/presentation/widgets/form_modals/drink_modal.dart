@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:http/http.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/base_entity_modal.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/form_fields.dart' as custom;
+import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/form_fields.dart' as custom;
+import 'package:stirred_backoffice/presentation/widgets/form_modals/complex_form_fields.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class DrinkModal extends BaseEntityModal<Drink> {
@@ -22,34 +23,30 @@ class DrinkModal extends BaseEntityModal<Drink> {
 class DrinkModalState extends BaseEntityModalState<Drink> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
-  late final TextEditingController _preparationTimeController;
   late final TextEditingController _instructionsController;
-  late final TextEditingController _ingredientsController;
   MultipartFile? _selectedImage;
+  double _preparationTime = 0;
+  int _difficulty = 1;
+  final List<RecipeIngredient> _ingredients = [];
 
   @override
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.entity?.name);
     _descriptionController = TextEditingController(text: widget.entity?.description);
-    _preparationTimeController = TextEditingController(text: widget.entity?.recipe?.preparationTime.toString());
     _instructionsController = TextEditingController(
       text: widget.entity?.recipe?.instructions.join('\n'),
     );
-    _ingredientsController = TextEditingController(
-      text: widget.entity?.recipe?.ingredients
-          .map((i) => '${i.quantity} ${i.unit} ${i.ingredientName}')
-          .join('\n'),
-    );
+    _preparationTime = widget.entity?.recipe?.preparationTime.toDouble() ?? 0;
+    _difficulty = widget.entity?.recipe?.difficulty.hashCode ?? 1;
+    _ingredients.addAll(widget.entity?.recipe?.ingredients ?? []);
   }
 
   @override
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
-    _preparationTimeController.dispose();
     _instructionsController.dispose();
-    _ingredientsController.dispose();
     super.dispose();
   }
 
@@ -77,58 +74,41 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
           minLines: 3,
         ),
         const Gap(StirSpacings.small16),
-        custom.TextFormField(
+        NumberPickerFormField(
           label: 'Preparation Time (minutes)',
-          controller: _preparationTimeController,
+          value: _preparationTime,
+          onChanged: (value) => setState(() => _preparationTime = value),
+          enabled: currentMode != EntityModalMode.view,
+          min: 0,
+          max: 120,
+          step: 1,
+        ),
+        const Gap(StirSpacings.small16),
+        DifficultySelectorFormField(
+          label: 'Difficulty',
+          value: _difficulty,
+          onChanged: (value) => setState(() => _difficulty = value),
           enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.small16),
         custom.TextFormField(
-          label: 'Instructions (one per line)',
+          label: 'Instructions (separated by new lines)',
           controller: _instructionsController,
           enabled: currentMode != EntityModalMode.view,
           minLines: 3,
         ),
         const Gap(StirSpacings.small16),
-        custom.TextFormField(
-          label: 'Ingredients (format: quantity unit name, one per line)',
-          controller: _ingredientsController,
+        IngredientsFormField(
+          label: 'Ingredients',
+          ingredients: _ingredients,
+          onChanged: (ingredients) => setState(() {
+            _ingredients.clear();
+            _ingredients.addAll(ingredients);
+          }),
           enabled: currentMode != EntityModalMode.view,
-          minLines: 3,
         ),
       ],
     );
-  }
-
-  List<RecipeIngredient> _parseIngredients() {
-    final ingredients = <RecipeIngredient>[];
-    final lines = _ingredientsController.text.split('\n');
-    
-    for (final line in lines) {
-      if (line.trim().isEmpty) continue;
-      
-      final parts = line.trim().split(' ');
-      if (parts.length < 3) {
-        throw Exception('Invalid ingredient format: $line');
-      }
-      
-      final quantity = double.tryParse(parts[0]);
-      if (quantity == null) {
-        throw Exception('Invalid quantity in ingredient: $line');
-      }
-      
-      final unit = parts[1];
-      final name = parts.sublist(2).join(' ');
-      
-      ingredients.add(RecipeIngredient(
-        ingredientId: 'ID',
-        quantity: quantity,
-        unit: unit,
-        ingredientName: name,
-      ));
-    }
-    
-    return ingredients;
   }
 
   @override
@@ -143,14 +123,12 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
     }
 
     try {
-      final ingredients = _parseIngredients();
       final instructions = _instructionsController.text
           .split('\n')
           .where((line) => line.trim().isNotEmpty)
           .toList();
-      final preparationTime = int.tryParse(_preparationTimeController.text);
-      /*
-      if (currentMode == EntityModalMode.create) {
+
+      /*if (currentMode == EntityModalMode.create) {
         if (_selectedImage == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Image is required')),
@@ -163,9 +141,10 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
           description: _descriptionController.text,
           picture: _selectedImage!,
           recipe: RecipeCreateRequest(
-            ingredients: ingredients,
+            ingredients: _ingredients,
             instructions: instructions,
-            preparationTime: preparationTime,
+            preparationTime: _preparationTime.toInt(),
+            difficulty: _difficulty,
           ),
         );
 
@@ -177,9 +156,10 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
           description: _descriptionController.text,
           picture: _selectedImage,
           recipe: RecipePatchRequest(
-            ingredients: ingredients,
+            ingredients: _ingredients,
             instructions: instructions,
-            preparationTime: preparationTime,
+            preparationTime: _preparationTime.toInt(),
+            difficulty: _difficulty,
           ),
         );
 

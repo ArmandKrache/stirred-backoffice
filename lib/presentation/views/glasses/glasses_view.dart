@@ -8,8 +8,8 @@ import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/glass_modal.dart';
-import 'package:stirred_backoffice/presentation/widgets/entity/base_entity_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/glass_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class GlassesView extends ConsumerWidget {
