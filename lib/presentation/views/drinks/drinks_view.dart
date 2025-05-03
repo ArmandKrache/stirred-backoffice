@@ -140,14 +140,14 @@ class DrinksView extends ConsumerWidget {
           );
 
           if (shouldDelete == true) {
-            /*final success = await ref.read(drinksNotifierProvider.notifier).deleteDrink(drink.id);
+            final success = await ref.read(drinksNotifierProvider.notifier).deleteDrink(drink.id);
             if (success) {
               Navigator.pop(context);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Failed to delete drink')),
               );
-            }*/
+            }
           }
         } : null,
       ),
@@ -164,6 +164,7 @@ class DrinksView extends ConsumerWidget {
           final success = await ref.read(drinksNotifierProvider.notifier).createDrink(request);
 
           if (success) {
+            ref.read(drinksNotifierProvider.notifier).fetchItems(resetList: true);
             Navigator.pop(context);
           } else {
             ScaffoldMessenger.of(context).showSnackBar(

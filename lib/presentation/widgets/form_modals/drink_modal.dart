@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:http/http.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/drink_details/drink_details_notifier.dart';
+import 'package:stirred_backoffice/presentation/views/drinks/drinks_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/categories_selector_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/difficulty_selector_form_field.dart';
@@ -16,25 +17,20 @@ import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
-class DrinkModal extends ConsumerStatefulWidget {
+class DrinkModal extends BaseEntityModal<Drink> {
   const DrinkModal({
     super.key,
-    required this.mode,
-    this.entity,
-    this.onSave,
-    this.onDelete,
+    required super.mode,
+    required super.entity,
+    required super.onSave,
+    super.onDelete,
   });
 
-  final EntityModalMode mode;
-  final Drink? entity;
-  final Function(dynamic)? onSave;
-  final VoidCallback? onDelete;
-
   @override
-  DrinkModalState createState() => DrinkModalState();
+  BaseEntityModalState<Drink> createState() => DrinkModalState();
 }
 
-class DrinkModalState extends ConsumerState<DrinkModal> {
+class DrinkModalState extends BaseEntityModalState<Drink> {
   late final TextEditingController _nameController;
   late final TextEditingController _descriptionController;
   late final TextEditingController _instructionsController;
@@ -42,14 +38,12 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
   MultipartFile? _selectedImage;
   Difficulty _difficulty = Difficulty.beginner;
   final List<RecipeIngredient> _ingredients = [];
-  late EntityModalMode _currentMode;
   Glass? _selectedGlass;
   Map<String, List<String>> _selectedCategories = {};
 
   @override
   void initState() {
     super.initState();
-    _currentMode = widget.mode;
     _nameController = TextEditingController(text: widget.entity?.name);
     _descriptionController = TextEditingController(text: widget.entity?.description);
     _preparationTimeController = TextEditingController(text: widget.entity?.recipe?.preparationTime.toStringAsFixed(0));
@@ -70,7 +64,9 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
     };
 
     if (widget.entity != null) {
-      ref.read(drinkDetailsNotifierProvider(widget.entity!.id).notifier).refreshDrink();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ProviderScope.containerOf(context).read(drinkDetailsNotifierProvider(widget.entity!.id).notifier).refreshDrink();
+      });
     }
   }
 
@@ -84,64 +80,26 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      child: StatefulBuilder(
-        builder: (context, setState) => Container(
-          width: 600,
-          padding: const EdgeInsets.all(StirSpacings.medium24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  StirText.titleLarge(_currentMode.title),
-                  IconButton(
-                    icon: const Icon(Icons.close),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              const Gap(StirSpacings.medium24),
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: _buildContent(context),
-                      ),
-                    ),
-                    const Gap(StirSpacings.small16),
-                    _buildActions(context, setState),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildContent(BuildContext context) {
+  Widget buildContent(BuildContext context) {
     if (widget.entity == null) {
       return _buildForm();
     }
 
-    return ref.watch(drinkDetailsNotifierProvider(widget.entity!.id)).when(
-      data: (data) {
-        final drink = data.drink ?? widget.entity!;
-        _updateControllers(drink);
-        return _buildForm();
+    return Consumer(
+      builder: (context, ref, child) {
+        return ref.watch(drinkDetailsNotifierProvider(widget.entity!.id)).when(
+          data: (data) {
+            final drink = data.drink ?? widget.entity!;
+            _updateControllers(drink);
+            return _buildForm();
+          },
+          error: (error, stackTrace) => ErrorPlaceholder(
+            message: error.toString(),
+            stackTrace: stackTrace,
+          ),
+          loading: () => const LoadingPlaceholder(),
+        );
       },
-      error: (error, stackTrace) => ErrorPlaceholder(
-        message: error.toString(),
-        stackTrace: stackTrace,
-      ),
-      loading: () => const LoadingPlaceholder(),
     );
   }
 
@@ -173,19 +131,19 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
         custom.ImageFormField(
           currentImageUrl: widget.entity?.picture,
           onImageChanged: (image) => _selectedImage = image,
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.medium24),
         custom.TextFormField(
           label: 'Name',
           controller: _nameController,
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.small16),
         custom.TextFormField(
           label: 'Description',
           controller: _descriptionController,
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
           minLines: 3,
         ),
         const Divider(
@@ -196,20 +154,20 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
         NumberPickerFormField(
           label: 'Preparation Time (minutes)',
           controller: _preparationTimeController,
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.small16),
         DifficultySelectorFormField(
           label: 'Difficulty',
           value: _difficulty,
           onChanged: (value) => setState(() => _difficulty = value),
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.small16),
         custom.TextFormField(
           label: 'Instructions (separated by new lines)',
           controller: _instructionsController,
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
           minLines: 3,
         ),
         const Gap(StirSpacings.small16),
@@ -220,7 +178,7 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
             _ingredients.clear();
             _ingredients.addAll(ingredients);
           }),
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Divider(
           height: StirSpacings.small16,
@@ -231,54 +189,21 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           label: 'Glass',
           value: _selectedGlass,
           onChanged: (glass) => setState(() => _selectedGlass = glass),
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
         const Gap(StirSpacings.small16),
         CategoriesSelectorFormField(
           label: 'Categories',
           value: _selectedCategories,
           onChanged: (categories) => setState(() => _selectedCategories = categories),
-          enabled: _currentMode != EntityModalMode.view,
+          enabled: currentMode != EntityModalMode.view,
         ),
       ],
     );
   }
 
-  Widget _buildActions(BuildContext context, StateSetter setState) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        if (_currentMode == EntityModalMode.view) ...[
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _currentMode = EntityModalMode.edit;
-              });
-            },
-            child: const Text('Edit'),
-          ),
-          const Gap(StirSpacings.small16),
-          if (widget.onDelete != null)
-            FilledButton(
-              onPressed: widget.onDelete,
-              child: const Text('Delete'),
-            ),
-        ] else ...[
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          const Gap(StirSpacings.small16),
-          FilledButton(
-            onPressed: _handleSave,
-            child: const Text('Save'),
-          ),
-        ],
-      ],
-    );
-  }
-
-  void _handleSave() {
+  @override
+  void handleSave() {
     if (widget.onSave == null) return;
 
     if (_nameController.text.isEmpty) {
@@ -294,7 +219,7 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           .where((line) => line.trim().isNotEmpty)
           .toList();
 
-      if (_currentMode == EntityModalMode.create) {
+      if (currentMode == EntityModalMode.create) {
         if (_selectedImage == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Image is required')),
@@ -329,26 +254,49 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
         };
 
         widget.onSave!(request);
-      } /*else if (_currentMode == EntityModalMode.edit) {
-        final request = DrinkPatchRequest(
-          id: widget.entity!.id,
-          name: _nameController.text,
-          description: _descriptionController.text,
-          picture: _selectedImage,
-          recipe: RecipePatchRequest(
-            ingredients: _ingredients,
-            instructions: instructions,
-            preparationTime: _preparationTime.toInt(),
-            difficulty: _difficulty,
-          ),
-        );
-
-        widget.onSave!(request);
-      }*/
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );
+    }
+  }
+
+  void _handleDelete() async {
+    if (widget.entity == null) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Delete Drink'),
+        content: const Text('Are you sure you want to delete this drink? This action cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      final success = await ProviderScope.containerOf(context).read(drinksNotifierProvider.notifier).deleteDrink(widget.entity!.id);
+      
+      if (success) {
+        if (mounted) {
+          Navigator.pop(context);
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Failed to delete drink')),
+          );
+        }
+      }
     }
   }
 }

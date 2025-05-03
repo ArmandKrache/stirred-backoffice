@@ -118,7 +118,6 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
   }
 
   Future<bool> createDrink(Map<String, dynamic> body) async {
-    logger.d(body);
     final recipe = RecipeCreateRequest(
       name: body['name'],
       description: body['description'],
@@ -127,7 +126,6 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
       preparationTime: body['recipe']['preparation_time'],
       difficulty: body['recipe']['difficulty'],
     );
-    logger.d(recipe);
 
     final result = await ref.read(drinksRepositoryProvider).createRecipe(recipe);
 
@@ -160,5 +158,19 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
     final drinkResult = await ref.read(drinksRepositoryProvider).createDrink(request: drink);
 
     return drinkResult.when(success: (response) => true, failure: (_) => false);
+  }
+
+  /// Deletes a drink and its associated recipe
+  Future<bool> deleteDrink(String drinkId) async {
+    final result = await ref.read(drinksRepositoryProvider).deleteDrink(drinkId);
+
+    return result.when(
+      success: (_) {
+        // Refresh the list to remove the deleted drink
+        fetchItems(resetList: true);
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 }
