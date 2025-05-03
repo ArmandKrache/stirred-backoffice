@@ -5,7 +5,9 @@ import 'package:http/http.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/drink_details/drink_details_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/categories_selector_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/difficulty_selector_form_field.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/glass_selector_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/ingredients_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/number_picker_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/form_fields.dart' as custom;
@@ -41,6 +43,8 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
   Difficulty _difficulty = Difficulty.beginner;
   final List<RecipeIngredient> _ingredients = [];
   late EntityModalMode _currentMode;
+  Glass? _selectedGlass;
+  Map<String, List<String>> _selectedCategories = {};
 
   @override
   void initState() {
@@ -54,6 +58,16 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
     );
     _difficulty = widget.entity?.recipe?.difficulty ?? Difficulty.beginner;
     _ingredients.addAll(widget.entity?.recipe?.ingredients ?? []);
+    _selectedGlass = widget.entity?.glass;
+    _selectedCategories = {
+      'seasons': widget.entity?.categories?.seasons ?? [],
+      'origins': widget.entity?.categories?.origins ?? [],
+      'strengths': widget.entity?.categories?.strengths ?? [],
+      'eras': widget.entity?.categories?.eras ?? [],
+      'diets': widget.entity?.categories?.diets ?? [],
+      'colors': widget.entity?.categories?.colors ?? [],
+      'keywords': widget.entity?.categories?.keywords ?? [],
+    };
 
     if (widget.entity != null) {
       ref.read(drinkDetailsNotifierProvider(widget.entity!.id).notifier).refreshDrink();
@@ -139,6 +153,16 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
     _difficulty = drink.recipe?.difficulty ?? Difficulty.beginner;
     _ingredients.clear();
     _ingredients.addAll(drink.recipe?.ingredients ?? []);
+    _selectedGlass = drink.glass;
+    _selectedCategories = {
+      'seasons': drink.categories?.seasons ?? [],
+      'origins': drink.categories?.origins ?? [],
+      'strengths': drink.categories?.strengths ?? [],
+      'eras': drink.categories?.eras ?? [],
+      'diets': drink.categories?.diets ?? [],
+      'colors': drink.categories?.colors ?? [],
+      'keywords': drink.categories?.keywords ?? [],
+    };
   }
 
   Widget _buildForm() {
@@ -203,8 +227,19 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
         ),
         StirText.titleMedium('Informations'),
         const Gap(StirSpacings.small4),
-        /// TODO: Add glass type selector field
-        /// TODO: Add categories field
+        GlassSelectorFormField(
+          label: 'Glass',
+          value: _selectedGlass,
+          onChanged: (glass) => setState(() => _selectedGlass = glass),
+          enabled: _currentMode != EntityModalMode.view,
+        ),
+        const Gap(StirSpacings.small16),
+        CategoriesSelectorFormField(
+          label: 'Categories',
+          value: _selectedCategories,
+          onChanged: (categories) => setState(() => _selectedCategories = categories),
+          enabled: _currentMode != EntityModalMode.view,
+        ),
       ],
     );
   }
@@ -272,10 +307,24 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           'description': _descriptionController.text,
           'picture': _selectedImage!,
           'recipe': {
-            'ingredients': _ingredients,
+            'ingredients': _ingredients.map((ingredient) => {
+              'ingredient': ingredient.ingredientId,
+              'quantity': ingredient.quantity,
+              'unit': ingredient.unit,
+            }).toList(),
             'instructions': instructions,
-            'preparationTime': int.parse(_preparationTimeController.text),
-            'difficulty': _difficulty,
+            'preparation_time': int.parse(_preparationTimeController.text),
+            'difficulty': _difficulty.value,
+          },
+          'glass': _selectedGlass?.id,
+          'categories': {
+            'seasons': List<String>.from(_selectedCategories['seasons'] ?? []),
+            'origins': List<String>.from(_selectedCategories['origins'] ?? []),
+            'strengths': List<String>.from(_selectedCategories['strengths'] ?? []),
+            'eras': List<String>.from(_selectedCategories['eras'] ?? []),
+            'diets': List<String>.from(_selectedCategories['diets'] ?? []),
+            'colors': List<String>.from(_selectedCategories['colors'] ?? []),
+            'keywords': List<String>.from(_selectedCategories['keywords'] ?? []),
           },
         };
 

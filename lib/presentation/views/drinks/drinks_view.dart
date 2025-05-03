@@ -161,9 +161,7 @@ class DrinksView extends ConsumerWidget {
         mode: EntityModalMode.create,
         entity: null,
         onSave: (request) async {
-          /*final success = await ref.read(drinksNotifierProvider.notifier).createDrink(
-            request: request as DrinksCreateRequest,
-          );
+          final success = await ref.read(drinksNotifierProvider.notifier).createDrink(request);
 
           if (success) {
             Navigator.pop(context);
@@ -171,7 +169,7 @@ class DrinksView extends ConsumerWidget {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('Failed to create drink')),
             );
-          }*/
+          }
         },
       ),
     );

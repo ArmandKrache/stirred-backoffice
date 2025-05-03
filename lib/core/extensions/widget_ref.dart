@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stirred_backoffice/core/theme/color.dart';
 import 'package:stirred_backoffice/core/theme/shadow.dart';
 import 'package:stirred_backoffice/presentation/providers/choices_notifier.dart';
+import 'package:stirred_backoffice/presentation/providers/current_data.dart';
 import 'package:stirred_backoffice/presentation/providers/current_theme.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
@@ -12,6 +13,13 @@ extension WidgetRefExtensions on WidgetRef {
 
   AllChoicesResponse? get allChoices => watch(choicesNotifierProvider).whenOrNull(
         data: (data) => data,
+      );
+
+  Profile? get currentUser => watch(currentDataNotifierProvider).whenOrNull(
+        data: (data) => data.whenOrNull(
+          authentified: (data) => data,
+          unauthentified: (_) => null,
+        ),
       );
 
   /// Get the current locale of the app. If the locale notifier is in error or

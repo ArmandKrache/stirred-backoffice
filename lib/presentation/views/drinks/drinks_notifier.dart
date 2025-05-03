@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:stirred_backoffice/presentation/providers/current_data.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_notifier_mixin.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_state.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
@@ -114,5 +115,50 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
         activeFilters: {},
       ),
     );
+  }
+
+  Future<bool> createDrink(Map<String, dynamic> body) async {
+    logger.d(body);
+    final recipe = RecipeCreateRequest(
+      name: body['name'],
+      description: body['description'],
+      ingredients: body['recipe']['ingredients'],
+      instructions: body['recipe']['instructions'],
+      preparationTime: body['recipe']['preparation_time'],
+      difficulty: body['recipe']['difficulty'],
+    );
+    logger.d(recipe);
+
+    final result = await ref.read(drinksRepositoryProvider).createRecipe(recipe);
+
+    final recipeId = result.when(
+      success: (response) => response.recipe.id,
+      failure: (_) => null,
+    );
+
+    final user = ref.read(currentDataNotifierProvider).whenOrNull(
+          data: (data) => data.whenOrNull(
+            authentified: (data) => data,
+            unauthentified: (_) => null,
+          ),
+        );
+
+    if (recipeId == null || user == null) {
+      return false;
+    }
+
+    final drink = DrinkCreateRequest(
+      name: body['name'],
+      description: body['description'],
+      picture: body['picture'],
+      categories: body['categories'],
+      recipe: recipeId,
+      author: user.id,
+      glass: body['glass'],
+    );
+
+    final drinkResult = await ref.read(drinksRepositoryProvider).createDrink(request: drink);
+
+    return drinkResult.when(success: (response) => true, failure: (_) => false);
   }
 }
