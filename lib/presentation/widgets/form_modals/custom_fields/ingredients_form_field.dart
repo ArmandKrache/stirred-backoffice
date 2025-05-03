@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
+import 'package:stirred_backoffice/core/extensions/widget_ref.dart';
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 /// A form field for managing ingredients with quantity and unit selection
-class IngredientsFormField extends StatefulWidget {
+class IngredientsFormField extends ConsumerStatefulWidget {
   const IngredientsFormField({
     super.key,
     required this.label,
@@ -20,12 +22,12 @@ class IngredientsFormField extends StatefulWidget {
   final bool enabled;
 
   @override
-  State<IngredientsFormField> createState() => _IngredientsFormFieldState();
+  ConsumerState<IngredientsFormField> createState() => _IngredientsFormFieldState();
 }
 
-class _IngredientsFormFieldState extends State<IngredientsFormField> {
+class _IngredientsFormFieldState extends ConsumerState<IngredientsFormField> {
   final List<RecipeIngredient> _ingredients = [];
-  final List<String> _availableUnits = ['ml', 'cl', 'l', 'g', 'kg', 'oz', 'tsp', 'tbsp', 'piece'];
+  late List<String> _availableUnits;
 
   @override
   void initState() {
@@ -57,6 +59,8 @@ class _IngredientsFormFieldState extends State<IngredientsFormField> {
 
   @override
   Widget build(BuildContext context) {
+    _availableUnits = ref.allChoices?.ingredientUnits ?? [];
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -121,8 +125,14 @@ class _AddIngredientDialog extends StatefulWidget {
 
 class _AddIngredientDialogState extends State<_AddIngredientDialog> {
   final _quantityController = TextEditingController();
-  String _selectedUnit = 'ml';
+  late String _selectedUnit;
   String _selectedIngredient = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedUnit = widget.availableUnits.first;
+  }
 
   @override
   void dispose() {
