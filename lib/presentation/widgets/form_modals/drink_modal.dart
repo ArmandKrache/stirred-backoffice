@@ -143,6 +143,7 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
 
   Widget _buildForm() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
         custom.ImageFormField(
@@ -163,7 +164,11 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           enabled: _currentMode != EntityModalMode.view,
           minLines: 3,
         ),
-        const Gap(StirSpacings.small16),
+        const Divider(
+          height: StirSpacings.small16,
+        ),
+        StirText.titleMedium('Recipe'),
+        const Gap(StirSpacings.small4),
         NumberPickerFormField(
           label: 'Preparation Time (minutes)',
           controller: _preparationTimeController,
@@ -193,6 +198,13 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           }),
           enabled: _currentMode != EntityModalMode.view,
         ),
+        const Divider(
+          height: StirSpacings.small16,
+        ),
+        StirText.titleMedium('Informations'),
+        const Gap(StirSpacings.small4),
+        /// TODO: Add glass type selector field
+        /// TODO: Add categories field
       ],
     );
   }
@@ -247,7 +259,7 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           .where((line) => line.trim().isNotEmpty)
           .toList();
 
-      /*if (_currentMode == EntityModalMode.create) {
+      if (_currentMode == EntityModalMode.create) {
         if (_selectedImage == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Image is required')),
@@ -255,20 +267,20 @@ class DrinkModalState extends ConsumerState<DrinkModal> {
           return;
         }
 
-        final request = DrinksCreateRequest(
-          name: _nameController.text,
-          description: _descriptionController.text,
-          picture: _selectedImage!,
-          recipe: RecipeCreateRequest(
-            ingredients: _ingredients,
-            instructions: instructions,
-            preparationTime: _preparationTime.toInt(),
-            difficulty: _difficulty,
-          ),
-        );
+        final request = {
+          'name': _nameController.text,
+          'description': _descriptionController.text,
+          'picture': _selectedImage!,
+          'recipe': {
+            'ingredients': _ingredients,
+            'instructions': instructions,
+            'preparationTime': int.parse(_preparationTimeController.text),
+            'difficulty': _difficulty,
+          },
+        };
 
         widget.onSave!(request);
-      } else if (_currentMode == EntityModalMode.edit) {
+      } /*else if (_currentMode == EntityModalMode.edit) {
         final request = DrinkPatchRequest(
           id: widget.entity!.id,
           name: _nameController.text,
