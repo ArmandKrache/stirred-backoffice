@@ -4,7 +4,6 @@ import 'package:gap/gap.dart';
 import 'package:http/http.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/drink_details/drink_details_notifier.dart';
-import 'package:stirred_backoffice/presentation/views/drinks/drinks_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/categories_selector_form_field.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/custom_fields/difficulty_selector_form_field.dart';
@@ -35,22 +34,28 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
   late final TextEditingController _descriptionController;
   late final TextEditingController _instructionsController;
   late final TextEditingController _preparationTimeController;
+  String? _recipeId;
   MultipartFile? _selectedImage;
   Difficulty _difficulty = Difficulty.beginner;
   final List<RecipeIngredient> _ingredients = [];
   Glass? _selectedGlass;
   Map<String, List<String>> _selectedCategories = {};
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
+    _recipeId = widget.entity?.recipe?.id;
     _nameController = TextEditingController(text: widget.entity?.name);
     _descriptionController = TextEditingController(text: widget.entity?.description);
-    _preparationTimeController = TextEditingController(text: widget.entity?.recipe?.preparationTime.toStringAsFixed(0));
+    _preparationTimeController = TextEditingController(
+      text: widget.entity?.recipe?.preparationTime.toStringAsFixed(0) ?? '',
+    );
     _instructionsController = TextEditingController(
-      text: widget.entity?.recipe?.instructions.join('\n'),
+      text: widget.entity?.recipe?.instructions.join('\n') ?? '',
     );
     _difficulty = widget.entity?.recipe?.difficulty ?? Difficulty.beginner;
+    _ingredients.clear();
     _ingredients.addAll(widget.entity?.recipe?.ingredients ?? []);
     _selectedGlass = widget.entity?.glass;
     _selectedCategories = {
@@ -90,7 +95,11 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
         return ref.watch(drinkDetailsNotifierProvider(widget.entity!.id)).when(
           data: (data) {
             final drink = data.drink ?? widget.entity!;
-            _updateControllers(drink);
+            // Only update controllers if the drink ID has changed
+            if (!_initialized) {
+              _initializeControllers(drink);
+              _initialized = true;
+            }
             return _buildForm();
           },
           error: (error, stackTrace) => ErrorPlaceholder(
@@ -103,7 +112,8 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
     );
   }
 
-  void _updateControllers(Drink drink) {
+  void _initializeControllers(Drink drink) {
+    _recipeId = drink.recipe?.id;
     _nameController.text = drink.name;
     _descriptionController.text = drink.description ?? '';
     _preparationTimeController.text = drink.recipe?.preparationTime.toStringAsFixed(0) ?? '';
@@ -113,13 +123,13 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
     _ingredients.addAll(drink.recipe?.ingredients ?? []);
     _selectedGlass = drink.glass;
     _selectedCategories = {
-      'seasons': drink.categories?.seasons ?? [],
-      'origins': drink.categories?.origins ?? [],
-      'strengths': drink.categories?.strengths ?? [],
-      'eras': drink.categories?.eras ?? [],
-      'diets': drink.categories?.diets ?? [],
-      'colors': drink.categories?.colors ?? [],
-      'keywords': drink.categories?.keywords ?? [],
+      'seasons': List<String>.from(drink.categories?.seasons ?? []),
+      'origins': List<String>.from(drink.categories?.origins ?? []),
+      'strengths': List<String>.from(drink.categories?.strengths ?? []),
+      'eras': List<String>.from(drink.categories?.eras ?? []),
+      'diets': List<String>.from(drink.categories?.diets ?? []),
+      'colors': List<String>.from(drink.categories?.colors ?? []),
+      'keywords': List<String>.from(drink.categories?.keywords ?? []),
     };
   }
 
@@ -219,6 +229,32 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
           .where((line) => line.trim().isNotEmpty)
           .toList();
 
+      final request = {
+        'name': _nameController.text,
+        'description': _descriptionController.text,
+        'recipe': {
+          'id': _recipeId,
+          'ingredients': _ingredients.map((ingredient) => {
+            'ingredient': ingredient.ingredientId,
+            'quantity': ingredient.quantity,
+            'unit': ingredient.unit,
+          }).toList(),
+          'instructions': instructions,
+          'preparation_time': int.parse(_preparationTimeController.text),
+          'difficulty': _difficulty.value,
+        },
+        'glass': _selectedGlass?.id,
+        'categories': {
+          'seasons': List<String>.from(_selectedCategories['seasons'] ?? []),
+          'origins': List<String>.from(_selectedCategories['origins'] ?? []),
+          'strengths': List<String>.from(_selectedCategories['strengths'] ?? []),
+          'eras': List<String>.from(_selectedCategories['eras'] ?? []),
+          'diets': List<String>.from(_selectedCategories['diets'] ?? []),
+          'colors': List<String>.from(_selectedCategories['colors'] ?? []),
+          'keywords': List<String>.from(_selectedCategories['keywords'] ?? []),
+        },
+      };
+
       if (currentMode == EntityModalMode.create) {
         if (_selectedImage == null) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -226,77 +262,16 @@ class DrinkModalState extends BaseEntityModalState<Drink> {
           );
           return;
         }
-
-        final request = {
-          'name': _nameController.text,
-          'description': _descriptionController.text,
-          'picture': _selectedImage!,
-          'recipe': {
-            'ingredients': _ingredients.map((ingredient) => {
-              'ingredient': ingredient.ingredientId,
-              'quantity': ingredient.quantity,
-              'unit': ingredient.unit,
-            }).toList(),
-            'instructions': instructions,
-            'preparation_time': int.parse(_preparationTimeController.text),
-            'difficulty': _difficulty.value,
-          },
-          'glass': _selectedGlass?.id,
-          'categories': {
-            'seasons': List<String>.from(_selectedCategories['seasons'] ?? []),
-            'origins': List<String>.from(_selectedCategories['origins'] ?? []),
-            'strengths': List<String>.from(_selectedCategories['strengths'] ?? []),
-            'eras': List<String>.from(_selectedCategories['eras'] ?? []),
-            'diets': List<String>.from(_selectedCategories['diets'] ?? []),
-            'colors': List<String>.from(_selectedCategories['colors'] ?? []),
-            'keywords': List<String>.from(_selectedCategories['keywords'] ?? []),
-          },
-        };
-
-        widget.onSave!(request);
+        request['picture'] = _selectedImage!;
+      } else if (_selectedImage != null) {
+        request['picture'] = _selectedImage!;
       }
+
+      widget.onSave!(request);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.toString())),
       );
-    }
-  }
-
-  void _handleDelete() async {
-    if (widget.entity == null) return;
-
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Drink'),
-        content: const Text('Are you sure you want to delete this drink? This action cannot be undone.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(context, true),
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-
-    if (confirmed == true) {
-      final success = await ProviderScope.containerOf(context).read(drinksNotifierProvider.notifier).deleteDrink(widget.entity!.id);
-      
-      if (success) {
-        if (mounted) {
-          Navigator.pop(context);
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Failed to delete drink')),
-          );
-        }
-      }
     }
   }
 }

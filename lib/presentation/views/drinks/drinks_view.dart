@@ -91,13 +91,10 @@ class DrinksView extends ConsumerWidget {
         mode: mode,
         entity: drink,
         onSave: (data) async {
-          /*if (mode == EntityModalMode.create) {
-            final request = data as DrinksCreateRequest;
-            final success = await ref.read(drinksNotifierProvider.notifier).createDrink(
-              request: request,
-            );
-
+          if (mode == EntityModalMode.create) {
+            final success = await ref.read(drinksNotifierProvider.notifier).createDrink(data);
             if (success) {
+              ref.read(drinksNotifierProvider.notifier).fetchItems(resetList: true);
               Navigator.pop(context);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -105,20 +102,16 @@ class DrinksView extends ConsumerWidget {
               );
             }
           } else {
-            final request = data as DrinkPatchRequest;
-            final success = await ref.read(drinksNotifierProvider.notifier).updateDrink(
-              request.id,
-              request: request,
-            );
-
+            final success = await ref.read(drinksNotifierProvider.notifier).updateDrink(drink.id, data);
             if (success) {
+              ref.read(drinksNotifierProvider.notifier).fetchItems(resetList: true);
               Navigator.pop(context);
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Failed to update drink')),
               );
             }
-          }*/
+          }
         },
         onDelete: mode == EntityModalMode.view ? () async {
           final shouldDelete = await showDialog<bool>(

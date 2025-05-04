@@ -35,7 +35,7 @@ class DifficultySelectorFormField extends ConsumerWidget {
         Wrap(
           spacing: StirSpacings.small4,
           children: Difficulty.values.map((difficulty) => StirPillButton(
-                onPressed: () => onChanged(difficulty),
+                onPressed: enabled ? () => onChanged(difficulty) : null,
                 selected: difficulty == value,
                 enabled: enabled,
                 color: difficulty.color(colors),

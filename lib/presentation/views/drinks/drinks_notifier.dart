@@ -173,4 +173,47 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
       failure: (_) => false,
     );
   }
+
+  Future<bool> updateDrink(String drinkId, Map<String, dynamic> body) async {
+    final recipe = RecipePatchRequest(
+      id: body['recipe']['id'],
+      name: body['name'],
+      description: body['description'],
+      ingredients: body['recipe']['ingredients'],
+      instructions: body['recipe']['instructions'],
+      difficulty: body['recipe']['difficulty'],
+      preparationTime: body['recipe']['preparation_time'],
+    );
+
+    final result = await ref.read(drinksRepositoryProvider).patchRecipe(body['recipe']['id'], recipe);
+
+    final newRecipeId = result.when(
+      success: (response) => response.recipe.id,
+      failure: (_) => null,
+    );
+
+    if (newRecipeId == null) {
+      return false;
+    }
+
+    final drink = DrinkPatchRequest(
+      id: drinkId,
+      name: body['name'],
+      description: body['description'],
+      picture: body['picture'],
+      categories: body['categories'],
+      recipe: newRecipeId,
+      glass: body['glass'],
+    );
+
+    final drinkResult = await ref.read(drinksRepositoryProvider).patchDrink(drinkId, drink);
+
+    if (drinkResult.when(success: (_) => true, failure: (_) => false)) {
+      // Refresh the list to show the updated drink
+      await fetchItems(resetList: true);
+      return true;
+    }
+
+    return false;
+  }
 }

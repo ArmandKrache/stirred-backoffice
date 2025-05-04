@@ -5,7 +5,6 @@ import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/core/extensions/widget_ref.dart';
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text.dart';
 import 'package:stirred_backoffice/presentation/widgets/design_system/stir_text_field.dart';
-import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class CategoriesSelectorFormField extends ConsumerStatefulWidget {
   const CategoriesSelectorFormField({
