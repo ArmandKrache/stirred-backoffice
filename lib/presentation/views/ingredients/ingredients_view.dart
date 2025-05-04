@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/ingredients/ingredients_notifier.dart';
-import 'package:stirred_backoffice/presentation/widgets/design_system/stir_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/ingredient_modal.dart';
+import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
@@ -33,30 +33,19 @@ class IngredientsView extends ConsumerWidget {
             onLoadMore: ingredientsNotifier.loadMore,
             title: 'Ingredients Overview',
             searchHint: 'Search ingredients...',
-            onCreatePressed: () => _showCreateIngredientModal(context),
+            onCreatePressed: () => _showCreateIngredientModal(context, ref),
             createButtonLabel: 'Add New Ingredient',
             columns: const [
               'Name',
-              'Category',
             ],
             itemBuilder: (context, ingredient) => ListItemRow(
               picture: ingredient.picture,
               pictureIcon: Icons.local_bar,
-              onTap: () {
-                // TODO: Navigate to ingredient details
-              },
+              onTap: () => _showEditIngredientModal(context, ref, ingredient),
               children: [
                 NameIdColumn(
                   name: ingredient.name,
                   id: ingredient.id,
-                ),
-                const ColumnDivider(),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: StirSpacings.small16),
-                    child: _CategoryChip(category: 'Categories'),
-                  ),
                 ),
               ],
             ),
@@ -97,46 +86,64 @@ class IngredientsView extends ConsumerWidget {
     );
   }
 
-  void _showCreateIngredientModal(BuildContext context) {
-    StirModal.show(
+  void _showCreateIngredientModal(BuildContext context, WidgetRef ref) {
+    showDialog(
       context: context,
-      title: 'Create New Ingredient',
-      content: const Center(
-        child: Text('Ingredient form content will go here'),
+      builder: (context) => IngredientModal(
+        mode: EntityModalMode.create,
+        entity: null,
+        onSave: (request) async {
+          final success = await ref.read(ingredientsNotifierProvider.notifier).createIngredient(request);
+          if (success) {
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
+          } else {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to create ingredient')),
+              );
+            }
+          }
+        },
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Cancel'),
-        ),
-        FilledButton(
-          onPressed: () {
-            // TODO: Implement create ingredient
-            Navigator.pop(context);
-          },
-          child: const Text('Create'),
-        ),
-      ],
     );
   }
-}
 
-class _CategoryChip extends StatelessWidget {
-  const _CategoryChip({required this.category});
-
-  final String category;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        category,
-        style: const TextStyle(color: Colors.blue),
+  void _showEditIngredientModal(BuildContext context, WidgetRef ref, Ingredient ingredient) {
+    showDialog(
+      context: context,
+      builder: (context) => IngredientModal(
+        mode: EntityModalMode.view,
+        entity: ingredient,
+        onSave: (request) async {
+          final success = await ref.read(ingredientsNotifierProvider.notifier).updateIngredient(ingredient.id, request);
+          if (success) {
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
+          } else {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to update ingredient')),
+              );
+            }
+          }
+        },
+        onDelete: () async {
+          final success = await ref.read(ingredientsNotifierProvider.notifier).deleteIngredient(ingredient.id);
+          if (success) {
+            if (context.mounted) {
+              Navigator.pop(context);
+            }
+          } else {
+            if (context.mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Failed to delete ingredient')),
+              );
+            }
+          }
+        },
       ),
     );
   }

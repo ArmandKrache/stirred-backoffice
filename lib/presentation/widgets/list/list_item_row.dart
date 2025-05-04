@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
+import 'package:stirred_common_domain/stirred_common_domain.dart';
 
 class ListItemRow extends StatelessWidget {
   const ListItemRow({
@@ -19,6 +20,7 @@ class ListItemRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    logger.d(picture);
     return InkWell(
       onTap: onTap,
       child: Container(

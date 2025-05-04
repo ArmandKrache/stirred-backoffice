@@ -22,10 +22,14 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
   Future<PaginationState<Ingredient>> _load() async {
     final result = await ref.read(drinksRepositoryProvider).getIngredientsList();
 
+    logger.d(result);
+
     final response = result.when(
       success: (response) => response,
       failure: (_) => null,
     );
+
+    logger.d(response);
 
     return PaginationState(
       items: response?.ingredients ?? [],
@@ -112,5 +116,60 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
         activeFilters: {},
       ),
     );
+  }
+
+  /// Creates a new ingredient
+  Future<bool> createIngredient(Map<String, dynamic> body) async {
+    logger.d(body);
+    final result = await ref.read(drinksRepositoryProvider).createIngredient(
+      request: IngredientCreateRequest(
+        name: body['name'],
+        description: body['description'],
+        picture: body['picture'],
+        matches: body['matches'],
+        categories: body['categories'],
+      ),
+    );
+
+    if (result.when(success: (_) => true, failure: (_) => false)) {
+      // Refresh the list to show the new ingredient
+      await fetchItems(resetList: true);
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Updates an existing ingredient
+  Future<bool> updateIngredient(String ingredientId, Map<String, dynamic> body) async {
+    final result = await ref.read(drinksRepositoryProvider).patchIngredient(
+      ingredientId,
+      name: body['name'],
+      description: body['description'],
+      picture: body['picture'],
+      matches: body['matches'],
+      categories: body['categories'],
+    );
+
+    if (result.when(success: (_) => true, failure: (_) => false)) {
+      // Refresh the list to show the updated ingredient
+      await fetchItems(resetList: true);
+      return true;
+    }
+
+    return false;
+  }
+
+  /// Deletes an ingredient
+  Future<bool> deleteIngredient(String ingredientId) async {
+    final result = await ref.read(drinksRepositoryProvider).deleteIngredient(ingredientId);
+
+    if (result.when(success: (_) => true, failure: (_) => false)) {
+      // Refresh the list to remove the deleted ingredient
+      await fetchItems(resetList: true);
+      return true;
+    }
+
+    return false;
   }
 } 
