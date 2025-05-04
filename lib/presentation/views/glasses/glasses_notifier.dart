@@ -35,7 +35,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int offset = 0,
+    int page = 0,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -48,9 +48,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getGlassesList(
-          offset: offset,
-        );
+        final result = await ref.read(drinksRepositoryProvider).getGlassesList();
 
         return result.when(
           success: (response) {

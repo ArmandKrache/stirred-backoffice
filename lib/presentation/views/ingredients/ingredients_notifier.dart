@@ -22,14 +22,10 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
   Future<PaginationState<Ingredient>> _load() async {
     final result = await ref.read(drinksRepositoryProvider).getIngredientsList();
 
-    logger.d(result);
-
     final response = result.when(
       success: (response) => response,
       failure: (_) => null,
     );
-
-    logger.d(response);
 
     return PaginationState(
       items: response?.ingredients ?? [],
@@ -39,7 +35,7 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int offset = 0,
+    int page = 1,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -52,13 +48,20 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getIngredientsList();
+        final result = await ref.read(drinksRepositoryProvider).getIngredientsList(
+          page: page,
+          pageSize: 20,
+        );
 
         return result.when(
           success: (response) {
+            final newItems = response.ingredients;
+            final updatedItems = resetList ? newItems : state.items + newItems;
+            
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.ingredients,
+                items: updatedItems,
+                isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
               ),
             );
             return true;
@@ -131,13 +134,18 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
       ),
     );
 
-    if (result.when(success: (_) => true, failure: (_) => false)) {
-      // Refresh the list to show the new ingredient
-      await fetchItems(resetList: true);
-      return true;
-    }
-
-    return false;
+    return result.when(
+      success: (response) {
+        // Add the new ingredient to the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: [response.ingredient, ...data.items],
+          ),
+        );
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 
   /// Updates an existing ingredient
@@ -151,25 +159,40 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
       categories: body['categories'],
     );
 
-    if (result.when(success: (_) => true, failure: (_) => false)) {
-      // Refresh the list to show the updated ingredient
-      await fetchItems(resetList: true);
-      return true;
-    }
-
-    return false;
+    return result.when(
+      success: (response) {
+        // Update the ingredient in the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.map((ingredient) {
+              if (ingredient.id == ingredientId) {
+                return response.ingredient;
+              }
+              return ingredient;
+            }).toList(),
+          ),
+        );
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 
   /// Deletes an ingredient
   Future<bool> deleteIngredient(String ingredientId) async {
     final result = await ref.read(drinksRepositoryProvider).deleteIngredient(ingredientId);
 
-    if (result.when(success: (_) => true, failure: (_) => false)) {
-      // Refresh the list to remove the deleted ingredient
-      await fetchItems(resetList: true);
-      return true;
-    }
-
-    return false;
+    return result.when(
+      success: (_) {
+        // Remove the ingredient from the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.where((ingredient) => ingredient.id != ingredientId).toList(),
+          ),
+        );
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 } 

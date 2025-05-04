@@ -26,5 +26,11 @@ class PaginationState<T> with _$PaginationState<T> {
     
     /// Whether the list has reached the end
     @Default(false) bool hasReachedEnd,
+
+    /// The current page
+    @Default(1) int page,
+
+    /// The total number of items
+    @Default(0) int totalItems,
   }) = _PaginationState<T>;
 } 

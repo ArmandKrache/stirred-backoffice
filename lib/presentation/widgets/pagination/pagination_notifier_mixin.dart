@@ -23,11 +23,12 @@ mixin PaginationNotifierMixin<T> {
     );
 
     try {
-      final hasLoadedMore = await fetchItems(offset: currentState.items.length);
+      final hasLoadedMore = await fetchItems(page: currentState.page + 1);
       state = state.whenData(
         (state) => state.copyWith(
           isLoadingMore: false,
           isUpToDate: !hasLoadedMore,
+          page: currentState.page + 1,
         ),
       );
     } catch (error, stackTrace) {
@@ -103,6 +104,6 @@ mixin PaginationNotifierMixin<T> {
   /// Returns true if more items were loaded
   Future<bool> fetchItems({
     bool resetList = false,
-    int offset = 0,
+    int page = 1,
   });
 } 

@@ -35,7 +35,7 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int offset = 0,
+    int page = 0,
   }) async {
     if (resetList) {
       state = state.whenData(

@@ -36,7 +36,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int offset = 0,
+    int page = 0,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -49,9 +49,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getDrinksList(
-          offset: offset,
-        );
+        final result = await ref.read(drinksRepositoryProvider).getDrinksList();
 
         return result.when(
           success: (response) {
