@@ -35,7 +35,7 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int page = 0,
+    int page = 1,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -48,13 +48,20 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(profileRepositoryProvider).getProfilesList();
+        final result = await ref.read(profileRepositoryProvider).getProfilesList(
+          page: page,
+          pageSize: 20,
+        );
 
         return result.when(
           success: (response) {
+            final newItems = response.profiles;
+            final updatedItems = resetList ? newItems : state.items + newItems;
+            
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.profiles,
+                items: updatedItems,
+                isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
               ),
             );
             return true;

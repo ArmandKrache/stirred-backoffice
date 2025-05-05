@@ -35,7 +35,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int page = 0,
+    int page = 1,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -48,13 +48,20 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getGlassesList();
+        final result = await ref.read(drinksRepositoryProvider).getGlassesList(
+          page: page,
+          pageSize: 20,
+        );
 
         return result.when(
           success: (response) {
+            final newItems = response.glasses;
+            final updatedItems = resetList ? newItems : state.items + newItems;
+            
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.glasses,
+                items: updatedItems,
+                isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
               ),
             );
             return true;
@@ -75,9 +82,13 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
     );
 
     return result.when(
-      success: (_) {
-        // Refresh the list
-        fetchItems(resetList: true);
+      success: (response) {
+        // Add the new glass to the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: [response.glass, ...data.items],
+          ),
+        );
         return true;
       },
       failure: (_) => false,
@@ -95,9 +106,18 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
     );
 
     return result.when(
-      success: (_) {
-        // Refresh the list
-        fetchItems(resetList: true);
+      success: (response) {
+        // Update the glass in the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.map((glass) {
+              if (glass.id == id) {
+                return response.glass;
+              }
+              return glass;
+            }).toList(),
+          ),
+        );
         return true;
       },
       failure: (_) => false,
@@ -110,8 +130,12 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
 
     return result.when(
       success: (_) {
-        // Refresh the list
-        fetchItems(resetList: true);
+        // Remove the glass from the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.where((glass) => glass.id != id).toList(),
+          ),
+        );
         return true;
       },
       failure: (_) => false,

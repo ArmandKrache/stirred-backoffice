@@ -36,7 +36,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
   @override
   Future<bool> fetchItems({
     bool resetList = false,
-    int page = 0,
+    int page = 1,
   }) async {
     if (resetList) {
       state = state.whenData(
@@ -49,13 +49,20 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     return state.maybeWhen(
       data: (state) async {
-        final result = await ref.read(drinksRepositoryProvider).getDrinksList();
+        final result = await ref.read(drinksRepositoryProvider).getDrinksList(
+          page: page,
+          pageSize: 20,
+        );
 
         return result.when(
           success: (response) {
+            final newItems = response.drinks;
+            final updatedItems = resetList ? newItems : state.items + newItems;
+            
             this.state = AsyncData(
               state.copyWith(
-                items: state.items + response.drinks,
+                items: updatedItems,
+                isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
               ),
             );
             return true;
@@ -155,7 +162,18 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     final drinkResult = await ref.read(drinksRepositoryProvider).createDrink(request: drink);
 
-    return drinkResult.when(success: (response) => true, failure: (_) => false);
+    return drinkResult.when(
+      success: (response) {
+        // Add the new drink to the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: [response.drink, ...data.items],
+          ),
+        );
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 
   /// Deletes a drink and its associated recipe
@@ -164,8 +182,12 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
     return result.when(
       success: (_) {
-        // Refresh the list to remove the deleted drink
-        fetchItems(resetList: true);
+        // Remove the drink from the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.where((drink) => drink.id != drinkId).toList(),
+          ),
+        );
         return true;
       },
       failure: (_) => false,
@@ -200,18 +222,27 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
       description: body['description'],
       picture: body['picture'],
       categories: body['categories'],
-      recipe: newRecipeId,
       glass: body['glass'],
     );
 
     final drinkResult = await ref.read(drinksRepositoryProvider).patchDrink(drinkId, drink);
 
-    if (drinkResult.when(success: (_) => true, failure: (_) => false)) {
-      // Refresh the list to show the updated drink
-      await fetchItems(resetList: true);
-      return true;
-    }
-
-    return false;
+    return drinkResult.when(
+      success: (response) {
+        // Update the drink in the current list
+        state = state.whenData(
+          (data) => data.copyWith(
+            items: data.items.map((drink) {
+              if (drink.id == drinkId) {
+                return response.drink;
+              }
+              return drink;
+            }).toList(),
+          ),
+        );
+        return true;
+      },
+      failure: (_) => false,
+    );
   }
 }
