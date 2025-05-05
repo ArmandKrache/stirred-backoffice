@@ -10,6 +10,14 @@ part 'ingredients_notifier.g.dart';
 /// The Notifier enclosing the `IngredientsView` logic.
 @riverpod
 class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierMixin<Ingredient> {
+  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
+  }
+
   @override
   Future<PaginationState<Ingredient>> build() async {
     final controller = await _load();
@@ -42,6 +50,7 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
         (data) => data.copyWith(
           items: [],
           isUpToDate: false,
+          isReloading: data.isReloading,
         ),
       );
     }
@@ -51,6 +60,7 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
         final result = await ref.read(drinksRepositoryProvider).getIngredientsList(
           page: page,
           pageSize: 20,
+          query: state.searchQuery.isNotEmpty ? state.searchQuery : null,
         );
 
         return result.when(
@@ -62,6 +72,7 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
               state.copyWith(
                 items: updatedItems,
                 isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
+                isReloading: false, // Reset loading state
               ),
             );
             return true;
@@ -75,21 +86,23 @@ class IngredientsNotifier extends _$IngredientsNotifier with PaginationNotifierM
 
   @override
   Future<void> search(String query) async {
+    // Only update the search query in the state, don't trigger a reload yet
     state = state.whenData(
-      (data) => data.copyWith(
-        searchQuery: query,
-        isReloading: true,
-      ),
+      (data) => data.copyWith(searchQuery: query),
     );
 
-    try {
-      await fetchItems(resetList: true);
+    _debouncer.debounce(() async {
+      // Only update the loading state, don't modify the search query
       state = state.whenData(
-        (data) => data.copyWith(isReloading: false),
+        (data) => data.copyWith(isReloading: true),
       );
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-    }
+
+      try {
+        await fetchItems(resetList: true);
+      } catch (error, stackTrace) {
+        state = AsyncError(error, stackTrace);
+      }
+    });
   }
 
   @override

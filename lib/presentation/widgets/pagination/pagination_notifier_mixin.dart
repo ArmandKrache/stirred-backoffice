@@ -9,6 +9,9 @@ mixin PaginationNotifierMixin<T> {
   /// Set the current state
   set state(AsyncValue<PaginationState<T>> value);
 
+  /// Called when the notifier is disposed
+  void dispose() {}
+
   /// Load more items
   Future<void> loadMore() async {
     final currentState = state.value;

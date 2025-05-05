@@ -59,10 +59,6 @@ class PaginatedListView<T> extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (state.isReloading) {
-      return const LoadingPlaceholder();
-    }
-
     return Column(
       children: [
         const Gap(StirSpacings.small16),
@@ -70,29 +66,9 @@ class PaginatedListView<T> extends ConsumerWidget {
         const SizedBox(height: StirSpacings.small16),
         if (columns.isNotEmpty) _buildTableHeader(),
         Expanded(
-          child: NotificationListener<ScrollNotification>(
-            onNotification: (notification) {
-              if (notification is ScrollEndNotification &&
-                  notification.metrics.pixels >=
-                      notification.metrics.maxScrollExtent - 200 &&
-                  !state.isLoadingMore &&
-                  !state.isUpToDate) {
-                onLoadMore();
-              }
-              return true;
-            },
-            child: ListView.builder(
-              itemCount: state.items.length + (state.isLoadingMore ? 1 : 0),
-              itemBuilder: (context, index) {
-                if (index == state.items.length) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-                return itemBuilder(context, state.items[index]);
-              },
-            ),
-          ),
+          child: state.isReloading
+              ? const LoadingPlaceholder()
+              : _buildList(),
         ),
       ],
     );
@@ -226,6 +202,32 @@ class PaginatedListView<T> extends ConsumerWidget {
             ),
           ],
         ],
+      ),
+    );
+  }
+
+  Widget _buildList() {
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        if (notification is ScrollEndNotification &&
+            notification.metrics.pixels >=
+                notification.metrics.maxScrollExtent - 200 &&
+            !state.isLoadingMore &&
+            !state.isUpToDate) {
+          onLoadMore();
+        }
+        return true;
+      },
+      child: ListView.builder(
+        itemCount: state.items.length + (state.isLoadingMore ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index == state.items.length) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          return itemBuilder(context, state.items[index]);
+        },
       ),
     );
   }
