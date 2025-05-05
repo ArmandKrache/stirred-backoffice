@@ -10,6 +10,14 @@ part 'glasses_notifier.g.dart';
 /// The Notifier enclosing the `GlassesView` logic.
 @riverpod
 class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Glass> {
+  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
+  }
+
   @override
   Future<PaginationState<Glass>> build() async {
     final controller = await _load();
@@ -42,6 +50,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
         (data) => data.copyWith(
           items: [],
           isUpToDate: false,
+          isReloading: data.isReloading,
         ),
       );
     }
@@ -51,6 +60,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
         final result = await ref.read(drinksRepositoryProvider).getGlassesList(
           page: page,
           pageSize: 20,
+          query: state.searchQuery.isNotEmpty ? state.searchQuery : null,
         );
 
         return result.when(
@@ -62,6 +72,7 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
               state.copyWith(
                 items: updatedItems,
                 isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
+                isReloading: false
               ),
             );
             return true;
@@ -70,6 +81,56 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
         );
       },
       orElse: () => false,
+    );
+  }
+
+  @override
+  Future<void> search(String query) async {
+    // Only update the search query in the state, don't trigger a reload yet
+    state = state.whenData(
+      (data) => data.copyWith(searchQuery: query),
+    );
+
+    _debouncer.debounce(() async {
+      // Only update the loading state, don't modify the search query
+      state = state.whenData(
+        (data) => data.copyWith(isReloading: true),
+      );
+
+      try {
+        await fetchItems(resetList: true);
+      } catch (error, stackTrace) {
+        state = AsyncError(error, stackTrace);
+      }
+    });
+  }
+
+  @override
+  Future<void> applyFilters(Map<String, dynamic> filters) async {
+    state = state.whenData(
+      (data) => data.copyWith(
+        activeFilters: filters,
+        isReloading: true,
+      ),
+    );
+
+    try {
+      await fetchItems(resetList: true);
+      state = state.whenData(
+        (data) => data.copyWith(isReloading: false),
+      );
+    } catch (error, stackTrace) {
+      state = AsyncError(error, stackTrace);
+    }
+  }
+
+  @override
+  void clearFilters() {
+    state = state.whenData(
+      (data) => data.copyWith(
+        searchQuery: '',
+        activeFilters: {},
+      ),
     );
   }
 
@@ -139,54 +200,6 @@ class GlassesNotifier extends _$GlassesNotifier with PaginationNotifierMixin<Gla
         return true;
       },
       failure: (_) => false,
-    );
-  }
-
-  @override
-  Future<void> search(String query) async {
-    state = state.whenData(
-      (data) => data.copyWith(
-        searchQuery: query,
-        isReloading: true,
-      ),
-    );
-
-    try {
-      await fetchItems(resetList: true);
-      state = state.whenData(
-        (data) => data.copyWith(isReloading: false),
-      );
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-    }
-  }
-
-  @override
-  Future<void> applyFilters(Map<String, dynamic> filters) async {
-    state = state.whenData(
-      (data) => data.copyWith(
-        activeFilters: filters,
-        isReloading: true,
-      ),
-    );
-
-    try {
-      await fetchItems(resetList: true);
-      state = state.whenData(
-        (data) => data.copyWith(isReloading: false),
-      );
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-    }
-  }
-
-  @override
-  void clearFilters() {
-    state = state.whenData(
-      (data) => data.copyWith(
-        searchQuery: '',
-        activeFilters: {},
-      ),
     );
   }
 }

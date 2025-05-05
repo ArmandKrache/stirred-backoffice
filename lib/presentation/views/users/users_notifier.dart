@@ -10,6 +10,14 @@ part 'users_notifier.g.dart';
 /// The Notifier enclosing the `UsersView` logic.
 @riverpod
 class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile> {
+  final Debouncer _debouncer = Debouncer(milliseconds: 500);
+
+  @override
+  void dispose() {
+    _debouncer.dispose();
+    super.dispose();
+  }
+
   @override
   Future<PaginationState<Profile>> build() async {
     final controller = await _load();
@@ -51,6 +59,7 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
         final result = await ref.read(profileRepositoryProvider).getProfilesList(
           page: page,
           pageSize: 20,
+          query: state.searchQuery.isNotEmpty ? state.searchQuery : null,
         );
 
         return result.when(
@@ -62,6 +71,7 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
               state.copyWith(
                 items: updatedItems,
                 isUpToDate: newItems.isEmpty, // If we get an empty response, we've reached the end
+                isReloading: false,
               ),
             );
             return true;
@@ -75,21 +85,23 @@ class UsersNotifier extends _$UsersNotifier with PaginationNotifierMixin<Profile
 
   @override
   Future<void> search(String query) async {
+    // Only update the search query in the state, don't trigger a reload yet
     state = state.whenData(
-      (data) => data.copyWith(
-        searchQuery: query,
-        isReloading: true,
-      ),
+      (data) => data.copyWith(searchQuery: query),
     );
 
-    try {
-      await fetchItems(resetList: true);
+    _debouncer.debounce(() async {
+      // Only update the loading state, don't modify the search query
       state = state.whenData(
-        (data) => data.copyWith(isReloading: false),
+        (data) => data.copyWith(isReloading: true),
       );
-    } catch (error, stackTrace) {
-      state = AsyncError(error, stackTrace);
-    }
+
+      try {
+        await fetchItems(resetList: true);
+      } catch (error, stackTrace) {
+        state = AsyncError(error, stackTrace);
+      }
+    });
   }
 
   @override
