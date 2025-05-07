@@ -13,11 +13,10 @@ class PaginatedListView<T> extends ConsumerWidget {
     super.key,
     required this.state,
     required this.onSearch,
-    required this.onFilterPressed,
     required this.onLoadMore,
     required this.itemBuilder,
     this.searchHint = 'Search',
-    this.filterBottomSheet,
+    this.onFilterPressed,
     this.title = 'Items',
     this.columns = const [],
     this.onCreatePressed,
@@ -30,9 +29,6 @@ class PaginatedListView<T> extends ConsumerWidget {
   /// Callback when search query changes
   final Function(String) onSearch;
 
-  /// Callback when filter button is pressed
-  final VoidCallback onFilterPressed;
-
   /// Callback when more items should be loaded
   final VoidCallback onLoadMore;
 
@@ -42,8 +38,8 @@ class PaginatedListView<T> extends ConsumerWidget {
   /// Hint text for the search field
   final String searchHint;
 
-  /// Optional bottom sheet for filters
-  final Widget? filterBottomSheet;
+  /// Callback when filter button is pressed
+  final VoidCallback? onFilterPressed;
 
   /// Title for the list
   final String title;
@@ -87,11 +83,13 @@ class PaginatedListView<T> extends ConsumerWidget {
             showLabel: false,
           ),
         ),
-        const SizedBox(width: StirSpacings.small16),
-        IconButton(
-          icon: const Icon(Icons.filter_list),
-          onPressed: onFilterPressed,
-        ),
+        if (onFilterPressed != null) ...[
+          const SizedBox(width: StirSpacings.small16),
+          IconButton(
+            icon: const Icon(Icons.filter_list),
+            onPressed: onFilterPressed,
+          ),
+        ],
         if (onCreatePressed != null) ...[
           const SizedBox(width: StirSpacings.small16),
           FilledButton.icon(

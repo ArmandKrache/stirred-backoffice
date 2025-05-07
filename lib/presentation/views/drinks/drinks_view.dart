@@ -47,16 +47,6 @@ class DrinksView extends ConsumerWidget {
                 ),
               ],
             ),
-            filterBottomSheet: FilterBottomSheet(
-              onApplyFilters: (filters) {
-                drinksNotifier.applyFilters(filters);
-                Navigator.pop(context);
-              },
-              onClearFilters: () {
-                drinksNotifier.clearFilters();
-                Navigator.pop(context);
-              },
-            ),
           ),
           error: (error, stacktrace) => ErrorPlaceholder(
             message: error.toString(),

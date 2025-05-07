@@ -8,7 +8,6 @@ import 'package:stirred_backoffice/presentation/widgets/form_modals/ingredient_m
 import 'package:stirred_backoffice/presentation/widgets/form_modals/base_entity_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
@@ -29,7 +28,6 @@ class IngredientsView extends ConsumerWidget {
           data: (data) => PaginatedListView<Ingredient>(
             state: data,
             onSearch: ingredientsNotifier.search,
-            onFilterPressed: () => _showFilterBottomSheet(context, ingredientsNotifier),
             onLoadMore: ingredientsNotifier.loadMore,
             title: 'Ingredients Overview',
             searchHint: 'Search ingredients...',
@@ -49,16 +47,6 @@ class IngredientsView extends ConsumerWidget {
                 ),
               ],
             ),
-            filterBottomSheet: FilterBottomSheet(
-              onApplyFilters: (filters) {
-                ingredientsNotifier.applyFilters(filters);
-                Navigator.pop(context);
-              },
-              onClearFilters: () {
-                ingredientsNotifier.clearFilters();
-                Navigator.pop(context);
-              },
-            ),
           ),
           error: (error, stacktrace) => ErrorPlaceholder(
             message: error.toString(),
@@ -66,22 +54,6 @@ class IngredientsView extends ConsumerWidget {
           ),
           loading: () => const LoadingPlaceholder(),
         ),
-      ),
-    );
-  }
-
-  void _showFilterBottomSheet(BuildContext context, IngredientsNotifier notifier) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => FilterBottomSheet(
-        onApplyFilters: (filters) {
-          notifier.applyFilters(filters);
-          Navigator.pop(context);
-        },
-        onClearFilters: () {
-          notifier.clearFilters();
-          Navigator.pop(context);
-        },
       ),
     );
   }

@@ -5,7 +5,6 @@ import 'package:stirred_backoffice/presentation/views/users/users_notifier.dart'
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/column_divider.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
@@ -26,7 +25,6 @@ class UsersView extends ConsumerWidget {
           data: (data) => PaginatedListView<Profile>(
             state: data,
             onSearch: usersNotifier.search,
-            onFilterPressed: () => _showFilterBottomSheet(context, usersNotifier),
             onLoadMore: usersNotifier.loadMore,
             title: 'Users Overview',
             searchHint: 'Search users...',
@@ -40,7 +38,7 @@ class UsersView extends ConsumerWidget {
               picture: user.picture,
               pictureIcon: Icons.person,
               onTap: () {
-                // TODO: Navigate to user details
+                // TODO: Open Profile Details View
               },
               children: [
                 NameIdColumn(
@@ -65,16 +63,6 @@ class UsersView extends ConsumerWidget {
                 ),
               ],
             ),
-            filterBottomSheet: FilterBottomSheet(
-              onApplyFilters: (filters) {
-                usersNotifier.applyFilters(filters);
-                Navigator.pop(context);
-              },
-              onClearFilters: () {
-                usersNotifier.clearFilters();
-                Navigator.pop(context);
-              },
-            ),
           ),
           error: (error, stacktrace) => ErrorPlaceholder(
             message: error.toString(),
@@ -82,22 +70,6 @@ class UsersView extends ConsumerWidget {
           ),
           loading: () => const LoadingPlaceholder(),
         ),
-      ),
-    );
-  }
-
-  void _showFilterBottomSheet(BuildContext context, UsersNotifier notifier) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => FilterBottomSheet(
-        onApplyFilters: (filters) {
-          notifier.applyFilters(filters);
-          Navigator.pop(context);
-        },
-        onClearFilters: () {
-          notifier.clearFilters();
-          Navigator.pop(context);
-        },
       ),
     );
   }

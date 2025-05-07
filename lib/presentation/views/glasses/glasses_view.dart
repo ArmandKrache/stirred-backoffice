@@ -4,7 +4,6 @@ import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/glasses/glasses_notifier.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
@@ -27,7 +26,6 @@ class GlassesView extends ConsumerWidget {
           data: (data) => PaginatedListView<Glass>(
             state: data,
             onSearch: glassesNotifier.search,
-            onFilterPressed: () => _showFilterBottomSheet(context, glassesNotifier),
             onLoadMore: glassesNotifier.loadMore,
             title: 'Glasses Overview',
             searchHint: 'Search glasses...',
@@ -47,16 +45,6 @@ class GlassesView extends ConsumerWidget {
                 ),
               ],
             ),
-            filterBottomSheet: FilterBottomSheet(
-              onApplyFilters: (filters) {
-                glassesNotifier.applyFilters(filters);
-                Navigator.pop(context);
-              },
-              onClearFilters: () {
-                glassesNotifier.clearFilters();
-                Navigator.pop(context);
-              },
-            ),
           ),
           error: (error, stacktrace) => ErrorPlaceholder(
             message: error.toString(),
@@ -64,22 +52,6 @@ class GlassesView extends ConsumerWidget {
           ),
           loading: () => const LoadingPlaceholder(),
         ),
-      ),
-    );
-  }
-
-  void _showFilterBottomSheet(BuildContext context, GlassesNotifier notifier) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => FilterBottomSheet(
-        onApplyFilters: (filters) {
-          notifier.applyFilters(filters);
-          Navigator.pop(context);
-        },
-        onClearFilters: () {
-          notifier.clearFilters();
-          Navigator.pop(context);
-        },
       ),
     );
   }
