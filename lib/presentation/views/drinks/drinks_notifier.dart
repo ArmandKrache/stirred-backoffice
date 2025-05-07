@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:stirred_backoffice/presentation/providers/current_data.dart';
+import 'package:stirred_backoffice/presentation/views/drinks/widgets/drinks_filter_dialog.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_notifier_mixin.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/pagination_state.dart';
 import 'package:stirred_common_domain/stirred_common_domain.dart';
@@ -12,6 +13,11 @@ part 'drinks_notifier.g.dart';
 @riverpod
 class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink> {
   final Debouncer _debouncer = Debouncer(milliseconds: 500);
+  DrinksOrdering _currentOrdering = DrinksOrdering.trending;
+  bool _isFavoritesOnly = false;
+
+  DrinksOrdering get currentOrdering => _currentOrdering;
+  bool get isFavoritesOnly => _isFavoritesOnly;
 
   @override
   void dispose() {
@@ -29,7 +35,10 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
   }
 
   Future<PaginationState<Drink>> _load() async {
-    final result = await ref.read(drinksRepositoryProvider).getDrinksList();
+    final result = await ref.read(drinksRepositoryProvider).getDrinksList(
+      ordering: _currentOrdering.value,
+      favoritesOnly: _isFavoritesOnly,
+    );
 
     final response = result.when(
       success: (response) => response,
@@ -61,6 +70,8 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
           page: page,
           pageSize: 20,
           query: state.searchQuery.isNotEmpty ? state.searchQuery : null,
+          ordering: _currentOrdering.value,
+          favoritesOnly: _isFavoritesOnly,
         );
 
         return result.when(
@@ -107,6 +118,9 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
   @override
   Future<void> applyFilters(Map<String, dynamic> filters) async {
+    _currentOrdering = filters['ordering'] as DrinksOrdering;
+    _isFavoritesOnly = filters['favoritesOnly'] as bool;
+
     state = state.whenData(
       (data) => data.copyWith(
         activeFilters: filters,
@@ -126,6 +140,9 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
 
   @override
   void clearFilters() {
+    _currentOrdering = DrinksOrdering.trending;
+    _isFavoritesOnly = false;
+
     state = state.whenData(
       (data) => data.copyWith(
         searchQuery: '',
@@ -133,6 +150,7 @@ class DrinksNotifier extends _$DrinksNotifier with PaginationNotifierMixin<Drink
       ),
     );
   }
+
 
   Future<bool> createDrink(Map<String, dynamic> body) async {
     final recipe = RecipeCreateRequest(

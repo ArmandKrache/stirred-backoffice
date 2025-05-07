@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:stirred_backoffice/core/constants/spacing.dart';
 import 'package:stirred_backoffice/presentation/views/drinks/drinks_notifier.dart';
+import 'package:stirred_backoffice/presentation/views/drinks/widgets/drinks_filter_dialog.dart';
 import 'package:stirred_backoffice/presentation/widgets/form_modals/drink_modal.dart';
 import 'package:stirred_backoffice/presentation/widgets/error_placeholder.dart';
 import 'package:stirred_backoffice/presentation/widgets/loading_placeholder.dart';
-import 'package:stirred_backoffice/presentation/widgets/list/filter_bottom_sheet.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/list_item_row.dart';
 import 'package:stirred_backoffice/presentation/widgets/list/name_id_column.dart';
 import 'package:stirred_backoffice/presentation/widgets/pagination/paginated_list_view.dart';
@@ -27,7 +27,7 @@ class DrinksView extends ConsumerWidget {
           data: (data) => PaginatedListView<Drink>(
             state: data,
             onSearch: drinksNotifier.search,
-            onFilterPressed: () => _showFilterBottomSheet(context, drinksNotifier),
+            onFilterPressed: () => _showFilterDialog(context, drinksNotifier),
             onLoadMore: drinksNotifier.loadMore,
             title: 'Drinks Overview',
             searchHint: 'Search drinks...',
@@ -58,17 +58,17 @@ class DrinksView extends ConsumerWidget {
     );
   }
 
-  void _showFilterBottomSheet(BuildContext context, DrinksNotifier notifier) {
-    showModalBottomSheet(
+  void _showFilterDialog(BuildContext context, DrinksNotifier notifier) {
+    showDialog(
       context: context,
-      builder: (context) => FilterBottomSheet(
-        onApplyFilters: (filters) {
-          notifier.applyFilters(filters);
-          Navigator.pop(context);
-        },
-        onClearFilters: () {
-          notifier.clearFilters();
-          Navigator.pop(context);
+      builder: (context) => DrinksFilterDialog(
+        currentOrdering: notifier.currentOrdering,
+        isFavoritesOnly: notifier.isFavoritesOnly,
+        onApply: (ordering, favoritesOnly) {
+          notifier.applyFilters({
+            'ordering': ordering,
+            'favoritesOnly': favoritesOnly,
+          });
         },
       ),
     );
