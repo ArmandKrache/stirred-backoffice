@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "app.flutter.test.tech" "\0"
-            VALUE "FileDescription", "cocktail_app" "\0"
+            VALUE "FileDescription", "stirred_backoffice" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "cocktail_app" "\0"
+            VALUE "InternalName", "stirred_backoffice" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 app.flutter.test.tech. All rights reserved." "\0"
-            VALUE "OriginalFilename", "cocktail_app.exe" "\0"
-            VALUE "ProductName", "cocktail_app" "\0"
+            VALUE "OriginalFilename", "stirred_backoffice.exe" "\0"
+            VALUE "ProductName", "stirred_backoffice" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
